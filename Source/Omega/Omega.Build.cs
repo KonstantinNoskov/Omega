@@ -18,7 +18,10 @@ public class Omega : ModuleRules
 			"Paper2D",
 			"Paper2DEditor",
 			"PaperZD",
-			"PaperZDEditor"
+			"PaperZDEditor",
+			"GameplayAbilities",
+			"GameplayTags",
+			"GameplayTasks"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

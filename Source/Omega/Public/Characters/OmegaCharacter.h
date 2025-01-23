@@ -5,6 +5,8 @@
 
 #include "OmegaCharacter.generated.h"
 
+class UAttributeSet;
+class UAbilitySystemComponent;
 class UPaperZDAnimationComponent;
 
 UCLASS()
@@ -23,6 +25,12 @@ protected:
 private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "PaperZD", meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UPaperZDAnimationComponent> PaperAnimation;
+	TObjectPtr<UPaperZDAnimationComponent> PaperAnimation; 
+
+	UPROPERTY()
+	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+
+	UPROPERTY()
+	TObjectPtr<UAttributeSet> AttributeSet;
 	
 };
