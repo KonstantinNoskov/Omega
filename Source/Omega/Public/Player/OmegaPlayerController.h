@@ -28,6 +28,7 @@ protected:
 private:
 	
 	void Move(const FInputActionValue& InputActionValue);
+		
 	void Jump(const FInputActionValue& InputActionValue);
 
 	void RotateController();

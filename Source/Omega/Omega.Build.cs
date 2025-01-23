@@ -15,7 +15,10 @@ public class Omega : ModuleRules
 			"Engine",
 			"InputCore",
 			"EnhancedInput",
-			"Paper2D"
+			"Paper2D",
+			"Paper2DEditor",
+			"PaperZD",
+			"PaperZDEditor"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

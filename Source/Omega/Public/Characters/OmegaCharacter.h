@@ -5,7 +5,7 @@
 
 #include "OmegaCharacter.generated.h"
 
-class UPaperFlipbook;
+class UPaperZDAnimationComponent;
 
 UCLASS()
 class OMEGA_API AOmegaCharacter : public APaperCharacter
@@ -19,6 +19,10 @@ public:
 protected:
 
 	virtual void BeginPlay() override;
-	
+
+private:
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "PaperZD", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UPaperZDAnimationComponent> PaperAnimation;
 	
 };

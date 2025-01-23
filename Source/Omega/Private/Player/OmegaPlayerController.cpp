@@ -3,8 +3,9 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "PaperCharacter.h"
-#include "PaperFlipbookComponent.h"
+#include "Characters/PlayerCharacters/RedHoodCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 
 AOmegaPlayerController::AOmegaPlayerController()
 {
@@ -27,13 +28,9 @@ void AOmegaPlayerController::AssignMappingContext()
 
 	if (InputSubSystem)
 	{
-		// Set Brute's mapping context
+		// Set mapping context
 		InputSubSystem->AddMappingContext(InputMappingContext, 0);
-
-		
 	}
-
-	
 }
 
 void AOmegaPlayerController::SetupInputComponent()
@@ -56,6 +53,9 @@ void AOmegaPlayerController::Move(const FInputActionValue& InputActionValue)
 	{
 		ControlledPawn->AddMovementInput(FVector(InputFloat, 0.f,0.f));
 
+		// Контроллер нельзя развернуть в воздухе
+		if (ControlledPawn->GetMovementComponent()->IsFalling()) return;
+		
 		// Rotate character sprite mesh towards to it's direction
 		RotateController();
 	}
