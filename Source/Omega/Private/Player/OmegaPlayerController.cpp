@@ -3,7 +3,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "PaperCharacter.h"
-#include "Characters/PlayerCharacters/RedHoodCharacter.h"
+#include "Characters/PlayerCharacters/PlayerBaseCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 

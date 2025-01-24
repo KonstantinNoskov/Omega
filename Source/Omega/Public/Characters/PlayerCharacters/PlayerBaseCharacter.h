@@ -2,20 +2,21 @@
 
 #include "CoreMinimal.h"
 #include "Characters/OmegaCharacter.h"
-#include "RedHoodCharacter.generated.h"
+#include "PlayerBaseCharacter.generated.h"
 
 class UCameraComponent;
 class USpringArmComponent;
 
 UCLASS()
-class OMEGA_API ARedHoodCharacter : public AOmegaCharacter
+class OMEGA_API APlayerBaseCharacter : public AOmegaCharacter
 {
 	GENERATED_BODY()
 
 public:
-
-	ARedHoodCharacter();
+	
+	APlayerBaseCharacter();
 	virtual void Tick(float DeltaSeconds) override;
+	virtual void PossessedBy(AController* NewController) override;
 
 protected:
 
@@ -66,5 +67,13 @@ protected:
 	float CameraDistanceUpdateSpeed = 1.f;
 
 #pragma endregion
+
+private:
+
+	
+	/**
+	 * Assign owner & avatar actor to Ability system 
+	 */
+	void InitAbilityActorInfo();
 	
 };
