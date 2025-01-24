@@ -14,14 +14,25 @@ public class Omega : ModuleRules
 			"CoreUObject",
 			"Engine",
 			"InputCore",
+			
+			//Enhanced Input
 			"EnhancedInput",
+			
+			// 2D
 			"Paper2D",
 			"Paper2DEditor",
 			"PaperZD",
 			"PaperZDEditor",
+			
+			// GAS
 			"GameplayAbilities",
 			"GameplayTags",
-			"GameplayTasks"
+			"GameplayTasks",
+			
+			// UI
+			"Slate",
+			"SlateCore",
+			"UMG"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
