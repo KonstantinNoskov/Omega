@@ -4,7 +4,9 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Player/OmegaPlayerController.h"
 #include "Player/OmegaPlayerState.h"
+#include "UI/HUD/OmegaHUD.h"
 
 APlayerBaseCharacter::APlayerBaseCharacter()
 {
@@ -54,7 +56,15 @@ void APlayerBaseCharacter::InitAbilityActorInfo()
 	AbilitySystemComponent = OmegaPlayerState->GetAbilitySystemComponent();
 
 	// Assign attribute set
-	AttributeSet = OmegaPlayerState->GetAttributeSet();	
+	AttributeSet = OmegaPlayerState->GetAttributeSet();
+
+	if (AOmegaPlayerController* OmegaPlayerController = Cast<AOmegaPlayerController>(GetController()))
+	{
+		if (AOmegaHUD* OmegaHUD = Cast<AOmegaHUD>(OmegaPlayerController->GetHUD()))
+		{
+			OmegaHUD->InitOverlay(OmegaPlayerController, OmegaPlayerState, AbilitySystemComponent, AttributeSet);
+		}
+	}
 }
 
 

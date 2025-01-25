@@ -4,19 +4,23 @@
 #include "UObject/Object.h"
 #include "OmegaWidgetController.generated.h"
 
+struct FWidgetControllerParams;
 class UAbilitySystemComponent;
 class UAttributeSet;
 
-UCLASS()
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeValueChangedSignature, float, NewValue);
+
+UCLASS(Blueprintable, BlueprintType)
 class OMEGA_API UOmegaWidgetController : public UObject
 {
 	GENERATED_BODY()
 
-	
-
 public:
 
-	void SetWidgetControllerParameters();
+	void SetWidgetControllerParameters(const FWidgetControllerParams& InParams);
+	virtual void BroadcastInitialValues();
+	
+	virtual void BindCallbacksToDependencies();
 
 protected:
 

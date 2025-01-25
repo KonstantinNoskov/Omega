@@ -4,6 +4,7 @@
 #include "Blueprint/UserWidget.h"
 #include "OmegaUserWidget.generated.h"
 
+struct FWidgetControllerParams;
 class UOmegaWidgetController;
 
 UCLASS()
@@ -11,6 +12,7 @@ class OMEGA_API UOmegaUserWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
+	
 protected:
 	
 	UFUNCTION(BlueprintImplementableEvent)
@@ -24,6 +26,7 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<UObject> WidgetController;
 
+	
 	
 		
 };
