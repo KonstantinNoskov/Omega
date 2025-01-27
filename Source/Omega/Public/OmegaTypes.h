@@ -1,9 +1,26 @@
 ﻿#pragma once
 
+#include "GameplayEffectTypes.h"
 #include "OmegaTypes.generated.h"
 
 class UAttributeSet;
 class UAbilitySystemComponent;
+
+UENUM(BlueprintType)
+enum class EEffectApplicationPolicy : uint8
+{
+	ApplyOnOverlap,
+	ApplyOnEndOverlap,
+	DoNotApply
+};
+
+UENUM(BlueprintType)
+enum class EEffectRemovalPolicy : uint8
+{
+	RemoveOnOverlap,
+	RemoveOnEndOverlap,
+	DoNotRemove
+};
 
 USTRUCT(BlueprintType)
 struct FWidgetControllerParams
