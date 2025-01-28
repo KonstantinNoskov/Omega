@@ -31,17 +31,10 @@ void AOmegaEffectActor::ApplyEffectToTarget(AActor* TargetActor, const TSubclass
 	EffectContextHandle.AddSourceObject(this);
 	
 	// Creating EffectSpecHandle based on EffectContextHandle
-	const FGameplayEffectSpecHandle EffectSpecHandle = OmegaASC->MakeOutgoingSpec(InGameplayEffectClass, 1.f, EffectContextHandle);
+	const FGameplayEffectSpecHandle EffectSpecHandle = OmegaASC->MakeOutgoingSpec(InGameplayEffectClass, ActorLevel, EffectContextHandle);
 	
 	// Making Target ability system apply effect to itself and store it.
 	const FActiveGameplayEffectHandle ActiveGameplayEffectHandle = OmegaASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data);
-
-	// Store all infinite applied effects 
-	/*const bool bIsEffectInfinite = EffectSpecHandle.Data->Def->DurationPolicy == EGameplayEffectDurationType::Infinite;
-	if (bIsEffectInfinite)
-	{
-		ActiveInfiniteEffectHandles.Add(OmegaASC, ActiveGameplayEffectHandle);
-	}*/
 }
 
 void AOmegaEffectActor::OnOverlap(AActor* TargetActor)
@@ -56,7 +49,7 @@ void AOmegaEffectActor::OnOverlap(AActor* TargetActor)
 	if (!TargetASC) return; 
 	
 	// Duration
-	if (DurationEffectRemovalPolicy == EEffectRemovalPolicy::RemoveOnOverlap && DurationGameplayEffectClass)	{ TargetASC->RemoveActiveGameplayEffectBySourceEffect(DurationGameplayEffectClass, TargetASC); }
+	if (DurationEffectRemovalPolicy == EEffectRemovalPolicy::RemoveOnOverlap && DurationGameplayEffectClass) { TargetASC->RemoveActiveGameplayEffectBySourceEffect(DurationGameplayEffectClass, TargetASC); }
 }
 
 void AOmegaEffectActor::OnEndOverlap(AActor* TargetActor)
