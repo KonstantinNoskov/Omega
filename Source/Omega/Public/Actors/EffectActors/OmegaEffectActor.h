@@ -5,15 +5,13 @@
 #include "GameFramework/Actor.h"
 #include "OmegaEffectActor.generated.h"
 
-struct FActiveGameplayEffectHandle;
-
 enum class EEffectRemovalPolicy : uint8;
 enum class EEffectApplicationPolicy : uint8;
 
-class UAbilitySystemComponent;
+struct FActiveGameplayEffectHandle;
+
 class UGameplayEffect;
 class UPaperFlipbookComponent;
-class USphereComponent;
 
 UCLASS()
 class OMEGA_API AOmegaEffectActor : public AActor

@@ -68,12 +68,5 @@ protected:
 
 #pragma endregion
 
-private:
-
-	
-	/**
-	 * Assign owner & avatar actor to Ability system 
-	 */
-	void InitAbilityActorInfo();
-	
+	virtual void InitAbilityActorInfo() override;
 };

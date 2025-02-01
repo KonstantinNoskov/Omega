@@ -1,11 +1,16 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
+#include "OmegaTypes.h"
 #include "OmegaWidgetController.h"
 #include "OverlayWidgetController.generated.h"
 
 
+struct FGameplayTag;
 struct FOnAttributeChangeData;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMessageWidgetRowSignature, FUIWidgetRow, Row);
 
 UCLASS()
 class OMEGA_API UOverlayWidgetController : public UOmegaWidgetController
@@ -19,12 +24,15 @@ public:
 
 protected:
 
-	void OnHealthChanged(const FOnAttributeChangeData& InData) const;
-	void OnMaxHealthChanged(const FOnAttributeChangeData& InData) const;
-	void OnManaChanged(const FOnAttributeChangeData& InData) const;
-	void OnMaxManaChanged(const FOnAttributeChangeData& InData) const;
-	
+	template<typename T>
+	T* GetDataTableRowByTag(UDataTable* InDataTable, const FGameplayTag& InTag);
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widget Data", meta = (RequiredAssetDataTags = "RowStructure=/Script/Omega.UIWidgetRow"))
+	TObjectPtr<UDataTable> WidgetMessageDataTable;
+
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Messages")
+	FMessageWidgetRowSignature MessageWidgetRowDelegate;
+	
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
 	FOnAttributeValueChangedSignature OnHealthChangedDelegate;
 
@@ -36,4 +44,8 @@ protected:
 
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
 	FOnAttributeValueChangedSignature OnMaxManaChangedDelegate;
+
+	
 };
+
+

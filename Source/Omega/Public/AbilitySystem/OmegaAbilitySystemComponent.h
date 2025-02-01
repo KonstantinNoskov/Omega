@@ -4,6 +4,7 @@
 #include "AbilitySystemComponent.h"
 #include "OmegaAbilitySystemComponent.generated.h"
 
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnEffectAssetTagsUpdatedSignature, const FGameplayTagContainer& /*AssetTags*/)
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class OMEGA_API UOmegaAbilitySystemComponent : public UAbilitySystemComponent
@@ -16,9 +17,13 @@ public:
 
 protected:
 
-	virtual void BeginPlay() override;
+	void OnEffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& AppliedEffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle);
 
 public:
-
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	
+	void OnAbilityActorInfoSet();
+	
+	FOnEffectAssetTagsUpdatedSignature OnEffectAssetTagsUpdatedDelegate;
+		
+	
 };

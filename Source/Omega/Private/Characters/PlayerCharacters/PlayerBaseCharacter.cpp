@@ -1,6 +1,7 @@
 ﻿#include "Characters/PlayerCharacters/PlayerBaseCharacter.h"
 
 #include "AbilitySystemComponent.h"
+#include "AbilitySystem/OmegaAbilitySystemComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -52,6 +53,15 @@ void APlayerBaseCharacter::InitAbilityActorInfo()
 	checkf(OmegaPlayerState, TEXT("[%hs]: OmegaPlayerState for PlayerBaseCharacter is null!"), __FUNCTION__)
 	OmegaPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(OmegaPlayerState, this);
 
+	// Inform Ability system that all essential data is set and it's time to bind callbacks ability system delegates (OnGameplayEffectApplied, etc.)
+	UOmegaAbilitySystemComponent* OmegaASC = Cast<UOmegaAbilitySystemComponent>(OmegaPlayerState->GetAbilitySystemComponent());
+	if (OmegaASC)
+	{
+		OmegaASC->OnAbilityActorInfoSet();
+	}
+	else { UE_LOG(LogTemp, Error, TEXT("[%hs]: Cast from UAbiilitySystem to UOmegaAbilitySystem is failed!"), __FUNCTION__)	}
+	
+	
 	// Assign ability system  
 	AbilitySystemComponent = OmegaPlayerState->GetAbilitySystemComponent();
 
@@ -70,7 +80,6 @@ void APlayerBaseCharacter::InitAbilityActorInfo()
 
 void APlayerBaseCharacter::HandleCameraBehavior(const float DeltaTime) const
 {
-	
 	const float CurrentCameraDistance = CharacterSpringArm->TargetArmLength;
 	const float CurrentVelocity = GetCharacterMovement()->GetLastUpdateVelocity().Length();
 	const float TargetCameraDistance = CurrentCameraDistance * (CurrentVelocity / 100);

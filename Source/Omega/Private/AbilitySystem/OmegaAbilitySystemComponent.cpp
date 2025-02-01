@@ -3,17 +3,20 @@
 
 UOmegaAbilitySystemComponent::UOmegaAbilitySystemComponent()
 {
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
 }
 
-void UOmegaAbilitySystemComponent::BeginPlay()
+void UOmegaAbilitySystemComponent::OnAbilityActorInfoSet()
 {
-	Super::BeginPlay();
+	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UOmegaAbilitySystemComponent::OnEffectApplied);
 }
 
-
-void UOmegaAbilitySystemComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UOmegaAbilitySystemComponent::OnEffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& AppliedEffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle)
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	FGameplayTagContainer TagContainer;
+	AppliedEffectSpec.GetAllAssetTags(TagContainer);
+	
+	OnEffectAssetTagsUpdatedDelegate.Broadcast(TagContainer);
 }
+
 

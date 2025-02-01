@@ -28,6 +28,14 @@ public:
 	FORCEINLINE virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override		{ return AbilitySystemComponent; }
 	FORCEINLINE UAttributeSet* GetAttributeSet() const											{ return AttributeSet; }
 
+
+protected:
+	
+	/**
+	 * Assign owner & avatar actor to Ability system 
+	 */
+	virtual void InitAbilityActorInfo();
+
 private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "PaperZD", meta = (AllowPrivateAccess = "true"))

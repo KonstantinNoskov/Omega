@@ -17,9 +17,23 @@ AEnemyCharacter::AEnemyCharacter()
 void AEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	if (IsValid(AbilitySystemComponent))
+	{
+		AbilitySystemComponent->InitAbilityActorInfo(this, this);
+	}
+	else { UE_LOG(LogTemp, Error, TEXT("[%hs]: Ability System is null!"), __FUNCTION__); }
+	
+}
 
-	checkf(AbilitySystemComponent, TEXT("[%hs]: Ability System is null!"), __FUNCTION__)
+void AEnemyCharacter::InitAbilityActorInfo()
+{
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
+	UOmegaAbilitySystemComponent* OmegaASC = Cast<UOmegaAbilitySystemComponent>(AbilitySystemComponent);
+	if (OmegaASC)
+	{
+		OmegaASC->OnAbilityActorInfoSet();
+	}
 }
 
 

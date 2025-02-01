@@ -1,6 +1,8 @@
 ﻿#include "UI/WidgetControllers/OverlayWidgetController.h"
 
+#include "AbilitySystem/OmegaAbilitySystemComponent.h"
 #include "AbilitySystem/OmegaAttributeSet.h"
+#include "BlueprintLibraries/OmegaFunctionLibrary.h"
 
 void UOverlayWidgetController::BroadcastInitialValues()
 {
@@ -15,21 +17,44 @@ void UOverlayWidgetController::BroadcastInitialValues()
 
 void UOverlayWidgetController::BindCallbacksToDependencies()
 {
-	if (const UOmegaAttributeSet* OmegaAttributeSet = CastChecked<UOmegaAttributeSet>(AttributeSet))
+	// Get Essentials
+	UOmegaAbilitySystemComponent* OmegaAbilitySystemComponent = Cast<UOmegaAbilitySystemComponent>(AbilitySystemComponent);
+	const UOmegaAttributeSet* OmegaAttributeSet = CastChecked<UOmegaAttributeSet>(AttributeSet);
+
+	// Essentials valid check
+	checkf(OmegaAbilitySystemComponent,		TEXT("[%hs]: OmegaAbilitySystemComponent cast is failed!"), __FUNCTION__)
+	checkf(OmegaAttributeSet,				TEXT("[%hs]: OmegaAttributeSet cast is failed!"), __FUNCTION__)
+	
+	//	On Attributes Changed
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(OmegaAttributeSet->GetHealthAttribute()).AddLambda([this](const FOnAttributeChangeData& InData)
 	{
-		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(OmegaAttributeSet->GetHealthAttribute()).AddUObject		(this,	&UOverlayWidgetController::OnHealthChanged);
-		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(OmegaAttributeSet->GetMaxHealthAttribute()).AddUObject	(this,	&UOverlayWidgetController::OnMaxHealthChanged);
-		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(OmegaAttributeSet->GetManaAttribute()).AddUObject		(this,	&UOverlayWidgetController::OnManaChanged);
-		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(OmegaAttributeSet->GetMaxManaAttribute()).AddUObject	(this,	&UOverlayWidgetController::OnMaxManaChanged);
-	}
+		OnHealthChangedDelegate.Broadcast(InData.NewValue);
+	});
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(OmegaAttributeSet->GetMaxHealthAttribute()).AddLambda([this](const FOnAttributeChangeData& InData)
+	{
+		OnMaxHealthChangedDelegate.Broadcast(InData.NewValue);
+	});
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(OmegaAttributeSet->GetManaAttribute()).AddLambda([this](const FOnAttributeChangeData& InData)
+	{
+		OnManaChangedDelegate.Broadcast(InData.NewValue);
+	});
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(OmegaAttributeSet->GetMaxManaAttribute()).AddLambda([this](const FOnAttributeChangeData& InData)
+	{
+		OnMaxManaChangedDelegate.Broadcast(InData.NewValue);
+	});
+
+	//	On Asset Tag Container Updated
+	OmegaAbilitySystemComponent->OnEffectAssetTagsUpdatedDelegate.AddLambda([this](const FGameplayTagContainer& InAssetTags)
+	{
+		for (const FGameplayTag& Tag : InAssetTags)
+		{
+			
+			if (!Tag.MatchesTag(FGameplayTag::RequestGameplayTag(FName("Message")))) continue;
+			
+			const FUIWidgetRow* Row = UOmegaFunctionLibrary::GetDataTableRowByTag<FUIWidgetRow>(WidgetMessageDataTable, Tag);
+			if (Row) { MessageWidgetRowDelegate.Broadcast(*Row);	}
+			else { UE_LOG(LogTemp, Error, TEXT("[%hs]: Message widget row in %s doesn't exist!"), __FUNCTION__, *WidgetMessageDataTable->GetName()) } 
+		}
+	});
+	
 }
-
-#pragma region ON ATTRIBUTES CHANGED CALLBACKS
-
-void UOverlayWidgetController::OnHealthChanged(const FOnAttributeChangeData& InData)		const		{	OnHealthChangedDelegate.Broadcast		(InData.NewValue);	}
-void UOverlayWidgetController::OnMaxHealthChanged(const FOnAttributeChangeData& InData)		const		{	OnMaxHealthChangedDelegate.Broadcast	(InData.NewValue);	}
-void UOverlayWidgetController::OnManaChanged(const FOnAttributeChangeData& InData)			const		{	OnManaChangedDelegate.Broadcast			(InData.NewValue);	}
-void UOverlayWidgetController::OnMaxManaChanged(const FOnAttributeChangeData& InData)		const		{	OnMaxManaChangedDelegate.Broadcast		(InData.NewValue);	}
-
-#pragma endregion
-

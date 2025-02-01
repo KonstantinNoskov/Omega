@@ -14,3 +14,5 @@ void AOmegaCharacter::BeginPlay()
 	Super::BeginPlay();
 }
 
+void AOmegaCharacter::InitAbilityActorInfo() {}
+

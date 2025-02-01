@@ -3,9 +3,14 @@
 #include "GameplayEffectTypes.h"
 #include "OmegaTypes.generated.h"
 
+class UPaperSprite;
+class UOmegaUserWidget;
 class UAttributeSet;
 class UAbilitySystemComponent;
 
+/*
+ * Used to handle gameplay effect apply conditions
+ */
 UENUM(BlueprintType)
 enum class EEffectApplicationPolicy : uint8
 {
@@ -14,6 +19,9 @@ enum class EEffectApplicationPolicy : uint8
 	DoNotApply
 };
 
+/*
+ * Used to handle gameplay effect removal conditions
+ */
 UENUM(BlueprintType)
 enum class EEffectRemovalPolicy : uint8
 {
@@ -22,6 +30,9 @@ enum class EEffectRemovalPolicy : uint8
 	DoNotRemove
 };
 
+/*
+ * Stores essentials params to setup widget controllers
+ */
 USTRUCT(BlueprintType)
 struct FWidgetControllerParams
 {
@@ -50,6 +61,9 @@ struct FWidgetControllerParams
 	TObjectPtr<UAttributeSet> AttributeSet = nullptr;
 };
 
+/*
+ * 
+ */
 USTRUCT(BlueprintType)
 struct FEffectProperties
 {
@@ -84,5 +98,45 @@ struct FEffectProperties
 	ACharacter* TargetCharacter = nullptr;
 	
 };
+
+
+/*
+ * Stores icon info for gameplay effect message widget
+ */
+USTRUCT(BlueprintType)
+struct FMessageIconData
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPaperSprite* Sprite = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FVector2D Size;
+};
+
+
+/*
+ *	Data to display on overlay widget on gameplay tag update 
+ */
+USTRUCT()
+struct FUIWidgetRow : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FGameplayTag MessageTag = FGameplayTag();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FText Message = FText();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSubclassOf<UOmegaUserWidget> MessageWidget;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FMessageIconData MessageIconData;
+	
+};
+
 
 
