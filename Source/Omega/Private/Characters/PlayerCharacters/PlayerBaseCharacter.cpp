@@ -46,26 +46,32 @@ void APlayerBaseCharacter::PossessedBy(AController* NewController)
 	InitAbilityActorInfo();
 }
 
+int32 APlayerBaseCharacter::GetPlayerLevel() const
+{
+	AOmegaPlayerState* OmegaPlayerState = GetPlayerState<AOmegaPlayerState>();
+	if (!OmegaPlayerState)
+		{ UE_LOG(LogTemp, Error, TEXT("[%hs]: Can't get player level. PlayerState is null!"),__FUNCTION__)	return 0;	}
+
+	return OmegaPlayerState->GetPlayerLevel();
+
+}
+
 void APlayerBaseCharacter::InitAbilityActorInfo()
 {
 	// Init ability actor info with player state valid check
 	AOmegaPlayerState* OmegaPlayerState = GetPlayerState<AOmegaPlayerState>();
-	checkf(OmegaPlayerState, TEXT("[%hs]: OmegaPlayerState for PlayerBaseCharacter is null!"), __FUNCTION__)
+	if (!OmegaPlayerState)	{ UE_LOG(LogTemp, Error, TEXT("[%hs]: OmegaPlayerState for PlayerBaseCharacter is null!"),__FUNCTION__)		return;	}
+	
 	OmegaPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(OmegaPlayerState, this);
 
-	// Inform Ability system that all essential data is set and it's time to bind callbacks ability system delegates (OnGameplayEffectApplied, etc.)
+	// Inform Ability system that all essential data is set and it's time to bind callbacks to ability system delegates (OnGameplayEffectApplied, etc.)
 	UOmegaAbilitySystemComponent* OmegaASC = Cast<UOmegaAbilitySystemComponent>(OmegaPlayerState->GetAbilitySystemComponent());
-	if (OmegaASC)
-	{
-		OmegaASC->OnAbilityActorInfoSet();
-	}
-	else { UE_LOG(LogTemp, Error, TEXT("[%hs]: Cast from UAbiilitySystem to UOmegaAbilitySystem is failed!"), __FUNCTION__)	}
+	if (!OmegaASC)	{ UE_LOG(LogTemp, Error, TEXT("[%hs]: Cast from UAbiilitySystem to UOmegaAbilitySystem is failed!"),__FUNCTION__)	return;	}
 	
-	
-	// Assign ability system  
-	AbilitySystemComponent = OmegaPlayerState->GetAbilitySystemComponent();
+	OmegaASC->OnAbilityActorInfoSet();
 
-	// Assign attribute set
+	// Assign Player's Ability system & Attribute Set
+	AbilitySystemComponent = OmegaPlayerState->GetAbilitySystemComponent();
 	AttributeSet = OmegaPlayerState->GetAttributeSet();
 
 	if (AOmegaPlayerController* OmegaPlayerController = Cast<AOmegaPlayerController>(GetController()))
@@ -75,8 +81,12 @@ void APlayerBaseCharacter::InitAbilityActorInfo()
 			OmegaHUD->InitOverlay(OmegaPlayerController, OmegaPlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
+	
+	// Set player's default primary attributes 
+	InitializeDefaultAttributes(DefaultPrimaryAttributes, 1.f);
+	InitializeDefaultAttributes(DefaultSecondaryAttributes, 1.f);
+	InitializeDefaultAttributes(DefaultTertiaryAttributes, 1.f);
 }
-
 
 void APlayerBaseCharacter::HandleCameraBehavior(const float DeltaTime) const
 {

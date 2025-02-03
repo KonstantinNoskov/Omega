@@ -33,19 +33,73 @@ private:
 
 public:
 	
-	UPROPERTY(BlueprintReadOnly, Category = "Tertiary Attributes")
-	FGameplayAttributeData Health;
-	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, Health)
+#pragma region PRIMARY ATTRIBUTES
 
-	UPROPERTY(BlueprintReadOnly, Category = "Tertiary Attributes")
+	UPROPERTY(BlueprintReadOnly, Category = "Primary Attributes")
+	FGameplayAttributeData Strength;
+	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, Strength)
+
+	UPROPERTY(BlueprintReadOnly, Category = "Primary Attributes")
+	FGameplayAttributeData Dexterity;
+	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, Dexterity)
+
+	UPROPERTY(BlueprintReadOnly, Category = "Primary Attributes")
+	FGameplayAttributeData Intelligence;
+	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, Intelligence)
+
+#pragma endregion
+
+#pragma region SECONDARY ATTRIBUTES
+
+	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
 	FGameplayAttributeData MaxHealth;
 	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, MaxHealth)
 
+	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
+	FGameplayAttributeData MaxMana;
+	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, MaxMana)
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
+	FGameplayAttributeData HealthRegeneration;
+	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, HealthRegeneration)
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
+	FGameplayAttributeData ManaRegeneration;
+	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, ManaRegeneration)
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
+	FGameplayAttributeData PhysicalDamage;
+	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, PhysicalDamage)
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
+	FGameplayAttributeData MagicDamage;
+	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, MagicDamage)
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
+	FGameplayAttributeData BlockChance;
+	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, BlockChance)
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")	
+	FGameplayAttributeData CritChance;
+	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, CritChance)
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
+	FGameplayAttributeData ArmorResistance;
+	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, ArmorResistance)
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
+	FGameplayAttributeData ElementalResistance;
+	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, ElementalResistance)
+
+	
+
+#pragma endregion
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Tertiary Attributes")
+	FGameplayAttributeData Health;
+	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, Health)
+	
 	UPROPERTY(BlueprintReadOnly, Category = "Tertiary Attributes")
 	FGameplayAttributeData Mana;
 	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, Mana)
-
-	UPROPERTY(BlueprintReadOnly, Category = "Tertiary Attributes")
-	FGameplayAttributeData MaxMana;
-	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, MaxMana)
 };

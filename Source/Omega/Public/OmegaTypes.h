@@ -112,7 +112,7 @@ struct FMessageIconData
 	UPaperSprite* Sprite = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FVector2D Size;
+	FVector2D Size = FVector2D(0.f,0.f);
 };
 
 
