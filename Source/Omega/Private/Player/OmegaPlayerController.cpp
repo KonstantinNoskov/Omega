@@ -19,7 +19,7 @@ void AOmegaPlayerController::BeginPlay()
 	AssignMappingContext();	
 }
 
-void AOmegaPlayerController::AssignMappingContext()
+void AOmegaPlayerController::AssignMappingContext() const
 {
 	// Mapping context should be set
 	check(InputMappingContext)
@@ -42,7 +42,8 @@ void AOmegaPlayerController::SetupInputComponent()
 
 	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AOmegaPlayerController::Move);
 	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &AOmegaPlayerController::Jump);
-	
+	EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Triggered, this, &AOmegaPlayerController::Crouch);
+	EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Completed, this, &AOmegaPlayerController::Crouch);
 }
 
 void AOmegaPlayerController::Move(const FInputActionValue& InputActionValue)
@@ -52,8 +53,7 @@ void AOmegaPlayerController::Move(const FInputActionValue& InputActionValue)
 	if (APawn* ControlledPawn = GetPawn<APawn>())
 	{
 		ControlledPawn->AddMovementInput(FVector(InputFloat, 0.f,0.f));
-
-		// Контроллер нельзя развернуть в воздухе
+		
 		if (ControlledPawn->GetMovementComponent()->IsFalling()) return;
 		
 		// Rotate character sprite mesh towards to it's direction
@@ -75,10 +75,12 @@ void AOmegaPlayerController::RotateController()
 
 void AOmegaPlayerController::Jump(const FInputActionValue& InputActionValue)
 {
-	if (APaperCharacter* PlayerCharacter = Cast<APaperCharacter>(GetCharacter()))
-	{
-		PlayerCharacter->Jump();
-	}
+	OnJumpInputDelegate.Broadcast(InputActionValue);
+}
+
+void AOmegaPlayerController::Crouch(const FInputActionValue& InputActionValue)
+{
+	OnCrouchInputDelegate.Broadcast(InputActionValue);
 }
 
 

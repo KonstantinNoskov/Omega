@@ -5,6 +5,8 @@
 #include "OmegaMovementComponent.generated.h"
 
 
+struct FInputActionValue;
+
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class OMEGA_API UOmegaMovementComponent : public UCharacterMovementComponent
 {
@@ -13,12 +15,25 @@ class OMEGA_API UOmegaMovementComponent : public UCharacterMovementComponent
 public:
 
 	UOmegaMovementComponent();
+	
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 protected:
 
 	virtual void BeginPlay() override;
 
 public:
+	
+	void BindToPlayerController(AController* OwningController);
 
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+private:
+
+	UFUNCTION()
+	void MyJump(const FInputActionValue& InputActionValue);
+
+	UFUNCTION()
+	void MyCrouch(const FInputActionValue& InputActionValue);
+
+
 };

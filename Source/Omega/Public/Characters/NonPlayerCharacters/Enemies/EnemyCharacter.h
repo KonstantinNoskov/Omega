@@ -11,7 +11,7 @@ class OMEGA_API AEnemyCharacter : public AOmegaCharacter, public IEnemyInterface
 	GENERATED_BODY()
 
 public:
-	AEnemyCharacter();
+	AEnemyCharacter(const FObjectInitializer& ObjectInitializer);
 
 protected:
 	

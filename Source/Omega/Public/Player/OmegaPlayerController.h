@@ -8,6 +8,8 @@ class UInputAction;
 class UInputMappingContext;
 struct FInputActionValue;
 
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnInputRecievedSignature, const FInputActionValue& Input)
+
 UCLASS()
 class OMEGA_API AOmegaPlayerController : public APlayerController
 {
@@ -23,13 +25,17 @@ protected:
 
 	virtual void SetupInputComponent() override;
 
-	void AssignMappingContext();
+	void AssignMappingContext() const;
+
+	
 
 private:
 	
 	void Move(const FInputActionValue& InputActionValue);
 		
 	void Jump(const FInputActionValue& InputActionValue);
+
+	void Crouch(const FInputActionValue& InputActionValue);
 
 	void RotateController();
 
@@ -41,4 +47,12 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "input")
 	TObjectPtr<UInputAction> JumpAction;
+
+	UPROPERTY(EditAnywhere, Category = "input")
+	TObjectPtr<UInputAction> CrouchAction;
+
+public:
+	
+	FOnInputRecievedSignature OnJumpInputDelegate;
+	FOnInputRecievedSignature OnCrouchInputDelegate;
 };

@@ -7,6 +7,7 @@
 
 #include "OmegaCharacter.generated.h"
 
+class UOmegaMovementComponent;
 class UGameplayEffect;
 class UAttributeSet;
 class UAbilitySystemComponent;
@@ -19,7 +20,7 @@ class OMEGA_API AOmegaCharacter : public APaperCharacter, public IAbilitySystemI
 
 public:
 
-	AOmegaCharacter();
+	AOmegaCharacter(const FObjectInitializer& ObjectInitializer);
 
 protected:
 
@@ -41,8 +42,9 @@ protected:
 private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "PaperZD", meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UPaperZDAnimationComponent> PaperAnimation; 
+	TObjectPtr<UPaperZDAnimationComponent> PaperAnimation;
 
+	
 protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
@@ -64,6 +66,15 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Default Attributes", DisplayName = "Tertiary Attributes")
 	TSubclassOf<UGameplayEffect> DefaultTertiaryAttributes;
+
+#pragma endregion
+
+#pragma region MOVEMENT
+
+protected:
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Omega Movement")
+	TObjectPtr<UOmegaMovementComponent> OmegaMovementComponent;
 
 #pragma endregion
 	

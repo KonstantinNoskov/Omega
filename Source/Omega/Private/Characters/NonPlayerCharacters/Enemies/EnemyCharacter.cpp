@@ -4,7 +4,8 @@
 #include "AbilitySystem/OmegaAttributeSet.h"
 
 
-AEnemyCharacter::AEnemyCharacter()
+AEnemyCharacter::AEnemyCharacter(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
 {
 	
 	PrimaryActorTick.bCanEverTick = false;

@@ -2,12 +2,17 @@
 
 #include "AbilitySystemComponent.h"
 #include "PaperZDAnimationComponent.h"
+#include "Components/OmegaMovementComponent.h"
 
-AOmegaCharacter::AOmegaCharacter()
+AOmegaCharacter::AOmegaCharacter(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer.SetDefaultSubobjectClass<UOmegaMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
 	PrimaryActorTick.bCanEverTick = false;
 
 	PaperAnimation = CreateDefaultSubobject<UPaperZDAnimationComponent>("PaperZD Animation");
+
+	OmegaMovementComponent = Cast<UOmegaMovementComponent>(GetCharacterMovement());
+	
 }
 
 void AOmegaCharacter::BeginPlay()

@@ -14,7 +14,7 @@ class OMEGA_API APlayerBaseCharacter : public AOmegaCharacter
 
 public:
 	
-	APlayerBaseCharacter();
+	APlayerBaseCharacter(const FObjectInitializer& ObjectInitializer);
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void PossessedBy(AController* NewController) override;
 

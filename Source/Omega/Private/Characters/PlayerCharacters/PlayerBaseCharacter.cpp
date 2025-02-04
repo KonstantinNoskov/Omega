@@ -3,13 +3,15 @@
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/OmegaAbilitySystemComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Components/OmegaMovementComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Player/OmegaPlayerController.h"
 #include "Player/OmegaPlayerState.h"
 #include "UI/HUD/OmegaHUD.h"
 
-APlayerBaseCharacter::APlayerBaseCharacter()
+APlayerBaseCharacter::APlayerBaseCharacter(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
 {
 	PrimaryActorTick.bCanEverTick = true;
 	
@@ -46,6 +48,7 @@ void APlayerBaseCharacter::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 	
 	InitAbilityActorInfo();
+	OmegaMovementComponent->BindToPlayerController(GetController());
 }
 
 int32 APlayerBaseCharacter::GetPlayerLevel() const
