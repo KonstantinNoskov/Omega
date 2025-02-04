@@ -25,9 +25,11 @@ void AOmegaCharacter::InitializeDefaultAttributes(const TSubclassOf<UGameplayEff
 	
 	if (!DefaultAttributesEffect)
 		{ UE_LOG(LogTemp, Error, TEXT("[%hs]: Can't initialize default attributes cause it's empty! Check for player character default attributes properties."),__FUNCTION__)	return;	}
-
-	const FGameplayEffectContextHandle ContextHandle = AbilitySystemComponent->MakeEffectContext();  
-	const FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(DefaultAttributesEffect, Level, ContextHandle); 
+	
+	FGameplayEffectContextHandle ContextHandle = AbilitySystemComponent->MakeEffectContext();
+	ContextHandle.AddSourceObject(this);
+	
+	const FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(DefaultAttributesEffect, Level, ContextHandle);
 	AbilitySystemComponent->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data, AbilitySystemComponent);
 }
 

@@ -20,7 +20,7 @@ APlayerBaseCharacter::APlayerBaseCharacter()
 	CharacterSpringArm->bInheritPitch = false;
 	CharacterSpringArm->bInheritYaw = false;
 	CharacterSpringArm->bInheritRoll = false;
-	InitialCameraDistance = CharacterSpringArm->TargetArmLength;
+	
 	CharacterSpringArm->bEnableCameraLag = true;
 
 	CharacterCamera = CreateDefaultSubobject<UCameraComponent>("Camera");
@@ -30,6 +30,8 @@ APlayerBaseCharacter::APlayerBaseCharacter()
 void APlayerBaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	InitialCameraDistance = CharacterSpringArm->TargetArmLength;
 }
 
 void APlayerBaseCharacter::Tick(float DeltaSeconds)

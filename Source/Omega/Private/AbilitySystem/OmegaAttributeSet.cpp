@@ -41,6 +41,7 @@ void UOmegaAttributeSet::GetEffectProperties(const FGameplayEffectModCallbackDat
 	{
 		OutEffectProperties.SourceAvatarActor = OutEffectProperties.SourceASC->AbilityActorInfo->AvatarActor.Get();
 		OutEffectProperties.SourceController = OutEffectProperties.SourceASC->AbilityActorInfo->PlayerController.Get();
+		
 		if (OutEffectProperties.SourceController && OutEffectProperties.SourceAvatarActor)
 		{
 			if (const APawn* Pawn = Cast<APawn>(OutEffectProperties.SourceAvatarActor))
@@ -52,6 +53,7 @@ void UOmegaAttributeSet::GetEffectProperties(const FGameplayEffectModCallbackDat
 		if (OutEffectProperties.SourceController)
 		{
 			ACharacter* SourceCharacter = Cast<ACharacter>(OutEffectProperties.SourceController->GetPawn());
+			OutEffectProperties.SourceCharacter = SourceCharacter;
 		}
 	}
 
@@ -62,7 +64,6 @@ void UOmegaAttributeSet::GetEffectProperties(const FGameplayEffectModCallbackDat
 		OutEffectProperties.TargetController = Data.Target.AbilityActorInfo->PlayerController.Get();
 		OutEffectProperties.TargetCharacter = Cast<ACharacter>(OutEffectProperties.TargetAvatarActor);
 		OutEffectProperties.TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OutEffectProperties.TargetAvatarActor);
-		
 	}
 }
 
