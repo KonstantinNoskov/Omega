@@ -1,8 +1,10 @@
 ﻿#include "Characters/PlayerCharacters/PlayerBaseCharacter.h"
 
+#include "OmegaCollisionChannels.h"
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/OmegaAbilitySystemComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Components/OmegaMovementComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -14,7 +16,9 @@ APlayerBaseCharacter::APlayerBaseCharacter(const FObjectInitializer& ObjectIniti
 	: Super(ObjectInitializer)
 {
 	PrimaryActorTick.bCanEverTick = true;
-	
+
+#pragma region CAMERA
+
 	CharacterSpringArm = CreateDefaultSubobject<USpringArmComponent>("Spring Arm");
 	CharacterSpringArm->SetupAttachment(GetRootComponent());
 	CharacterSpringArm->SetWorldRotation(FRotator(0.f,-90.f,0.f));
@@ -27,6 +31,15 @@ APlayerBaseCharacter::APlayerBaseCharacter(const FObjectInitializer& ObjectIniti
 
 	CharacterCamera = CreateDefaultSubobject<UCameraComponent>("Camera");
 	CharacterCamera->SetupAttachment(CharacterSpringArm);
+
+#pragma endregion
+
+#pragma region COLLISION CHANNELS
+
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	GetCapsuleComponent()->SetCollisionObjectType(ECC_Player);
+
+#pragma endregion
 }
 
 void APlayerBaseCharacter::BeginPlay()
@@ -48,12 +61,12 @@ void APlayerBaseCharacter::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 	
 	InitAbilityActorInfo();
-	OmegaMovementComponent->BindToPlayerController(GetController());
+	OmegaMovementComponent->BindToPlayerController(NewController);
 }
 
 int32 APlayerBaseCharacter::GetPlayerLevel() const
 {
-	AOmegaPlayerState* OmegaPlayerState = GetPlayerState<AOmegaPlayerState>();
+	const AOmegaPlayerState* OmegaPlayerState = GetPlayerState<AOmegaPlayerState>();
 	if (!OmegaPlayerState)
 		{ UE_LOG(LogTemp, Error, TEXT("[%hs]: Can't get player level. PlayerState is null!"),__FUNCTION__)	return 0;	}
 

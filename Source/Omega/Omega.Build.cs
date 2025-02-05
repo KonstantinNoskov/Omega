@@ -9,7 +9,8 @@ public class Omega : ModuleRules
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
 		PublicDependencyModuleNames.AddRange(new string[]
-		{
+		{	
+			// Core
 			"Core",
 			"CoreUObject",
 			"Engine",
@@ -32,7 +33,10 @@ public class Omega : ModuleRules
 			// UI
 			"Slate",
 			"SlateCore",
-			"UMG"
+			"UMG",
+			
+			// AI
+			"AIModule"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

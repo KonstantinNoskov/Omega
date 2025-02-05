@@ -1,7 +1,12 @@
 ﻿#include "Characters/NonPlayerCharacters/Enemies/EnemyCharacter.h"
 
+#include "OmegaCollisionChannels.h"
 #include "AbilitySystem/OmegaAbilitySystemComponent.h"
 #include "AbilitySystem/OmegaAttributeSet.h"
+#include "AI/OmegaAIController.h"
+#include "BehaviorTree/BehaviorTree.h"
+#include "BehaviorTree/BlackboardComponent.h"
+#include "Components/CapsuleComponent.h"
 
 
 AEnemyCharacter::AEnemyCharacter(const FObjectInitializer& ObjectInitializer)
@@ -12,6 +17,23 @@ AEnemyCharacter::AEnemyCharacter(const FObjectInitializer& ObjectInitializer)
 
 	AbilitySystemComponent = CreateDefaultSubobject<UOmegaAbilitySystemComponent>("Omega Ability System");
 	AttributeSet = CreateDefaultSubobject<UOmegaAttributeSet>("Omega Attribute Set");
+
+#pragma region COLLISION CHANNELS
+
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	GetCapsuleComponent()->SetCollisionObjectType(ECC_Enemy);
+
+#pragma endregion
+}
+
+void AEnemyCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	OmegaAIController = Cast<AOmegaAIController>(NewController);
+	OmegaAIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
+	OmegaAIController->RunBehaviorTree(BehaviorTree);
+	
 }
 
 
