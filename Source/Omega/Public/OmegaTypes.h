@@ -30,6 +30,14 @@ enum class EEffectRemovalPolicy : uint8
 	DoNotRemove
 };
 
+UENUM(BlueprintType)
+enum class ECustomMovementMode : uint8
+{
+	None,
+	Dash
+};
+
+
 /*
  * Stores essentials params to setup widget controllers
  */

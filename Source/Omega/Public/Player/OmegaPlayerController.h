@@ -32,10 +32,22 @@ protected:
 private:
 	
 	void Move(const FInputActionValue& InputActionValue);
-		
 	void Jump(const FInputActionValue& InputActionValue);
-
 	void Crouch(const FInputActionValue& InputActionValue);
+
+
+#pragma region DASH
+
+private:
+	void Dash(const FInputActionValue& InputActionValue);
+
+public:
+	
+	FOnInputRecievedSignature OnDashInputDelegate;
+
+#pragma endregion
+
+private:
 
 	void RotateController();
 
@@ -51,8 +63,13 @@ private:
 	UPROPERTY(EditAnywhere, Category = "input")
 	TObjectPtr<UInputAction> CrouchAction;
 
+	UPROPERTY(EditAnywhere, Category = "input")
+	TObjectPtr<UInputAction> DashAction;
+
 public:
 	
 	FOnInputRecievedSignature OnJumpInputDelegate;
 	FOnInputRecievedSignature OnCrouchInputDelegate;
+	FOnInputRecievedSignature OnMoveInputDelegate;
+	
 };
