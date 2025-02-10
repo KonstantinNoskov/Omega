@@ -34,7 +34,8 @@ UENUM(BlueprintType)
 enum class ECustomMovementMode : uint8
 {
 	None,
-	Dash
+	Dash,
+	Mantle
 };
 
 

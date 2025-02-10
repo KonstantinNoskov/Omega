@@ -50,7 +50,11 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 
+public:
+	
+	virtual bool ProcessConsoleExec(const TCHAR* Cmd, FOutputDevice& Ar, UObject* Executor) override;
 
+protected:
 #pragma region ATTRIBUTES
 
 	UPROPERTY()
@@ -70,6 +74,10 @@ protected:
 #pragma endregion
 
 #pragma region MOVEMENT
+
+public:
+	
+	virtual void PossessedBy(AController* NewController) override;
 
 protected:
 	

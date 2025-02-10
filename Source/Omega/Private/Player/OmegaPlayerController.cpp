@@ -3,9 +3,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "PaperCharacter.h"
-#include "Characters/PlayerCharacters/PlayerBaseCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "GameFramework/SpringArmComponent.h"
 
 AOmegaPlayerController::AOmegaPlayerController()
 {
@@ -41,7 +39,7 @@ void AOmegaPlayerController::SetupInputComponent()
 	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
 
 	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AOmegaPlayerController::Move);
-	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &AOmegaPlayerController::Jump);
+	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &AOmegaPlayerController::Jump);
 	EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Triggered, this, &AOmegaPlayerController::Crouch);
 	EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Completed, this, &AOmegaPlayerController::Crouch);
 	EnhancedInputComponent->BindAction(DashAction, ETriggerEvent::Started, this, &AOmegaPlayerController::Dash);

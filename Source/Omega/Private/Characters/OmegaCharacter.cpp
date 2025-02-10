@@ -12,7 +12,9 @@ AOmegaCharacter::AOmegaCharacter(const FObjectInitializer& ObjectInitializer)
 	PaperAnimation = CreateDefaultSubobject<UPaperZDAnimationComponent>("PaperZD Animation");
 
 	OmegaMovementComponent = Cast<UOmegaMovementComponent>(GetCharacterMovement());
-	
+
+	OmegaMovementComponent->bConstrainToPlane = true;
+	OmegaMovementComponent->SetPlaneConstraintAxisSetting(EPlaneConstraintAxisSetting::Y);
 }
 
 void AOmegaCharacter::BeginPlay()
@@ -20,8 +22,12 @@ void AOmegaCharacter::BeginPlay()
 	Super::BeginPlay();
 }
 
-void AOmegaCharacter::InitAbilityActorInfo() {}
+void AOmegaCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);	
+}
 
+void AOmegaCharacter::InitAbilityActorInfo() {}
 
 void AOmegaCharacter::InitializeDefaultAttributes(const TSubclassOf<UGameplayEffect>& DefaultAttributesEffect, float Level) const
 {
@@ -37,4 +43,16 @@ void AOmegaCharacter::InitializeDefaultAttributes(const TSubclassOf<UGameplayEff
 	const FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(DefaultAttributesEffect, Level, ContextHandle);
 	AbilitySystemComponent->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data, AbilitySystemComponent);
 }
+
+bool AOmegaCharacter::ProcessConsoleExec(const TCHAR* Cmd, FOutputDevice& Ar, UObject* Executor)
+{
+	if (OmegaMovementComponent && OmegaMovementComponent->ProcessConsoleExec(Cmd, Ar, Executor))
+	{
+		return true;
+	}
+	
+	return Super::ProcessConsoleExec(Cmd, Ar, Executor);
+}
+
+
 
