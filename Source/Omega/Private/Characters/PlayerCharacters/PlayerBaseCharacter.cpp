@@ -12,6 +12,7 @@
 #include "Player/OmegaPlayerState.h"
 #include "UI/HUD/OmegaHUD.h"
 
+
 APlayerBaseCharacter::APlayerBaseCharacter(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
@@ -46,6 +47,7 @@ void APlayerBaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	GetCapsuleComponent()->SetWorldLocation(GetCapsuleComponent()->GetComponentLocation() + FVector(0.f,-60.f, 0.f));
 	InitialCameraDistance = CharacterSpringArm->TargetArmLength;
 }
 
@@ -61,7 +63,12 @@ void APlayerBaseCharacter::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 	
 	InitAbilityActorInfo();
-	OmegaMovementComponent->BindToPlayerController(NewController);
+
+	OmegaMovementComponent = Cast<UOmegaMovementComponent>(GetCharacterMovement());
+	if (OmegaMovementComponent)
+	{
+		OmegaMovementComponent->BindDependencies(NewController);
+	}
 }
 
 int32 APlayerBaseCharacter::GetPlayerLevel() const
