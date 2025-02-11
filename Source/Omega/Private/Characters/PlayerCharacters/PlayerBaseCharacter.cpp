@@ -41,13 +41,13 @@ APlayerBaseCharacter::APlayerBaseCharacter(const FObjectInitializer& ObjectIniti
 	GetCapsuleComponent()->SetCollisionObjectType(ECC_Player);
 
 #pragma endregion
+	
 }
 
 void APlayerBaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-	GetCapsuleComponent()->SetWorldLocation(GetCapsuleComponent()->GetComponentLocation() + FVector(0.f,-60.f, 0.f));
+	
 	InitialCameraDistance = CharacterSpringArm->TargetArmLength;
 }
 

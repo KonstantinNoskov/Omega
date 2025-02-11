@@ -39,15 +39,16 @@ void AOmegaPlayerController::SetupInputComponent()
 	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
 
 	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AOmegaPlayerController::Move);
-	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &AOmegaPlayerController::Jump);
+	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &AOmegaPlayerController::Jump);
 	EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Triggered, this, &AOmegaPlayerController::Crouch);
 	EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Completed, this, &AOmegaPlayerController::Crouch);
 	EnhancedInputComponent->BindAction(DashAction, ETriggerEvent::Started, this, &AOmegaPlayerController::Dash);
 	EnhancedInputComponent->BindAction(DashAction, ETriggerEvent::Completed, this, &AOmegaPlayerController::Dash);
+	//EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &AOmegaPlayerController::Attack);
 }
 
 void AOmegaPlayerController::Move(const FInputActionValue& InputActionValue)
-{	
+{
 	const float InputFloat = InputActionValue.Get<float>();
 
 	if (APawn* ControlledPawn = GetPawn<APawn>())
@@ -83,6 +84,13 @@ void AOmegaPlayerController::Crouch(const FInputActionValue& InputActionValue)
 {
 	OnCrouchInputDelegate.Broadcast(InputActionValue);
 }
+
+void AOmegaPlayerController::Attack(const FInputActionInstance& InputActionInstance)
+{
+	
+}
+
+
 
 void AOmegaPlayerController::Dash(const FInputActionValue& InputActionValue)
 {

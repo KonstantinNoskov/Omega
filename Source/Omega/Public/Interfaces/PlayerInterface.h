@@ -2,19 +2,18 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
-#include "CombatInterface.generated.h"
+#include "PlayerInterface.generated.h"
 
 UINTERFACE(BlueprintType, Blueprintable)
-class UCombatInterface : public UInterface
+class UPlayerInterface : public UInterface
 {
 	GENERATED_BODY()
 };
 
-class OMEGA_API ICombatInterface
+class OMEGA_API IPlayerInterface
 {
 	GENERATED_BODY()
 
 public:
-
-	virtual int32 GetPlayerLevel() const;
+	
 };

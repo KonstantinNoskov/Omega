@@ -45,7 +45,14 @@ protected:
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
 	FOnAttributeValueChangedSignature OnMaxManaChangedDelegate;
 
-	
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
+	FOnAttributeValueChangedSignature OnStrengthChangedDelegate;
+
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
+	FOnAttributeValueChangedSignature OnIntelligenceChangedDelegate;
+
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
+	FOnAttributeValueChangedSignature OnDexterityChangedDelegate;
 };
 
 

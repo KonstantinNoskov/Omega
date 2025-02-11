@@ -12,6 +12,9 @@ void UOverlayWidgetController::BroadcastInitialValues()
 		OnMaxHealthChangedDelegate.Broadcast(OmegaAttributeSet->GetMaxHealth());
 		OnManaChangedDelegate.Broadcast(OmegaAttributeSet->GetMana());
 		OnMaxManaChangedDelegate.Broadcast(OmegaAttributeSet->GetMaxMana());
+		OnStrengthChangedDelegate.Broadcast(OmegaAttributeSet->GetStrength());
+		OnIntelligenceChangedDelegate.Broadcast(OmegaAttributeSet->GetIntelligence());
+		OnDexterityChangedDelegate.Broadcast(OmegaAttributeSet->GetDexterity());
 	}
 }
 
@@ -42,13 +45,26 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	{
 		OnMaxManaChangedDelegate.Broadcast(InData.NewValue);
 	});
+	
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(OmegaAttributeSet->GetStrengthAttribute()).AddLambda([this](const FOnAttributeChangeData& InData)
+	{
+		OnStrengthChangedDelegate.Broadcast(InData.NewValue);
+	});
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(OmegaAttributeSet->GetIntelligenceAttribute()).AddLambda([this](const FOnAttributeChangeData& InData)
+	{
+		OnIntelligenceChangedDelegate.Broadcast(InData.NewValue);
+	});
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(OmegaAttributeSet->GetDexterityAttribute()).AddLambda([this](const FOnAttributeChangeData& InData)
+	{
+		OnDexterityChangedDelegate.Broadcast(InData.NewValue);
+	});
+	
 
 	//	On Asset Tag Container Updated
 	OmegaAbilitySystemComponent->OnEffectAssetTagsUpdatedDelegate.AddLambda([this](const FGameplayTagContainer& InAssetTags)
 	{
 		for (const FGameplayTag& Tag : InAssetTags)
 		{
-			
 			if (!Tag.MatchesTag(FGameplayTag::RequestGameplayTag(FName("Message")))) continue;
 			
 			const FUIWidgetRow* Row = UOmegaFunctionLibrary::GetDataTableRowByTag<FUIWidgetRow>(WidgetMessageDataTable, Tag);
