@@ -2,13 +2,14 @@
 
 #include "CoreMinimal.h"
 #include "Characters/OmegaCharacter.h"
+#include "Interfaces/PlayerInterface.h"
 #include "PlayerBaseCharacter.generated.h"
 
 class UCameraComponent;
 class USpringArmComponent;
 
 UCLASS()
-class OMEGA_API APlayerBaseCharacter : public AOmegaCharacter
+class OMEGA_API APlayerBaseCharacter : public AOmegaCharacter, public IPlayerInterface
 {
 	GENERATED_BODY()
 

@@ -44,8 +44,6 @@ protected:
 
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
 	FOnAttributeValueChangedSignature OnMaxManaChangedDelegate;
-
-	
 };
 
 

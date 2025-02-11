@@ -4,6 +4,7 @@
 #include "GameFramework/PlayerController.h"
 #include "OmegaPlayerController.generated.h"
 
+struct FInputActionInstance;
 class UInputAction;
 class UInputMappingContext;
 struct FInputActionValue;
@@ -34,11 +35,13 @@ private:
 	void Move(const FInputActionValue& InputActionValue);
 	void Jump(const FInputActionValue& InputActionValue);
 	void Crouch(const FInputActionValue& InputActionValue);
+	void Attack(const FInputActionInstance& InputActionInstance);
 
 
 #pragma region DASH
 
 private:
+	
 	void Dash(const FInputActionValue& InputActionValue);
 
 public:
@@ -65,6 +68,9 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "input")
 	TObjectPtr<UInputAction> DashAction;
+
+	UPROPERTY(EditAnywhere, Category = "input")
+	TObjectPtr<UInputAction> AttackAction;
 
 public:
 	

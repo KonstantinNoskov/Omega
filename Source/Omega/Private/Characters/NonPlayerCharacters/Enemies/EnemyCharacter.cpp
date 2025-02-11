@@ -49,6 +49,24 @@ void AEnemyCharacter::BeginPlay()
 	
 }
 
+#pragma region ENEMY INTERFACE
+
+void AEnemyCharacter::SetCombatTarget_Implementation(AActor* TargetActor)
+{
+	if (!OmegaAIController)
+	{
+		UE_LOG(LogTemp, Error, TEXT("[%hs] OmegaAIController is null!"), __FUNCTION__)
+		return;
+	}
+	
+	UBlackboardComponent* Blackboard = OmegaAIController->GetBlackboardComponent();
+	Blackboard->SetValueAsObject(CombatTargetName, TargetActor);
+	
+}
+
+#pragma endregion
+
+
 void AEnemyCharacter::InitAbilityActorInfo()
 {
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
