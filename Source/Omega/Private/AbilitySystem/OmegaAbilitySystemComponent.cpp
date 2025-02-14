@@ -1,5 +1,7 @@
 ﻿#include "AbilitySystem/OmegaAbilitySystemComponent.h"
 
+#include "OmegaGameplayTags.h"
+
 
 UOmegaAbilitySystemComponent::UOmegaAbilitySystemComponent()
 {
@@ -9,6 +11,7 @@ UOmegaAbilitySystemComponent::UOmegaAbilitySystemComponent()
 void UOmegaAbilitySystemComponent::OnAbilityActorInfoSet()
 {
 	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UOmegaAbilitySystemComponent::OnEffectApplied);
+	
 }
 
 
@@ -22,3 +25,4 @@ void UOmegaAbilitySystemComponent::OnEffectApplied(UAbilitySystemComponent* Abil
 }
 
 
+                      

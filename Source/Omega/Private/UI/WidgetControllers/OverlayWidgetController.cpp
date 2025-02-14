@@ -1,5 +1,6 @@
 ﻿#include "UI/WidgetControllers/OverlayWidgetController.h"
 
+#include "OmegaGameplayTags.h"
 #include "AbilitySystem/OmegaAbilitySystemComponent.h"
 #include "AbilitySystem/OmegaAttributeSet.h"
 #include "BlueprintLibraries/OmegaFunctionLibrary.h"
