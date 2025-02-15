@@ -34,6 +34,7 @@ void AOmegaHUD::InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySys
 	// Add widget with assigned widget controller to the viewport
 	OverlayWidget->AddToViewport();
 }
+
 UOverlayWidgetController* AOmegaHUD::GetOverlayWidgetController(const FWidgetControllerParams& InParams)
 {
 	if (!OverlayWidgetController )

@@ -10,19 +10,19 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 #pragma region PRIMARY ATTRIBUTES
 
 	// Strength
-	UGameplayTagsManager::Get().AddNativeGameplayTag(
+	GameplayTags.Attributes_Primary_Strength = UGameplayTagsManager::Get().AddNativeGameplayTag(
 			FName("Attributes.Primary.Strength"),
 			FString("Defines how much physical damage and health character has")
 			);
 
 	// Intelligence
-	UGameplayTagsManager::Get().AddNativeGameplayTag(
+	GameplayTags.Attributes_Primary_Intelligence = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Primary.Intelligence"),
 		FString("Defines how much magic damage and mana character has")
 		);
 
 	// Dexterity
-	UGameplayTagsManager::Get().AddNativeGameplayTag(
+	GameplayTags.Attributes_Primary_Dexterity = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Primary.Dexterity"),
 		FString("Defines chance to deal critical damage and block damage")
 		);
@@ -31,13 +31,13 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 #pragma region SECONDARY ATTRIBUTES
 
 	// MaxHealth
-	UGameplayTagsManager::Get().AddNativeGameplayTag(
+	GameplayTags.Attributes_Secondary_MaxHealth = UGameplayTagsManager::Get().AddNativeGameplayTag(
 			FName("Attributes.Secondary.MaxHealth"),
 			FString("Max amount of health")
 			);
 
 	// MaxMana
-	UGameplayTagsManager::Get().AddNativeGameplayTag(
+	GameplayTags.Attributes_Secondary_MaxMana = UGameplayTagsManager::Get().AddNativeGameplayTag(
 			FName("Attributes.Secondary.MaxMana"),
 			FString("Max amount of mana")
 			);
@@ -46,13 +46,13 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 #pragma region TERTIARY ATTRIBUTES
 
 	// Health
-	UGameplayTagsManager::Get().AddNativeGameplayTag(
+	GameplayTags.Attributes_Tertiary_Health = UGameplayTagsManager::Get().AddNativeGameplayTag(
 			FName("Attributes.Tertiary.Health"),
 			FString("Current amount of health")
 			);
 
 	// Mana
-	UGameplayTagsManager::Get().AddNativeGameplayTag(
+	GameplayTags.Attributes_Tertiary_Mana = UGameplayTagsManager::Get().AddNativeGameplayTag(
 			FName("Attributes.Tertiary.Mana"),
 			FString("Current amount of mana")
 			);
@@ -61,13 +61,13 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 #pragma region ELEMENTAL
 
 	// On Fire
-	UGameplayTagsManager::Get().AddNativeGameplayTag(
+	GameplayTags.Elemental_Fire_OnFire = UGameplayTagsManager::Get().AddNativeGameplayTag(
 			FName("Elemental.Fire.OnFire"),
 			FString("Actor stays on fire")
 			);
 
 	// Burn
-	UGameplayTagsManager::Get().AddNativeGameplayTag(
+	GameplayTags.Elemental_Fire_Burn = UGameplayTagsManager::Get().AddNativeGameplayTag(
 			FName("Elemental.Fire.Burn"),
 			FString("Actor bruns after he came out of fire")
 			);
@@ -76,24 +76,24 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 #pragma region MESSAGES
 
 	// Health Potions
-	UGameplayTagsManager::Get().AddNativeGameplayTag(
+	GameplayTags.Message_HealthPotion_Small = UGameplayTagsManager::Get().AddNativeGameplayTag(
 			FName("Message.HealthPotion.Small"),
 			FString("Small health potion taken")
 			);
 
 	
-	UGameplayTagsManager::Get().AddNativeGameplayTag(
+	GameplayTags.Message_HealthPotion_Mid = UGameplayTagsManager::Get().AddNativeGameplayTag(
 			FName("Message.HealthPotion.Mid"),
 			FString("Mid health potion taken")
 			);
 
 	// Mana Potions
-	UGameplayTagsManager::Get().AddNativeGameplayTag(
+	GameplayTags.Message_ManaPotion_Small = UGameplayTagsManager::Get().AddNativeGameplayTag(
 			FName("Message.ManaPotion.Small"),
 			FString("Small Mana potion taken")
 			);
 	
-	UGameplayTagsManager::Get().AddNativeGameplayTag(
+	GameplayTags.Message_ManaPotion_Mid = UGameplayTagsManager::Get().AddNativeGameplayTag(
 			FName("Message.ManaPotion.Mid"),
 			FString("Mid Mana potion taken")
 			);

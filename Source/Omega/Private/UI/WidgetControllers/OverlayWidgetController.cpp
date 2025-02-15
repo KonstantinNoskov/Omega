@@ -3,6 +3,8 @@
 #include "OmegaGameplayTags.h"
 #include "AbilitySystem/OmegaAbilitySystemComponent.h"
 #include "AbilitySystem/OmegaAttributeSet.h"
+#include "OmegaTypes.h"
+#include "AbilitySystem/Data/AttributeInfo.h"
 #include "BlueprintLibraries/OmegaFunctionLibrary.h"
 
 void UOverlayWidgetController::BroadcastInitialValues()
@@ -13,10 +15,19 @@ void UOverlayWidgetController::BroadcastInitialValues()
 		OnMaxHealthChangedDelegate.Broadcast(OmegaAttributeSet->GetMaxHealth());
 		OnManaChangedDelegate.Broadcast(OmegaAttributeSet->GetMana());
 		OnMaxManaChangedDelegate.Broadcast(OmegaAttributeSet->GetMaxMana());
-		OnStrengthChangedDelegate.Broadcast(OmegaAttributeSet->GetStrength());
+		
+		//OnStrengthChangedDelegate.Broadcast(OmegaAttributeSet->GetStrength());
 		OnIntelligenceChangedDelegate.Broadcast(OmegaAttributeSet->GetIntelligence());
 		OnDexterityChangedDelegate.Broadcast(OmegaAttributeSet->GetDexterity());
 	}
+
+	const UOmegaAttributeSet* OmegaAttributeSet = CastChecked<UOmegaAttributeSet>(AttributeSet);
+	check(AttributeData);
+	
+	FOmegaAttributeInfo AttributeInfo = AttributeData->FindAttributeInfoByTag(FOmegaGameplayTags::Get().Attributes_Primary_Strength);
+
+	AttributeInfo.AttributeValue = OmegaAttributeSet->GetStrength();
+	OnAttributeInfoChangedDelegate.Broadcast(AttributeInfo);
 }
 
 void UOverlayWidgetController::BindCallbacksToDependencies()
@@ -46,6 +57,7 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	{
 		OnMaxManaChangedDelegate.Broadcast(InData.NewValue);
 	});
+
 	
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(OmegaAttributeSet->GetStrengthAttribute()).AddLambda([this](const FOnAttributeChangeData& InData)
 	{

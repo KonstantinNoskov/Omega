@@ -99,6 +99,11 @@ void APlayerBaseCharacter::InitAbilityActorInfo()
 	AbilitySystemComponent = OmegaPlayerState->GetAbilitySystemComponent();
 	AttributeSet = OmegaPlayerState->GetAttributeSet();
 
+	// Set player's default primary attributes 
+	InitializeDefaultAttributes(DefaultPrimaryAttributes, 1.f);
+	InitializeDefaultAttributes(DefaultSecondaryAttributes, 1.f);
+	InitializeDefaultAttributes(DefaultTertiaryAttributes, 1.f);
+
 	if (AOmegaPlayerController* OmegaPlayerController = Cast<AOmegaPlayerController>(GetController()))
 	{
 		if (AOmegaHUD* OmegaHUD = Cast<AOmegaHUD>(OmegaPlayerController->GetHUD()))
@@ -107,10 +112,7 @@ void APlayerBaseCharacter::InitAbilityActorInfo()
 		}
 	}
 	
-	// Set player's default primary attributes 
-	InitializeDefaultAttributes(DefaultPrimaryAttributes, 1.f);
-	InitializeDefaultAttributes(DefaultSecondaryAttributes, 1.f);
-	InitializeDefaultAttributes(DefaultTertiaryAttributes, 1.f);
+	
 }
 
 void APlayerBaseCharacter::HandleCameraBehavior(const float DeltaTime) const

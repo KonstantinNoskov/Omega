@@ -12,11 +12,9 @@
 
 struct FOmegaGameplayTags
 {
-
-public:
+	
 
 	static const FOmegaGameplayTags& Get() { return GameplayTags; }
-	
 	static void InitializeNativeGameplayTags();
 
 private:
@@ -24,6 +22,7 @@ private:
 	static FOmegaGameplayTags GameplayTags;
 	
 
+public:
 
 #pragma region PRIMARY ATTRIBUTE
 	
