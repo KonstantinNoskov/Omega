@@ -2,10 +2,25 @@
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "GameplayEffectExtension.h"
+#include "OmegaGameplayTags.h"
 #include "GameFramework/Character.h"
 
 UOmegaAttributeSet::UOmegaAttributeSet()
 {
+	const FOmegaGameplayTags GameplayTags = FOmegaGameplayTags::Get();
+	
+	// Primary Attributes
+	TagsToAttributes.Add(GameplayTags.Attributes_Primary_Strength,		GetStrengthAttribute);
+	TagsToAttributes.Add(GameplayTags.Attributes_Primary_Intelligence,	GetIntelligenceAttribute);
+	TagsToAttributes.Add(GameplayTags.Attributes_Primary_Dexterity,		GetDexterityAttribute);
+	
+	// Secondary Attributes
+	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_MaxHealth,	GetMaxHealthAttribute);
+	TagsToAttributes.Add(GameplayTags.Attributes_Secondary_MaxMana,		GetMaxManaAttribute);
+
+	// Tertiary Attributes
+	TagsToAttributes.Add(GameplayTags.Attributes_Tertiary_Health,		GetHealthAttribute);
+	TagsToAttributes.Add(GameplayTags.Attributes_Tertiary_Mana,			GetManaAttribute);
 	
 }
 

@@ -31,8 +31,6 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, DisplayName = "Tertiary")
 	TMap<FName, FOmegaAttributeInfo> TertiaryAttributesInfo;
-
 	
-
 	FOmegaAttributeInfo FindAttributeInfoByTag(const FGameplayTag& AttributeTag, bool bLogNotFound = false);
 };

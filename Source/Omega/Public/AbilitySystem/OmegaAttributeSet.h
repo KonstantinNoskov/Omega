@@ -12,7 +12,12 @@ GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \
 GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
+template<class T>
+using TStaticFuncPtr = typename TBaseStaticDelegateInstance<T, FDefaultDelegateUserPolicy>::FFuncPtr;
+
 struct FEffectProperties;
+
+DECLARE_DELEGATE_RetVal(FGameplayAttribute, FAttributeSignature)
 
 UCLASS()
 class OMEGA_API UOmegaAttributeSet : public UAttributeSet
@@ -27,11 +32,14 @@ public:
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
 private:
-
 	
 	void GetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& OutEffectProperties);
 
 public:
+
+	TMap<FGameplayTag, TStaticFuncPtr<FGameplayAttribute()>> TagsToAttributes;
+
+
 	
 #pragma region PRIMARY ATTRIBUTES
 
