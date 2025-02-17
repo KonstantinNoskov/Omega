@@ -14,6 +14,15 @@ void UOmegaAbilitySystemComponent::OnAbilityActorInfoSet()
 	
 }
 
+void UOmegaAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& InStartupAbilities)
+{
+	for (TSubclassOf<UGameplayAbility> AbilityClass : InStartupAbilities)
+	{
+		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, 1.f);
+		GiveAbilityAndActivateOnce(AbilitySpec);
+	}
+}
+
 
 // Broadcast gameplay effect tags. Mostly for widget controller
 void UOmegaAbilitySystemComponent::OnEffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& AppliedEffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle)

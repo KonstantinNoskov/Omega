@@ -2,6 +2,7 @@
 
 FOmegaAttributeInfo UAttributeInfo::FindAttributeInfoByTag(const FGameplayTag& AttributeTag, bool bLogNotFound)
 {
+	// Loop through Primary Attributes
 	for (auto Attribute : PrimaryAttributesInfo)
 	{	
 		if (Attribute.Value.AttributeTag.MatchesTagExact(AttributeTag))
@@ -9,7 +10,8 @@ FOmegaAttributeInfo UAttributeInfo::FindAttributeInfoByTag(const FGameplayTag& A
 			return Attribute.Value;
 		}
 	}
-	
+
+	// Loop through Secondary Attributes
 	for (auto Attribute : SecondaryAttributesInfo)
 	{	
 		if (Attribute.Value.AttributeTag.MatchesTagExact(AttributeTag))
@@ -18,6 +20,7 @@ FOmegaAttributeInfo UAttributeInfo::FindAttributeInfoByTag(const FGameplayTag& A
 		}
 	}
 
+	// Loop through Tertiary Attributes
 	for (auto Attribute : TertiaryAttributesInfo)
 	{	
 		if (Attribute.Value.AttributeTag.MatchesTagExact(AttributeTag))

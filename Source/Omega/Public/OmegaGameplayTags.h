@@ -51,6 +51,9 @@ public:
 	
 	FGameplayTag Elemental_Fire_OnFire;
 	FGameplayTag Elemental_Fire_Burn;
+
+	FGameplayTag Elemental_Water_InWater;
+	FGameplayTag Elemental_Water_Wet;
 	
 
 #pragma endregion
@@ -65,8 +68,13 @@ public:
 
 #pragma endregion 
 
-	
 
+#pragma region INPUT
+
+	FGameplayTag InputTag_LMB;
+	FGameplayTag InputTag_RMB;
+
+#pragma endregion
 
 
 };

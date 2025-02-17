@@ -2,6 +2,7 @@
 
 #include "AbilitySystemComponent.h"
 #include "PaperZDAnimationComponent.h"
+#include "AbilitySystem/OmegaAbilitySystemComponent.h"
 #include "Components/OmegaMovementComponent.h"
 
 AOmegaCharacter::AOmegaCharacter(const FObjectInitializer& ObjectInitializer)
@@ -24,7 +25,8 @@ void AOmegaCharacter::BeginPlay()
 
 void AOmegaCharacter::PossessedBy(AController* NewController)
 {
-	Super::PossessedBy(NewController);	
+	Super::PossessedBy(NewController);
+	
 }
 
 void AOmegaCharacter::InitAbilityActorInfo() {}
@@ -44,6 +46,14 @@ void AOmegaCharacter::InitializeDefaultAttributes(const TSubclassOf<UGameplayEff
 	AbilitySystemComponent->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data, AbilitySystemComponent);
 }
 
+void AOmegaCharacter::AddCharacterAbilities()
+{
+	UOmegaAbilitySystemComponent* OmegaASC = Cast<UOmegaAbilitySystemComponent>(AbilitySystemComponent);
+	if (!OmegaASC) { UE_LOG(LogTemp, Error, TEXT("[%hs] OmegaAbilitySystem cast has failed! %s"), __FUNCTION__, *GetName()) }
+
+	OmegaASC->AddCharacterAbilities(StartupAbilities);
+}
+
 bool AOmegaCharacter::ProcessConsoleExec(const TCHAR* Cmd, FOutputDevice& Ar, UObject* Executor)
 {
 	if (OmegaMovementComponent && OmegaMovementComponent->ProcessConsoleExec(Cmd, Ar, Executor))
@@ -53,6 +63,3 @@ bool AOmegaCharacter::ProcessConsoleExec(const TCHAR* Cmd, FOutputDevice& Ar, UO
 	
 	return Super::ProcessConsoleExec(Cmd, Ar, Executor);
 }
-
-
-

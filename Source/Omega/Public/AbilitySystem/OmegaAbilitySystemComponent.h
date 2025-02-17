@@ -24,6 +24,12 @@ public:
 	void OnAbilityActorInfoSet();
 	
 	FOnEffectAssetTagsUpdatedSignature OnEffectAssetTagsUpdatedDelegate;
+
+#pragma region ABILITIES
+
+	void AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& InStartupAbilities);
+
+#pragma endregion
 		
 	
 };

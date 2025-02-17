@@ -14,21 +14,12 @@ class OMEGA_API UAttributeInfo : public UDataAsset
 
 public:
 	
-	/*UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, DisplayName = "Primary")
-	TArray<FOmegaAttributeInfo> PrimaryAttributesInfo;*/
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, DisplayName = "Primary")
 	TMap<FName, FOmegaAttributeInfo> PrimaryAttributesInfo;
 
-	/*UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, DisplayName = "Secondary")
-	TArray<FOmegaAttributeInfo> SecondaryAttributesInfo;*/
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, DisplayName = "Secondary")
 	TMap<FName, FOmegaAttributeInfo> SecondaryAttributesInfo;
-
-	/*UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, DisplayName = "Tertiary")
-	TArray<FOmegaAttributeInfo> TertiaryAttributesInfo;*/
-
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, DisplayName = "Tertiary")
 	TMap<FName, FOmegaAttributeInfo> TertiaryAttributesInfo;
 	

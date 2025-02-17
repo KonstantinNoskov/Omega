@@ -99,4 +99,19 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 			);
 
 #pragma endregion
+#pragma region INPUT
+
+	// Left Mouse Button
+	GameplayTags.InputTag_LMB = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Input.LMB"),
+			FString("Left Mouse Button")
+			);
+
+	// Right Mouse Button
+	GameplayTags.InputTag_RMB = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Input.RMB"),
+			FString("Right Mouse Button")
+			);	
+
+#pragma endregion
 }

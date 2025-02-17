@@ -3,6 +3,8 @@
 #include "GameplayEffectTypes.h"
 #include "OmegaTypes.generated.h"
 
+
+class UInputAction;
 class UPaperSprite;
 class UOmegaUserWidget;
 class UAttributeSet;
@@ -37,7 +39,6 @@ enum class ECustomMovementMode : uint8
 	Dash,
 	Mantle
 };
-
 
 /*
  * Stores essentials params to setup widget controllers
@@ -108,7 +109,6 @@ struct FEffectProperties
 	
 };
 
-
 /*
  * Stores icon info for gameplay effect message widget
  */
@@ -148,7 +148,7 @@ struct FUIWidgetRow : public FTableRowBase
 };
 
 /**
- * Store
+ * Attribute data to pass-in to widgets
  */
 USTRUCT(BlueprintType)
 struct FOmegaAttributeInfo
@@ -167,4 +167,17 @@ struct FOmegaAttributeInfo
 	UPROPERTY(BlueprintReadOnly)
 	float AttributeValue = 0.f;
 };
+
+USTRUCT(BlueprintType)
+struct FOmegaInputAction
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditDefaultsOnly)
+	const UInputAction* InputAction = nullptr;
+
+	UPROPERTY(EditDefaultsOnly)
+	FGameplayTag InputTag = FGameplayTag();
+};
+
 

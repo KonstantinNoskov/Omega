@@ -64,6 +64,8 @@ void APlayerBaseCharacter::PossessedBy(AController* NewController)
 	
 	InitAbilityActorInfo();
 
+	AddCharacterAbilities();
+	
 	OmegaMovementComponent = Cast<UOmegaMovementComponent>(GetCharacterMovement());
 	if (OmegaMovementComponent)
 	{
@@ -94,7 +96,7 @@ void APlayerBaseCharacter::InitAbilityActorInfo()
 	if (!OmegaASC)	{ UE_LOG(LogTemp, Error, TEXT("[%hs]: Cast from UAbiilitySystem to UOmegaAbilitySystem is failed!"),__FUNCTION__)	return;	}
 	
 	OmegaASC->OnAbilityActorInfoSet();
-
+	
 	// Assign Player's Ability system & Attribute Set
 	AbilitySystemComponent = OmegaPlayerState->GetAbilitySystemComponent();
 	AttributeSet = OmegaPlayerState->GetAttributeSet();
