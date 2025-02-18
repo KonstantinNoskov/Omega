@@ -7,6 +7,7 @@
 
 #include "OmegaCharacter.generated.h"
 
+class UGameplayAbility;
 class UOmegaMovementComponent;
 class UGameplayEffect;
 class UAttributeSet;
@@ -83,6 +84,19 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Omega Movement")
 	TObjectPtr<UOmegaMovementComponent> OmegaMovementComponent;
+
+#pragma endregion
+
+#pragma region ABILITIES
+
+protected:
+
+	void AddCharacterAbilities();
+	
+private:
+	
+	UPROPERTY(EditAnywhere, Category = "Omega|Abilities")
+	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
 
 #pragma endregion
 	

@@ -9,6 +9,7 @@ class UAbilitySystemComponent;
 class UAttributeSet;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeValueChangedSignature, float, NewValue);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeInfoChangedSignature, const FOmegaAttributeInfo&, Info);
 
 UCLASS(Blueprintable, BlueprintType)
 class OMEGA_API UOmegaWidgetController : public UObject

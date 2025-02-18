@@ -1,17 +1,23 @@
 ﻿#include "UI/WidgetControllers/OverlayWidgetController.h"
 
+#include "OmegaGameplayTags.h"
 #include "AbilitySystem/OmegaAbilitySystemComponent.h"
 #include "AbilitySystem/OmegaAttributeSet.h"
+#include "OmegaTypes.h"
+#include "AbilitySystem/Data/AttributeInfo.h"
 #include "BlueprintLibraries/OmegaFunctionLibrary.h"
 
 void UOverlayWidgetController::BroadcastInitialValues()
 {
-	if (const UOmegaAttributeSet* OmegaAttributeSet = CastChecked<UOmegaAttributeSet>(AttributeSet))
+
+	const UOmegaAttributeSet* OmegaAttributeSet = CastChecked<UOmegaAttributeSet>(AttributeSet);
+	check(AttributeData);
+
+	for (auto& Pair : OmegaAttributeSet->TagsToAttributes)
 	{
-		OnHealthChangedDelegate.Broadcast(OmegaAttributeSet->GetHealth());
-		OnMaxHealthChangedDelegate.Broadcast(OmegaAttributeSet->GetMaxHealth());
-		OnManaChangedDelegate.Broadcast(OmegaAttributeSet->GetMana());
-		OnMaxManaChangedDelegate.Broadcast(OmegaAttributeSet->GetMaxMana());
+		FOmegaAttributeInfo AttributeInfo = AttributeData->FindAttributeInfoByTag(Pair.Key);
+		AttributeInfo.AttributeValue = Pair.Value().GetNumericValue(OmegaAttributeSet);
+		OnAttributeInfoChangedDelegate.Broadcast(AttributeInfo);
 	}
 }
 
@@ -25,30 +31,22 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	checkf(OmegaAbilitySystemComponent,		TEXT("[%hs]: OmegaAbilitySystemComponent cast is failed!"), __FUNCTION__)
 	checkf(OmegaAttributeSet,				TEXT("[%hs]: OmegaAttributeSet cast is failed!"), __FUNCTION__)
 	
-	//	On Attributes Changed
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(OmegaAttributeSet->GetHealthAttribute()).AddLambda([this](const FOnAttributeChangeData& InData)
+	for (auto& Pair : OmegaAttributeSet->TagsToAttributes)
 	{
-		OnHealthChangedDelegate.Broadcast(InData.NewValue);
-	});
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(OmegaAttributeSet->GetMaxHealthAttribute()).AddLambda([this](const FOnAttributeChangeData& InData)
-	{
-		OnMaxHealthChangedDelegate.Broadcast(InData.NewValue);
-	});
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(OmegaAttributeSet->GetManaAttribute()).AddLambda([this](const FOnAttributeChangeData& InData)
-	{
-		OnManaChangedDelegate.Broadcast(InData.NewValue);
-	});
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(OmegaAttributeSet->GetMaxManaAttribute()).AddLambda([this](const FOnAttributeChangeData& InData)
-	{
-		OnMaxManaChangedDelegate.Broadcast(InData.NewValue);
-	});
-
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Pair.Value()).AddLambda([this, Pair, OmegaAttributeSet](const FOnAttributeChangeData& InData)
+		{
+			FOmegaAttributeInfo Info = AttributeData->FindAttributeInfoByTag(Pair.Key);
+			Info.AttributeValue = Pair.Value().GetNumericValue(OmegaAttributeSet);
+			
+			OnAttributeInfoChangedDelegate.Broadcast(Info);
+		});
+	}
+	
 	//	On Asset Tag Container Updated
 	OmegaAbilitySystemComponent->OnEffectAssetTagsUpdatedDelegate.AddLambda([this](const FGameplayTagContainer& InAssetTags)
 	{
 		for (const FGameplayTag& Tag : InAssetTags)
 		{
-			
 			if (!Tag.MatchesTag(FGameplayTag::RequestGameplayTag(FName("Message")))) continue;
 			
 			const FUIWidgetRow* Row = UOmegaFunctionLibrary::GetDataTableRowByTag<FUIWidgetRow>(WidgetMessageDataTable, Tag);
