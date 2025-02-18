@@ -7,6 +7,7 @@
 #include "GameFramework/PlayerController.h"
 #include "OmegaPlayerController.generated.h"
 
+class UOmegaMovementComponent;
 class UOmegaAbilitySystemComponent;
 class UOmegaInputConfig;
 class UInputAction;
@@ -63,11 +64,15 @@ private:
 public:
 
 	UOmegaAbilitySystemComponent* GetOmegaAbilitySystemComponent();
+	UOmegaMovementComponent* GetOmegaMovementComponent();
 
 private:
 
 	UPROPERTY()
 	TObjectPtr<UOmegaAbilitySystemComponent> OmegaAbilitySystemComponent;
+
+	UPROPERTY()
+	TObjectPtr<UOmegaMovementComponent> OmegaMovementComponent;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UOmegaInputConfig> InputConfig;

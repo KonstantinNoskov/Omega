@@ -66,7 +66,6 @@ void APlayerBaseCharacter::PossessedBy(AController* NewController)
 
 	AddCharacterAbilities();
 	
-	OmegaMovementComponent = Cast<UOmegaMovementComponent>(GetCharacterMovement());
 	if (OmegaMovementComponent)
 	{
 		OmegaMovementComponent->BindDependencies(NewController);
@@ -80,7 +79,6 @@ int32 APlayerBaseCharacter::GetPlayerLevel() const
 		{ UE_LOG(LogTemp, Error, TEXT("[%hs]: Can't get player level. PlayerState is null!"),__FUNCTION__)	return 0;	}
 
 	return OmegaPlayerState->GetPlayerLevel();
-
 }
 
 void APlayerBaseCharacter::InitAbilityActorInfo()
@@ -113,8 +111,6 @@ void APlayerBaseCharacter::InitAbilityActorInfo()
 			OmegaHUD->InitOverlay(OmegaPlayerController, OmegaPlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
-	
-	
 }
 
 void APlayerBaseCharacter::HandleCameraBehavior(const float DeltaTime) const

@@ -10,8 +10,6 @@
 #include "Kismet/GameplayStatics.h"
 #include "Player/OmegaPlayerController.h"
 
-
-
 UOmegaMovementComponent::UOmegaMovementComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
@@ -35,13 +33,6 @@ void UOmegaMovementComponent::BindDependencies(AController* OwningController)
 	}
 	else { UE_LOG(LogTemp, Error, TEXT("[%hs]: OmegaOwner is null!"),__FUNCTION__);	}
 	
-	if (OmegaController)
-	{
-		OmegaController->OnJumpInputDelegate.AddUObject(this, &UOmegaMovementComponent::PerformJump);
-		OmegaController->OnCrouchInputDelegate.AddUObject(this, &UOmegaMovementComponent::PerformCrouch);
-		OmegaController->OnDashInputDelegate.AddUObject(this, &UOmegaMovementComponent::HandleDash);	
-	}
-	else { UE_LOG(LogTemp, Error, TEXT("[%hs]: OmegaController is null!"),__FUNCTION__);	}
 }
 
 void UOmegaMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -108,14 +99,14 @@ bool UOmegaMovementComponent::IsValidJump() const
 
 #pragma region CROUCH
 
-void UOmegaMovementComponent::PerformCrouch(const FInputActionValue& InputActionValue) const
+void UOmegaMovementComponent::PerformCrouch(const FInputActionValue& InputActionValue)
 {
-	const float InputBool = InputActionValue.Get<bool>();
+	const bool InputBool = InputActionValue.Get<bool>();
 	
 	if (OmegaOwner)
 	{
 		if (InputBool && !IsFalling() && OmegaCustomMovementMode != ECustomMovementMode::Dash)
-		{
+		{	
 			OmegaOwner->Crouch();
 		}
 		else
@@ -149,21 +140,11 @@ bool UOmegaMovementComponent::IsValidDash()
 	
 	return false;
 }
-
-void UOmegaMovementComponent::OnDashFinished()
-{
-	OmegaCustomMovementMode = ECustomMovementMode::None;
-	OmegaOwner->GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Enemy, ECR_Overlap);
-	BrakingDecelerationWalking = InitialWalkDeceleration;
-	OmegaController->EnableInput(OmegaController);
-}
-
 void UOmegaMovementComponent::PerformDash()
 {
 	
 	bFirstDash = false;
-
-	OmegaController->DisableInput(OmegaController);
+	
 	OmegaCustomMovementMode = ECustomMovementMode::Dash;
 	BrakingDecelerationWalking = 1000.f;
 	
@@ -180,6 +161,16 @@ void UOmegaMovementComponent::PerformDash()
 
 	OmegaOwner->GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Enemy, ECR_Ignore);
 }
+void UOmegaMovementComponent::OnDashFinished()
+{
+	OmegaCustomMovementMode = ECustomMovementMode::None;
+	
+	OmegaOwner->GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Enemy, ECR_Overlap);
+	BrakingDecelerationWalking = InitialWalkDeceleration;
+	
+}
+
+
 
 #pragma endregion
 
@@ -264,7 +255,6 @@ void UOmegaMovementComponent::PerformMantle(const FVector& MantleTargetPoint)
 {
 	OmegaCustomMovementMode = ECustomMovementMode::Mantle;
 	Velocity = FVector::ZeroVector;
-	OmegaController->DisableInput(OmegaController);
 	
 	SetMovementMode(MOVE_Flying);
 	OmegaOwner->GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Ignore);

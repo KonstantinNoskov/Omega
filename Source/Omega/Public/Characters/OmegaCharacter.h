@@ -31,7 +31,7 @@ public:
 
 	FORCEINLINE virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override		{ return AbilitySystemComponent; }
 	FORCEINLINE UAttributeSet* GetAttributeSet() const											{ return AttributeSet; }
-
+	virtual UPawnMovementComponent* GetMovementComponent() const override;
 
 protected:
 	

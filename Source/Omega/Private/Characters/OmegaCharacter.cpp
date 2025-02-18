@@ -29,6 +29,11 @@ void AOmegaCharacter::PossessedBy(AController* NewController)
 	
 }
 
+UPawnMovementComponent* AOmegaCharacter::GetMovementComponent() const
+{	
+	return OmegaMovementComponent;
+}
+
 void AOmegaCharacter::InitAbilityActorInfo() {}
 
 void AOmegaCharacter::InitializeDefaultAttributes(const TSubclassOf<UGameplayEffect>& DefaultAttributesEffect, float Level) const

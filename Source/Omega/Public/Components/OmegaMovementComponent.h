@@ -33,6 +33,9 @@ public:
 	void BindDependencies(AController* OwningController);
 	void UpdateCapsulePosition(float DeltaTime) const;
 
+	UFUNCTION(BlueprintPure)
+	FORCEINLINE ECustomMovementMode GetOmegaCustomMovementMode() const { return OmegaCustomMovementMode; } 
+
 private:
 
 	TObjectPtr<AOmegaCharacter> OmegaOwner;
@@ -51,10 +54,16 @@ private:
 	
 #pragma region JUMP
 
+public:
+	
 	UFUNCTION()
 	void PerformJump(const FInputActionValue& InputActionValue) const;
 
+private:
+	
 	bool IsValidJump() const;
+
+public:
 
 	UPROPERTY(EditAnywhere, Category = "Omega Movement|Jump", DisplayName = "Debug")
 	bool bJumpDebug = false;
@@ -63,17 +72,25 @@ private:
 
 #pragma region CROUCH
 
+public:
+	
 	UFUNCTION()
-	void PerformCrouch(const FInputActionValue& InputActionValue) const;
+	void PerformCrouch(const FInputActionValue& InputActionValue);
 
+	
+
+	
 #pragma endregion
 
 #pragma region DASH
 
-private:
 
+public:
+	
 	UFUNCTION(BlueprintCallable)
 	void HandleDash(const FInputActionValue& InputActionValue);
+
+private:
 	
 	void PerformDash();
 	bool IsValidDash();

@@ -5,6 +5,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "PaperCharacter.h"
 #include "AbilitySystem/OmegaAbilitySystemComponent.h"
+#include "Components/OmegaMovementComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 
@@ -43,7 +44,7 @@ void AOmegaPlayerController::SetupInputComponent()
 
 	OmegaInputComponent->BindAction(MoveAction,	ETriggerEvent::Triggered, this, &AOmegaPlayerController::Move);
 	OmegaInputComponent->BindAction(JumpAction,	ETriggerEvent::Started, this, &AOmegaPlayerController::Jump);
-	OmegaInputComponent->BindAction(CrouchAction,	ETriggerEvent::Started, this, &AOmegaPlayerController::Crouch);
+	OmegaInputComponent->BindAction(CrouchAction,	ETriggerEvent::Triggered, this, &AOmegaPlayerController::Crouch);
 	OmegaInputComponent->BindAction(CrouchAction,	ETriggerEvent::Completed, this, &AOmegaPlayerController::Crouch);
 	OmegaInputComponent->BindAction(DashAction,	ETriggerEvent::Started, this, &AOmegaPlayerController::Dash);
 	OmegaInputComponent->BindAction(DashAction,	ETriggerEvent::Completed, this, &AOmegaPlayerController::Dash);
@@ -51,16 +52,16 @@ void AOmegaPlayerController::SetupInputComponent()
 	OmegaInputComponent->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagHeld, &ThisClass::AbilityInputTagReleased);
 }
 
+#pragma region COMMMON FUNCTIONS
+
 void AOmegaPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
 	//GEngine->AddOnScreenDebugMessage(1, 1.f, FColor::Green, *InputTag.ToString());
 }
-
 void AOmegaPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 {
 	GetOmegaAbilitySystemComponent()->AbilityInputTagHeld(InputTag);
 }
-
 void AOmegaPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
 	GetOmegaAbilitySystemComponent()->AbilityInputTagReleased(InputTag);
@@ -76,12 +77,23 @@ UOmegaAbilitySystemComponent* AOmegaPlayerController::GetOmegaAbilitySystemCompo
 	return OmegaAbilitySystemComponent;
 }
 
+UOmegaMovementComponent* AOmegaPlayerController::GetOmegaMovementComponent()
+{
+	if (!OmegaMovementComponent)
+	{
+		OmegaMovementComponent = Cast<UOmegaMovementComponent>(GetPawn<APawn>()->GetMovementComponent());
+	}
+	
+	return OmegaMovementComponent;
+}
 void AOmegaPlayerController::Move(const FInputActionValue& InputActionValue)
 {	
 	const float InputFloat = InputActionValue.Get<float>();
 
 	if (APawn* ControlledPawn = GetPawn<APawn>())
 	{
+		if (GetOmegaMovementComponent()->GetOmegaCustomMovementMode() != ECustomMovementMode::None) return;
+		
 		ControlledPawn->AddMovementInput(FVector(InputFloat, 0.f,0.f));
 		
 		if (ControlledPawn->GetMovementComponent()->IsFalling()) return;
@@ -103,23 +115,32 @@ void AOmegaPlayerController::RotateController()
 	}
 }
 
+#pragma endregion
+#pragma region CUSTOM MOVEMENT
+
 void AOmegaPlayerController::Jump(const FInputActionValue& InputActionValue)
 {
-	OnJumpInputDelegate.Broadcast(InputActionValue);
-	
+	if (GetOmegaMovementComponent())
+	{
+		GetOmegaMovementComponent()->PerformJump(InputActionValue);
+	}
 }
-
 void AOmegaPlayerController::Crouch(const FInputActionValue& InputActionValue)
 {
-	OnCrouchInputDelegate.Broadcast(InputActionValue);
+	if (GetOmegaMovementComponent())
+	{
+		OmegaMovementComponent->PerformCrouch(InputActionValue);
+	}
 }
-
-
 void AOmegaPlayerController::Dash(const FInputActionValue& InputActionValue)
 {
-	OnDashInputDelegate.Broadcast(InputActionValue);
+	if (GetOmegaMovementComponent())
+	{
+		GetOmegaMovementComponent()->HandleDash(InputActionValue);
+	}
 }
 
+#pragma endregion
 
 
 
