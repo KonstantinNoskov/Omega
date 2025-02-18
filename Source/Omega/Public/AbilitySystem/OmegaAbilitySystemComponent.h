@@ -22,8 +22,17 @@ protected:
 public:
 	
 	void OnAbilityActorInfoSet();
+
+	void AbilityInputTagHeld(const FGameplayTag& InputTag);
+	void AbilityInputTagReleased(const FGameplayTag& InputTag);
 	
 	FOnEffectAssetTagsUpdatedSignature OnEffectAssetTagsUpdatedDelegate;
+
+#pragma region ABILITIES
+
+	void AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& InStartupAbilities);
+
+#pragma endregion
 		
 	
 };

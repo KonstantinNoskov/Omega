@@ -41,13 +41,13 @@ APlayerBaseCharacter::APlayerBaseCharacter(const FObjectInitializer& ObjectIniti
 	GetCapsuleComponent()->SetCollisionObjectType(ECC_Player);
 
 #pragma endregion
+	
 }
 
 void APlayerBaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-	GetCapsuleComponent()->SetWorldLocation(GetCapsuleComponent()->GetComponentLocation() + FVector(0.f,-60.f, 0.f));
+	
 	InitialCameraDistance = CharacterSpringArm->TargetArmLength;
 }
 
@@ -64,6 +64,8 @@ void APlayerBaseCharacter::PossessedBy(AController* NewController)
 	
 	InitAbilityActorInfo();
 
+	AddCharacterAbilities();
+	
 	OmegaMovementComponent = Cast<UOmegaMovementComponent>(GetCharacterMovement());
 	if (OmegaMovementComponent)
 	{
@@ -94,10 +96,15 @@ void APlayerBaseCharacter::InitAbilityActorInfo()
 	if (!OmegaASC)	{ UE_LOG(LogTemp, Error, TEXT("[%hs]: Cast from UAbiilitySystem to UOmegaAbilitySystem is failed!"),__FUNCTION__)	return;	}
 	
 	OmegaASC->OnAbilityActorInfoSet();
-
+	
 	// Assign Player's Ability system & Attribute Set
 	AbilitySystemComponent = OmegaPlayerState->GetAbilitySystemComponent();
 	AttributeSet = OmegaPlayerState->GetAttributeSet();
+
+	// Set player's default primary attributes 
+	InitializeDefaultAttributes(DefaultPrimaryAttributes, 1.f);
+	InitializeDefaultAttributes(DefaultSecondaryAttributes, 1.f);
+	InitializeDefaultAttributes(DefaultTertiaryAttributes, 1.f);
 
 	if (AOmegaPlayerController* OmegaPlayerController = Cast<AOmegaPlayerController>(GetController()))
 	{
@@ -107,10 +114,7 @@ void APlayerBaseCharacter::InitAbilityActorInfo()
 		}
 	}
 	
-	// Set player's default primary attributes 
-	InitializeDefaultAttributes(DefaultPrimaryAttributes, 1.f);
-	InitializeDefaultAttributes(DefaultSecondaryAttributes, 1.f);
-	InitializeDefaultAttributes(DefaultTertiaryAttributes, 1.f);
+	
 }
 
 void APlayerBaseCharacter::HandleCameraBehavior(const float DeltaTime) const

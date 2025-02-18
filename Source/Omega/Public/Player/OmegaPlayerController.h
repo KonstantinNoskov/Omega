@@ -1,9 +1,14 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
+#include "InputAction.h"
+#include "InputActionValue.h"
 #include "GameFramework/PlayerController.h"
 #include "OmegaPlayerController.generated.h"
 
+class UOmegaAbilitySystemComponent;
+class UOmegaInputConfig;
 class UInputAction;
 class UInputMappingContext;
 struct FInputActionValue;
@@ -51,20 +56,42 @@ private:
 
 	void RotateController();
 
-	UPROPERTY(EditAnywhere, Category = "input")
+	void AbilityInputTagPressed(FGameplayTag InputTag);
+	void AbilityInputTagHeld(FGameplayTag InputTag);
+	void AbilityInputTagReleased(FGameplayTag InputTag);
+
+public:
+
+	UOmegaAbilitySystemComponent* GetOmegaAbilitySystemComponent();
+
+private:
+
+	UPROPERTY()
+	TObjectPtr<UOmegaAbilitySystemComponent> OmegaAbilitySystemComponent;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	TObjectPtr<UOmegaInputConfig> InputConfig;
+
+	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputMappingContext> InputMappingContext;
 	
-	UPROPERTY(EditAnywhere, Category = "input")
+	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> MoveAction;
 
-	UPROPERTY(EditAnywhere, Category = "input")
+	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> JumpAction;
 
-	UPROPERTY(EditAnywhere, Category = "input")
+	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> CrouchAction;
 
-	UPROPERTY(EditAnywhere, Category = "input")
+	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> DashAction;
+
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> PrimaryAttackAction;
+
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> SecondaryAttackAction;
 
 public:
 	

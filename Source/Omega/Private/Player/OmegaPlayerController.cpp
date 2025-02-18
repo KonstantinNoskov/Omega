@@ -1,11 +1,12 @@
 ﻿#include "Player/OmegaPlayerController.h"
 
-#include "EnhancedInputComponent.h"
+#include "AbilitySystemBlueprintLibrary.h"
+#include "Input/OmegaInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "PaperCharacter.h"
-#include "Characters/PlayerCharacters/PlayerBaseCharacter.h"
+#include "AbilitySystem/OmegaAbilitySystemComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "GameFramework/SpringArmComponent.h"
+
 
 AOmegaPlayerController::AOmegaPlayerController()
 {
@@ -38,14 +39,41 @@ void AOmegaPlayerController::SetupInputComponent()
 	Super::SetupInputComponent();
 
 	// EnhancedInputComponent Valid Check
-	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
+	UOmegaInputComponent* OmegaInputComponent = CastChecked<UOmegaInputComponent>(InputComponent);
 
-	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AOmegaPlayerController::Move);
-	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &AOmegaPlayerController::Jump);
-	EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Triggered, this, &AOmegaPlayerController::Crouch);
-	EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Completed, this, &AOmegaPlayerController::Crouch);
-	EnhancedInputComponent->BindAction(DashAction, ETriggerEvent::Started, this, &AOmegaPlayerController::Dash);
-	EnhancedInputComponent->BindAction(DashAction, ETriggerEvent::Completed, this, &AOmegaPlayerController::Dash);
+	OmegaInputComponent->BindAction(MoveAction,	ETriggerEvent::Triggered, this, &AOmegaPlayerController::Move);
+	OmegaInputComponent->BindAction(JumpAction,	ETriggerEvent::Started, this, &AOmegaPlayerController::Jump);
+	OmegaInputComponent->BindAction(CrouchAction,	ETriggerEvent::Started, this, &AOmegaPlayerController::Crouch);
+	OmegaInputComponent->BindAction(CrouchAction,	ETriggerEvent::Completed, this, &AOmegaPlayerController::Crouch);
+	OmegaInputComponent->BindAction(DashAction,	ETriggerEvent::Started, this, &AOmegaPlayerController::Dash);
+	OmegaInputComponent->BindAction(DashAction,	ETriggerEvent::Completed, this, &AOmegaPlayerController::Dash);
+
+	OmegaInputComponent->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagHeld, &ThisClass::AbilityInputTagReleased);
+}
+
+void AOmegaPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
+{
+	//GEngine->AddOnScreenDebugMessage(1, 1.f, FColor::Green, *InputTag.ToString());
+}
+
+void AOmegaPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
+{
+	GetOmegaAbilitySystemComponent()->AbilityInputTagHeld(InputTag);
+}
+
+void AOmegaPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
+{
+	GetOmegaAbilitySystemComponent()->AbilityInputTagReleased(InputTag);
+}
+
+UOmegaAbilitySystemComponent* AOmegaPlayerController::GetOmegaAbilitySystemComponent()
+{
+	if (!OmegaAbilitySystemComponent)
+	{
+		OmegaAbilitySystemComponent = Cast<UOmegaAbilitySystemComponent>(UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn<APawn>()));
+	}
+	
+	return OmegaAbilitySystemComponent;
 }
 
 void AOmegaPlayerController::Move(const FInputActionValue& InputActionValue)
@@ -85,6 +113,7 @@ void AOmegaPlayerController::Crouch(const FInputActionValue& InputActionValue)
 {
 	OnCrouchInputDelegate.Broadcast(InputActionValue);
 }
+
 
 void AOmegaPlayerController::Dash(const FInputActionValue& InputActionValue)
 {

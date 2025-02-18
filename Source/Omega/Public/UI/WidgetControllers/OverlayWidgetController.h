@@ -7,6 +7,7 @@
 #include "OverlayWidgetController.generated.h"
 
 
+class UAttributeInfo;
 struct FGameplayTag;
 struct FOnAttributeChangeData;
 
@@ -21,9 +22,15 @@ public:
 	
 	virtual void BroadcastInitialValues() override;
 	virtual void BindCallbacksToDependencies() override;
-
+	
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
+	FOnAttributeInfoChangedSignature OnAttributeInfoChangedDelegate;
+	
 protected:
 
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UAttributeInfo> AttributeData;
+	
 	template<typename T>
 	T* GetDataTableRowByTag(UDataTable* InDataTable, const FGameplayTag& InTag);
 
@@ -45,7 +52,14 @@ protected:
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
 	FOnAttributeValueChangedSignature OnMaxManaChangedDelegate;
 
-	
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
+	FOnAttributeValueChangedSignature OnStrengthChangedDelegate;
+
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
+	FOnAttributeValueChangedSignature OnIntelligenceChangedDelegate;
+
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
+	FOnAttributeValueChangedSignature OnDexterityChangedDelegate;
 };
 
 

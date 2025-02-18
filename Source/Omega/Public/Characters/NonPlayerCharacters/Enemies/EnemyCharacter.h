@@ -23,7 +23,6 @@ protected:
 	virtual void BeginPlay() override;
 	
 
-protected:
 #pragma region COMBAT INTERFACE
 
 public:
@@ -32,12 +31,20 @@ public:
 
 #pragma endregion
 #pragma region AI
-
+	
 	UPROPERTY(EditAnywhere, Category = "AI")
 	TObjectPtr<UBehaviorTree> BehaviorTree;
 
 	UPROPERTY()
 	TObjectPtr<AOmegaAIController> OmegaAIController;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Combat")
+	FName CombatTargetName = "CombatTarget";
+
+#pragma endregion
+#pragma region ENEMY INTERFACE
+
+	virtual void SetCombatTarget_Implementation(AActor* TargetActor) override;
 
 #pragma endregion
 
