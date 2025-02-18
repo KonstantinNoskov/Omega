@@ -7,6 +7,7 @@
 #include "GameFramework/PlayerController.h"
 #include "OmegaPlayerController.generated.h"
 
+class UOmegaAbilitySystemComponent;
 class UOmegaInputConfig;
 class UInputAction;
 class UInputMappingContext;
@@ -58,8 +59,16 @@ private:
 	void AbilityInputTagPressed(FGameplayTag InputTag);
 	void AbilityInputTagHeld(FGameplayTag InputTag);
 	void AbilityInputTagReleased(FGameplayTag InputTag);
-	
 
+public:
+
+	UOmegaAbilitySystemComponent* GetOmegaAbilitySystemComponent();
+
+private:
+
+	UPROPERTY()
+	TObjectPtr<UOmegaAbilitySystemComponent> OmegaAbilitySystemComponent;
+	
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UOmegaInputConfig> InputConfig;
 

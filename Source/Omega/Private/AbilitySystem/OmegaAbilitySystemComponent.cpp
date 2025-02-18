@@ -1,6 +1,7 @@
 ﻿#include "AbilitySystem/OmegaAbilitySystemComponent.h"
 
 #include "OmegaGameplayTags.h"
+#include "AbilitySystem/Abilities/OmegaGameplayAbility.h"
 
 
 UOmegaAbilitySystemComponent::UOmegaAbilitySystemComponent()
@@ -11,15 +12,44 @@ UOmegaAbilitySystemComponent::UOmegaAbilitySystemComponent()
 void UOmegaAbilitySystemComponent::OnAbilityActorInfoSet()
 {
 	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UOmegaAbilitySystemComponent::OnEffectApplied);
-	
+}
+
+void UOmegaAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InputTag)
+{
+	if (!InputTag.IsValid()) return;
+
+	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		if (!AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag) || AbilitySpec.IsActive()) return;
+
+		AbilitySpecInputPressed(AbilitySpec);
+		TryActivateAbility(AbilitySpec.Handle);
+	}
+}
+
+void UOmegaAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& InputTag)
+{
+	if (!InputTag.IsValid()) return;
+
+	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		if (!AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag)) return;
+		
+		AbilitySpecInputReleased(AbilitySpec);
+	}
 }
 
 void UOmegaAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& InStartupAbilities)
 {
-	for (TSubclassOf<UGameplayAbility> AbilityClass : InStartupAbilities)
+	for (const TSubclassOf<UGameplayAbility> AbilityClass : InStartupAbilities)
 	{
 		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, 1.f);
-		GiveAbilityAndActivateOnce(AbilitySpec);
+		
+		if (const UOmegaGameplayAbility* OmegaAbility = CastChecked<UOmegaGameplayAbility>(AbilitySpec.Ability))
+		{
+			AbilitySpec.DynamicAbilityTags.AddTag(OmegaAbility->StartupInputTag);
+			GiveAbility(AbilitySpec);
+		}
 	}
 }
 

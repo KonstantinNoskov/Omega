@@ -22,6 +22,9 @@ protected:
 public:
 	
 	void OnAbilityActorInfoSet();
+
+	void AbilityInputTagHeld(const FGameplayTag& InputTag);
+	void AbilityInputTagReleased(const FGameplayTag& InputTag);
 	
 	FOnEffectAssetTagsUpdatedSignature OnEffectAssetTagsUpdatedDelegate;
 

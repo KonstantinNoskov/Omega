@@ -31,8 +31,7 @@ void UOmegaInputComponent::BindAbilityActions(const UOmegaInputConfig* InputConf
 	for (const FOmegaInputAction& Action : InputConfig->AbilityInputAction)
 	{
 		if (!Action.InputAction || !Action.InputTag.IsValid()) return;
-
-
+		
 		// Pressed
 		if (PressedFunc)
 		{

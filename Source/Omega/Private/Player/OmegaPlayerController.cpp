@@ -1,8 +1,10 @@
 ﻿#include "Player/OmegaPlayerController.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
 #include "Input/OmegaInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "PaperCharacter.h"
+#include "AbilitySystem/OmegaAbilitySystemComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 
@@ -51,17 +53,27 @@ void AOmegaPlayerController::SetupInputComponent()
 
 void AOmegaPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
-	GEngine->AddOnScreenDebugMessage(1, 1.f, FColor::Green, *InputTag.ToString());
+	//GEngine->AddOnScreenDebugMessage(1, 1.f, FColor::Green, *InputTag.ToString());
 }
 
 void AOmegaPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 {
-	GEngine->AddOnScreenDebugMessage(2, 0.f, FColor::Yellow, *InputTag.ToString());
+	GetOmegaAbilitySystemComponent()->AbilityInputTagHeld(InputTag);
 }
 
 void AOmegaPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
-	GEngine->AddOnScreenDebugMessage(2, 1.f, FColor::Red, *InputTag.ToString());
+	GetOmegaAbilitySystemComponent()->AbilityInputTagReleased(InputTag);
+}
+
+UOmegaAbilitySystemComponent* AOmegaPlayerController::GetOmegaAbilitySystemComponent()
+{
+	if (!OmegaAbilitySystemComponent)
+	{
+		OmegaAbilitySystemComponent = Cast<UOmegaAbilitySystemComponent>(UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn<APawn>()));
+	}
+	
+	return OmegaAbilitySystemComponent;
 }
 
 void AOmegaPlayerController::Move(const FInputActionValue& InputActionValue)
@@ -90,7 +102,6 @@ void AOmegaPlayerController::RotateController()
 		SetControlRotation(FRotator(0.f,YawRotation,0.f));
 	}
 }
-
 
 void AOmegaPlayerController::Jump(const FInputActionValue& InputActionValue)
 {
