@@ -21,6 +21,10 @@ void AOmegaPlayerController::BeginPlay()
 	AssignMappingContext();	
 }
 
+// -------------------------------------
+//  SETUP
+// -------------------------------------
+
 void AOmegaPlayerController::AssignMappingContext() const
 {
 	// Mapping context should be set
@@ -34,7 +38,6 @@ void AOmegaPlayerController::AssignMappingContext() const
 		InputSubSystem->AddMappingContext(InputMappingContext, 0);
 	}
 }
-
 void AOmegaPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
@@ -52,11 +55,13 @@ void AOmegaPlayerController::SetupInputComponent()
 	OmegaInputComponent->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagHeld, &ThisClass::AbilityInputTagReleased);
 }
 
-#pragma region COMMMON FUNCTIONS
+// -------------------------------------
+//  COMMON FUNCTIONS
+// -------------------------------------
 
 void AOmegaPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
-	//GEngine->AddOnScreenDebugMessage(1, 1.f, FColor::Green, *InputTag.ToString());
+	GetOmegaAbilitySystemComponent()->AbilityInputTagPressed(InputTag);
 }
 void AOmegaPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 {
@@ -66,7 +71,6 @@ void AOmegaPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
 	GetOmegaAbilitySystemComponent()->AbilityInputTagReleased(InputTag);
 }
-
 UOmegaAbilitySystemComponent* AOmegaPlayerController::GetOmegaAbilitySystemComponent()
 {
 	if (!OmegaAbilitySystemComponent)
@@ -76,7 +80,6 @@ UOmegaAbilitySystemComponent* AOmegaPlayerController::GetOmegaAbilitySystemCompo
 	
 	return OmegaAbilitySystemComponent;
 }
-
 UOmegaMovementComponent* AOmegaPlayerController::GetOmegaMovementComponent()
 {
 	if (!OmegaMovementComponent)
@@ -102,7 +105,6 @@ void AOmegaPlayerController::Move(const FInputActionValue& InputActionValue)
 		RotateController();
 	}
 }
-
 void AOmegaPlayerController::RotateController()
 {
 	if (const ACharacter* PlayerCharacter = GetCharacter())
@@ -115,8 +117,10 @@ void AOmegaPlayerController::RotateController()
 	}
 }
 
-#pragma endregion
-#pragma region CUSTOM MOVEMENT
+
+// -------------------------------------
+//  CUSTOM MOVEMENT
+// -------------------------------------
 
 void AOmegaPlayerController::Jump(const FInputActionValue& InputActionValue)
 {
@@ -140,7 +144,6 @@ void AOmegaPlayerController::Dash(const FInputActionValue& InputActionValue)
 	}
 }
 
-#pragma endregion
 
 
 

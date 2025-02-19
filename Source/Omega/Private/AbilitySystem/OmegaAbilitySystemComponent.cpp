@@ -14,6 +14,20 @@ void UOmegaAbilitySystemComponent::OnAbilityActorInfoSet()
 	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UOmegaAbilitySystemComponent::OnEffectApplied);
 }
 
+void UOmegaAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& InputTag)
+{
+	/*if (!InputTag.IsValid()) return;
+
+	
+	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		if (!AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag) || AbilitySpec.IsActive()) return;
+
+		AbilitySpecInputPressed(AbilitySpec);
+		TryActivateAbility(AbilitySpec.Handle);
+	}*/
+}
+
 void UOmegaAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InputTag)
 {
 	if (!InputTag.IsValid()) return;

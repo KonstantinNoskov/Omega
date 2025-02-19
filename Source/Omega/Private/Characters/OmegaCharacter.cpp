@@ -59,6 +59,13 @@ void AOmegaCharacter::AddCharacterAbilities()
 	OmegaASC->AddCharacterAbilities(StartupAbilities);
 }
 
+FVector AOmegaCharacter::GetProjectileSpawnLocation()
+{
+	if (!GetSprite()->DoesSocketExist(ProjectileSpawnSocket)) return FVector();
+	
+	return GetSprite()->GetSocketTransform(ProjectileSpawnSocket).GetLocation();	
+}
+
 bool AOmegaCharacter::ProcessConsoleExec(const TCHAR* Cmd, FOutputDevice& Ar, UObject* Executor)
 {
 	if (OmegaMovementComponent && OmegaMovementComponent->ProcessConsoleExec(Cmd, Ar, Executor))

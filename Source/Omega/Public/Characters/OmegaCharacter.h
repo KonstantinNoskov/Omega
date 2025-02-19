@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
 #include "PaperCharacter.h"
+#include "PaperFlipbookComponent.h"
 #include "Interfaces/CombatInterface.h"
 
 #include "OmegaCharacter.generated.h"
@@ -54,10 +55,13 @@ protected:
 public:
 	
 	virtual bool ProcessConsoleExec(const TCHAR* Cmd, FOutputDevice& Ar, UObject* Executor) override;
+	
+	// -------------------------------------
+	//  ATTRIBUTES
+	// -------------------------------------
 
 protected:
-#pragma region ATTRIBUTES
-
+	
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
 	
@@ -72,10 +76,10 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Default Attributes", DisplayName = "Tertiary Attributes")
 	TSubclassOf<UGameplayEffect> DefaultTertiaryAttributes;
 
-#pragma endregion
-
-#pragma region MOVEMENT
-
+	// -------------------------------------
+	//  MOVEMENT
+	// -------------------------------------
+	
 public:
 	
 	virtual void PossessedBy(AController* NewController) override;
@@ -85,19 +89,28 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Omega Movement")
 	TObjectPtr<UOmegaMovementComponent> OmegaMovementComponent;
 
-#pragma endregion
-
-#pragma region ABILITIES
+	// -------------------------------------
+	//  ABILITIES
+	// -------------------------------------
 
 protected:
 
 	void AddCharacterAbilities();
+
+public:
+	
+	virtual FVector GetProjectileSpawnLocation() override;
+
+protected:
+	
+	UPROPERTY(EditAnywhere, Category = "Omega|Combat")
+	FName ProjectileSpawnSocket;
 	
 private:
 	
 	UPROPERTY(EditAnywhere, Category = "Omega|Abilities")
 	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
 
-#pragma endregion
+
 	
 };
