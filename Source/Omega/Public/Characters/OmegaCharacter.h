@@ -89,6 +89,12 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"), Category = "Omega Movement")
 	TObjectPtr<UOmegaMovementComponent> OmegaMovementComponent;
 
+
+public:
+
+	UFUNCTION(BlueprintPure, Category = "Omega|Movement")
+	UOmegaMovementComponent* GetOmegaMovementComponent();	
+	
 	// -------------------------------------
 	//  ABILITIES
 	// -------------------------------------

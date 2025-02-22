@@ -2,11 +2,15 @@
 
 #include "OmegaGameplayTags.h"
 #include "AbilitySystem/Abilities/OmegaGameplayAbility.h"
+#include "Characters/OmegaCharacter.h"
+#include "Components/OmegaMovementComponent.h"
 
 
 UOmegaAbilitySystemComponent::UOmegaAbilitySystemComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
+
+	
 }
 
 void UOmegaAbilitySystemComponent::OnAbilityActorInfoSet()
@@ -16,9 +20,26 @@ void UOmegaAbilitySystemComponent::OnAbilityActorInfoSet()
 
 void UOmegaAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& InputTag)
 {
+
+	if (!InputTag.IsValid()) return;
+
+	if (GetOmegaMovementComponent()->GetOmegaCustomMovementMode() != ECustomMovementMode::None) return;
+	
+	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		if (!AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag) || AbilitySpec.IsActive()) return;
+		
+		
+		AbilitySpecInputPressed(AbilitySpec);
+		
+		TryActivateAbility(AbilitySpec.Handle);
+	}
+}
+
+void UOmegaAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InputTag)
+{
 	/*if (!InputTag.IsValid()) return;
 
-	
 	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
 	{
 		if (!AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag) || AbilitySpec.IsActive()) return;
@@ -26,19 +47,6 @@ void UOmegaAbilitySystemComponent::AbilityInputTagPressed(const FGameplayTag& In
 		AbilitySpecInputPressed(AbilitySpec);
 		TryActivateAbility(AbilitySpec.Handle);
 	}*/
-}
-
-void UOmegaAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InputTag)
-{
-	if (!InputTag.IsValid()) return;
-
-	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
-	{
-		if (!AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag) || AbilitySpec.IsActive()) return;
-
-		AbilitySpecInputPressed(AbilitySpec);
-		TryActivateAbility(AbilitySpec.Handle);
-	}
 }
 
 void UOmegaAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& InputTag)
@@ -75,6 +83,19 @@ void UOmegaAbilitySystemComponent::OnEffectApplied(UAbilitySystemComponent* Abil
 	AppliedEffectSpec.GetAllAssetTags(TagContainer);
 	
 	OnEffectAssetTagsUpdatedDelegate.Broadcast(TagContainer);
+}
+
+UOmegaMovementComponent* UOmegaAbilitySystemComponent::GetOmegaMovementComponent()
+{
+	if (!OmegaMovementComponent)
+	{
+		if (AOmegaCharacter* OmegaCharacter = Cast<AOmegaCharacter>(GetAvatarActor()))
+		{
+			OmegaMovementComponent = OmegaCharacter->GetOmegaMovementComponent();
+		}
+	}
+	
+	return OmegaMovementComponent;
 }
 
 

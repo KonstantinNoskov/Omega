@@ -4,6 +4,7 @@
 #include "AbilitySystemComponent.h"
 #include "OmegaAbilitySystemComponent.generated.h"
 
+class UOmegaMovementComponent;
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnEffectAssetTagsUpdatedSignature, const FGameplayTagContainer& /*AssetTags*/)
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
@@ -15,9 +16,16 @@ public:
 
 	UOmegaAbilitySystemComponent();
 
+private:
+	
+	TObjectPtr<UOmegaMovementComponent> OmegaMovementComponent;
+
 protected:
 
 	void OnEffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& AppliedEffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle);
+
+	UFUNCTION(BlueprintPure)
+	UOmegaMovementComponent* GetOmegaMovementComponent();
 
 public:
 	
@@ -28,6 +36,7 @@ public:
 	void AbilityInputTagReleased(const FGameplayTag& InputTag);
 	
 	FOnEffectAssetTagsUpdatedSignature OnEffectAssetTagsUpdatedDelegate;
+
 
 #pragma region ABILITIES
 

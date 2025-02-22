@@ -3,6 +3,7 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "Input/OmegaInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "OmegaGameplayTags.h"
 #include "PaperCharacter.h"
 #include "AbilitySystem/OmegaAbilitySystemComponent.h"
 #include "Components/OmegaMovementComponent.h"
@@ -20,6 +21,7 @@ void AOmegaPlayerController::BeginPlay()
 
 	AssignMappingContext();	
 }
+
 
 // -------------------------------------
 //  SETUP
@@ -55,22 +57,48 @@ void AOmegaPlayerController::SetupInputComponent()
 	OmegaInputComponent->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagHeld, &ThisClass::AbilityInputTagReleased);
 }
 
+
 // -------------------------------------
-//  COMMON FUNCTIONS
+//  INPUT
 // -------------------------------------
 
 void AOmegaPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
-	GetOmegaAbilitySystemComponent()->AbilityInputTagPressed(InputTag);
+	if (InputTag.MatchesTagExact(FOmegaGameplayTags::Get().InputTag_LMB))
+	{
+		GetOmegaAbilitySystemComponent()->AbilityInputTagPressed(InputTag);
+	}
+
+	if (InputTag.MatchesTagExact(FOmegaGameplayTags::Get().InputTag_RMB))
+	{
+		GetOmegaAbilitySystemComponent()->AbilityInputTagPressed(InputTag);
+	}
 }
+
 void AOmegaPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 {
-	GetOmegaAbilitySystemComponent()->AbilityInputTagHeld(InputTag);
+	if (InputTag.MatchesTagExact(FOmegaGameplayTags::Get().InputTag_LMB))
+	{
+		if (GetOmegaAbilitySystemComponent())
+		{
+			GetOmegaAbilitySystemComponent()->AbilityInputTagHeld(InputTag);
+		}
+	}
+
+	ElapsedPressTime += GetWorld()->GetDeltaSeconds();
+	
 }
 void AOmegaPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
+	if (!GetOmegaAbilitySystemComponent()) return;
 	GetOmegaAbilitySystemComponent()->AbilityInputTagReleased(InputTag);
 }
+
+
+// -------------------------------------
+//  COMMON FUNCTIONS
+// -------------------------------------
+
 UOmegaAbilitySystemComponent* AOmegaPlayerController::GetOmegaAbilitySystemComponent()
 {
 	if (!OmegaAbilitySystemComponent)

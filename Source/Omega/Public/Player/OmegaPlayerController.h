@@ -29,37 +29,52 @@ protected:
 	
 	virtual void BeginPlay() override;
 
-	virtual void SetupInputComponent() override;
 
+	// -------------------------------------
+	//  SETUP
+	// -------------------------------------
+
+protected:
+	
+	virtual void SetupInputComponent() override;
 	void AssignMappingContext() const;
 
-	
-
 private:
 	
-	void Move(const FInputActionValue& InputActionValue);
-	void Jump(const FInputActionValue& InputActionValue);
-	void Crouch(const FInputActionValue& InputActionValue);
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	TObjectPtr<UOmegaInputConfig> InputConfig;
 
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputMappingContext> InputMappingContext;
 
-#pragma region DASH
-
-private:
-	void Dash(const FInputActionValue& InputActionValue);
+	
+	// -------------------------------------
+	//  DELEGATES
+	// -------------------------------------
 
 public:
 	
-	FOnInputRecievedSignature OnDashInputDelegate;
+	FOnInputRecievedSignature OnJumpInputDelegate;
+	FOnInputRecievedSignature OnCrouchInputDelegate;
+	FOnInputRecievedSignature OnMoveInputDelegate;
 
-#pragma endregion
+	// -------------------------------------
+	//  INPUT
+	// -------------------------------------
 
 private:
-
-	void RotateController();
 
 	void AbilityInputTagPressed(FGameplayTag InputTag);
 	void AbilityInputTagHeld(FGameplayTag InputTag);
 	void AbilityInputTagReleased(FGameplayTag InputTag);
+
+	float ShortPressThreshold = .3f;
+	float ElapsedPressTime = 0.f; 
+	bool bShortPressed = true;
+	
+	// -------------------------------------
+	//  COMMON
+	// -------------------------------------
 
 public:
 
@@ -67,18 +82,20 @@ public:
 	UOmegaMovementComponent* GetOmegaMovementComponent();
 
 private:
-
+	
 	UPROPERTY()
 	TObjectPtr<UOmegaAbilitySystemComponent> OmegaAbilitySystemComponent;
 
 	UPROPERTY()
 	TObjectPtr<UOmegaMovementComponent> OmegaMovementComponent;
 	
-	UPROPERTY(EditDefaultsOnly, Category = "Input")
-	TObjectPtr<UOmegaInputConfig> InputConfig;
+private:
 
-	UPROPERTY(EditAnywhere, Category = "Input")
-	TObjectPtr<UInputMappingContext> InputMappingContext;
+	void RotateController();
+	
+	void Move(const FInputActionValue& InputActionValue);
+	void Jump(const FInputActionValue& InputActionValue);
+	void Crouch(const FInputActionValue& InputActionValue);
 	
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> MoveAction;
@@ -88,20 +105,34 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> CrouchAction;
-
-	UPROPERTY(EditAnywhere, Category = "Input")
-	TObjectPtr<UInputAction> DashAction;
-
+	
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> PrimaryAttackAction;
 
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> SecondaryAttackAction;
 
+	
+	// -------------------------------------
+	//  DASH ACTION
+	// -------------------------------------
+
+private:
+
+	void Dash(const FInputActionValue& InputActionValue);
+
 public:
 	
-	FOnInputRecievedSignature OnJumpInputDelegate;
-	FOnInputRecievedSignature OnCrouchInputDelegate;
-	FOnInputRecievedSignature OnMoveInputDelegate;
+	FOnInputRecievedSignature OnDashInputDelegate;
+
+private:
+	
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> DashAction;
+
+
+
+
+
 	
 };

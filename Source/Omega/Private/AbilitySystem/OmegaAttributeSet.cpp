@@ -40,7 +40,13 @@ void UOmegaAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallb
 	GetEffectProperties(Data, EffectProperties);
 
 	// Clamping the changed attributes
-	if (Data.EvaluatedData.Attribute == GetHealthAttribute()) SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
+	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
+	{
+		SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
+
+		UE_LOG(LogTemp, Warning, TEXT("[%hs] %s's health set to %f"), __FUNCTION__, *EffectProperties.TargetAvatarActor->GetName(), GetHealth())
+	}
+		
 }
 
 void UOmegaAttributeSet::GetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& OutEffectProperties)

@@ -18,8 +18,10 @@ APlayerBaseCharacter::APlayerBaseCharacter(const FObjectInitializer& ObjectIniti
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-#pragma region CAMERA
-
+	// -------------------------------------
+	//  CAMERA
+	// -------------------------------------
+	
 	CharacterSpringArm = CreateDefaultSubobject<USpringArmComponent>("Spring Arm");
 	CharacterSpringArm->SetupAttachment(GetRootComponent());
 	CharacterSpringArm->SetWorldRotation(FRotator(0.f,-90.f,0.f));
@@ -33,14 +35,13 @@ APlayerBaseCharacter::APlayerBaseCharacter(const FObjectInitializer& ObjectIniti
 	CharacterCamera = CreateDefaultSubobject<UCameraComponent>("Camera");
 	CharacterCamera->SetupAttachment(CharacterSpringArm);
 
-#pragma endregion
 
-#pragma region COLLISION CHANNELS
+	// -------------------------------------
+	//  COLLISION CHANNELS
+	// -------------------------------------
 
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	GetCapsuleComponent()->SetCollisionObjectType(ECC_Player);
-
-#pragma endregion
 	
 }
 

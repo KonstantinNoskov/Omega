@@ -51,6 +51,16 @@ void AOmegaCharacter::InitializeDefaultAttributes(const TSubclassOf<UGameplayEff
 	AbilitySystemComponent->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data, AbilitySystemComponent);
 }
 
+UOmegaMovementComponent* AOmegaCharacter::GetOmegaMovementComponent()
+{
+	if (!OmegaMovementComponent)
+	{
+		OmegaMovementComponent = Cast<UOmegaMovementComponent>(GetMovementComponent());
+	}
+
+	return OmegaMovementComponent;
+}
+
 void AOmegaCharacter::AddCharacterAbilities()
 {
 	UOmegaAbilitySystemComponent* OmegaASC = Cast<UOmegaAbilitySystemComponent>(AbilitySystemComponent);

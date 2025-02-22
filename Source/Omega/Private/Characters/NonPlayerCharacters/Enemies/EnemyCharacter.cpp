@@ -18,12 +18,14 @@ AEnemyCharacter::AEnemyCharacter(const FObjectInitializer& ObjectInitializer)
 	AbilitySystemComponent = CreateDefaultSubobject<UOmegaAbilitySystemComponent>("Omega Ability System");
 	AttributeSet = CreateDefaultSubobject<UOmegaAttributeSet>("Omega Attribute Set");
 
-#pragma region COLLISION CHANNELS
+	
+	// -------------------------------------
+	//  COLLISION CHANNELS
+	// -------------------------------------
 
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	GetCapsuleComponent()->SetCollisionObjectType(ECC_Enemy);
-
-#pragma endregion
+	
 }
 
 void AEnemyCharacter::PossessedBy(AController* NewController)
@@ -33,19 +35,13 @@ void AEnemyCharacter::PossessedBy(AController* NewController)
 	OmegaAIController = Cast<AOmegaAIController>(NewController);
 	OmegaAIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
 	OmegaAIController->RunBehaviorTree(BehaviorTree);
-	
 }
 
 
 void AEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	if (IsValid(AbilitySystemComponent))
-	{
-		AbilitySystemComponent->InitAbilityActorInfo(this, this);
-	}
-	else { UE_LOG(LogTemp, Error, TEXT("[%hs]: Ability System is null!"), __FUNCTION__); }
+	InitAbilityActorInfo();
 	
 }
 
@@ -74,6 +70,10 @@ void AEnemyCharacter::InitAbilityActorInfo()
 	if (OmegaASC)
 	{
 		OmegaASC->OnAbilityActorInfoSet();
+
+		InitializeDefaultAttributes(DefaultPrimaryAttributes, 1.f);
+		InitializeDefaultAttributes(DefaultSecondaryAttributes, 1.f);
+		InitializeDefaultAttributes(DefaultTertiaryAttributes, 1.f);
 	}
 }
 
