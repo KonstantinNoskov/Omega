@@ -3,8 +3,10 @@
 #include "CoreMinimal.h"
 #include "Characters/OmegaCharacter.h"
 #include "Interfaces/EnemyInterface.h"
+#include "UI/WidgetControllers/OmegaWidgetController.h"
 #include "EnemyCharacter.generated.h"
 
+class UWidgetComponent;
 class AOmegaAIController;
 class UBehaviorTree;
 
@@ -17,20 +19,36 @@ public:
 	AEnemyCharacter(const FObjectInitializer& ObjectInitializer);
 
 	virtual void PossessedBy(AController* NewController) override;
+	void BindCallbacks();
 
 protected:
 	
 	virtual void BeginPlay() override;
-	
 
-#pragma region COMBAT INTERFACE
+	// -------------------------------------
+	//  COMBAT INTERFACE
+	// -------------------------------------
 
 public:
 	
 	FORCEINLINE virtual int32 GetPlayerLevel() const override { return Level; }
 
-#pragma endregion
-#pragma region AI
+
+	// -------------------------------------
+	//  DELEGATES
+	// -------------------------------------
+
+
+	UPROPERTY(BlueprintAssignable)
+	FOnAttributeValueChangedSignature OnHealthChanged;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnAttributeValueChangedSignature OnMaxHealthChanged;
+
+	
+	// -------------------------------------
+	//  AI
+	// -------------------------------------
 	
 	UPROPERTY(EditAnywhere, Category = "AI")
 	TObjectPtr<UBehaviorTree> BehaviorTree;
@@ -41,16 +59,28 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Combat")
 	FName CombatTargetName = "CombatTarget";
 
-#pragma endregion
-#pragma region ENEMY INTERFACE
+
+	// -------------------------------------
+	//  ENEMY INTERFACE
+	// -------------------------------------
 
 	virtual void SetCombatTarget_Implementation(AActor* TargetActor) override;
 
-#pragma endregion
-
 protected:
+	
 	virtual void InitAbilityActorInfo() override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults")
 	int32 Level = 1;
+
+	// -------------------------------------
+	//  WIDGET
+	// -------------------------------------
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<UWidgetComponent> HealthBar;
+
+
+
+	
 };

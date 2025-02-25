@@ -30,7 +30,7 @@ protected:
 	/**
 	 *	Handles player camera behavior during gameplay
 	 * 
-	 *	@param DeltaTime - Delta time... obviously
+	 *	@param DeltaTime - Delta time
 	 */
 	void HandleCameraBehavior(const float DeltaTime) const;
 	

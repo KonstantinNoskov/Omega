@@ -148,7 +148,7 @@ struct FUIWidgetRow : public FTableRowBase
 };
 
 /**
- * Attribute data to pass-in to widgets
+ * Attribute data broadcasted to the widgets
  */
 USTRUCT(BlueprintType)
 struct FOmegaAttributeInfo

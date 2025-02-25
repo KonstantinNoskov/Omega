@@ -44,7 +44,7 @@ void UOmegaAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallb
 	{
 		SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
 
-		UE_LOG(LogTemp, Warning, TEXT("[%hs] %s's health set to %f"), __FUNCTION__, *EffectProperties.TargetAvatarActor->GetName(), GetHealth())
+		UE_LOG(LogTemp, Warning, TEXT("[%hs] %f "), __FUNCTION__, GetHealth());
 	}
 		
 }

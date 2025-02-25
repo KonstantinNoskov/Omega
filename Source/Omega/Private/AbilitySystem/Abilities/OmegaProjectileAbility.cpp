@@ -37,7 +37,7 @@ void UOmegaProjectileAbility::ActivateAbility(const FGameplayAbilitySpecHandle H
 		return;
 	}
 
-	// TODO: Write a comment
+	// Assign damage effect spec handle to the projectile
 	const UAbilitySystemComponent* SourceASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetAvatarActorFromActorInfo());
 	const FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), SourceASC->MakeEffectContext());
 	Projectile->DamageEffectSpecHandle = SpecHandle;

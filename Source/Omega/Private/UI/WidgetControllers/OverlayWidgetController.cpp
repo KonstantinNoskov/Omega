@@ -23,14 +23,13 @@ void UOverlayWidgetController::BroadcastInitialValues()
 
 void UOverlayWidgetController::BindCallbacksToDependencies()
 {
-	// Get Essentials
+	// Essentials valid check
 	UOmegaAbilitySystemComponent* OmegaAbilitySystemComponent = Cast<UOmegaAbilitySystemComponent>(AbilitySystemComponent);
 	const UOmegaAttributeSet* OmegaAttributeSet = CastChecked<UOmegaAttributeSet>(AttributeSet);
-
-	// Essentials valid check
 	checkf(OmegaAbilitySystemComponent,		TEXT("[%hs]: OmegaAbilitySystemComponent cast is failed!"), __FUNCTION__)
 	checkf(OmegaAttributeSet,				TEXT("[%hs]: OmegaAttributeSet cast is failed!"), __FUNCTION__)
-	
+
+	// Bind callbacks to all existing attributes
 	for (auto& Pair : OmegaAttributeSet->TagsToAttributes)
 	{
 		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Pair.Value()).AddLambda([this, Pair, OmegaAttributeSet](const FOnAttributeChangeData& InData)
@@ -42,7 +41,7 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 		});
 	}
 	
-	//	On Asset Tag Container Updated
+	// Display effect messages on a viewport
 	OmegaAbilitySystemComponent->OnEffectAssetTagsUpdatedDelegate.AddLambda([this](const FGameplayTagContainer& InAssetTags)
 	{
 		for (const FGameplayTag& Tag : InAssetTags)

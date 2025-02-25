@@ -40,8 +40,9 @@ public:
 	TMap<FGameplayTag, TStaticFuncPtr<FGameplayAttribute()>> TagsToAttributes;
 
 
-	
-#pragma region PRIMARY ATTRIBUTES
+	// -------------------------------------
+	//  PRIMARY ATTRIBUTES
+	// -------------------------------------
 
 	UPROPERTY(BlueprintReadOnly, Category = "Primary Attributes")
 	FGameplayAttributeData Strength;
@@ -55,10 +56,11 @@ public:
 	FGameplayAttributeData Intelligence;
 	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, Intelligence)
 
-#pragma endregion
-
-#pragma region SECONDARY ATTRIBUTES
-
+	
+	// -------------------------------------
+	//  SECONDARY ATTRIBUTES
+	// -------------------------------------
+	
 	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
 	FGameplayAttributeData MaxHealth;
 	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, MaxHealth)
@@ -100,8 +102,9 @@ public:
 	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, ElementalResistance)
 
 	
-
-#pragma endregion
+	// -------------------------------------
+	//  TERTIARY ATTRIBUTES
+	// -------------------------------------
 	
 	UPROPERTY(BlueprintReadOnly, Category = "Tertiary Attributes")
 	FGameplayAttributeData Health;

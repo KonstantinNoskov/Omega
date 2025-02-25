@@ -7,7 +7,13 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/WidgetComponent.h"
+#include "UI/Widgets/OmegaUserWidget.h"
 
+
+// -------------------------------------
+//  CONSTRUCTOR
+// -------------------------------------
 
 AEnemyCharacter::AEnemyCharacter(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -15,17 +21,17 @@ AEnemyCharacter::AEnemyCharacter(const FObjectInitializer& ObjectInitializer)
 	
 	PrimaryActorTick.bCanEverTick = false;
 
+	// GAS
 	AbilitySystemComponent = CreateDefaultSubobject<UOmegaAbilitySystemComponent>("Omega Ability System");
 	AttributeSet = CreateDefaultSubobject<UOmegaAttributeSet>("Omega Attribute Set");
-
 	
-	// -------------------------------------
-	//  COLLISION CHANNELS
-	// -------------------------------------
-
+	// COLLISION CHANNELS
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	GetCapsuleComponent()->SetCollisionObjectType(ECC_Enemy);
-	
+
+	// HEALTH BAR
+	HealthBar = CreateDefaultSubobject<UWidgetComponent>("Health Bar");
+	HealthBar->SetupAttachment(GetRootComponent());
 }
 
 void AEnemyCharacter::PossessedBy(AController* NewController)
@@ -37,15 +43,48 @@ void AEnemyCharacter::PossessedBy(AController* NewController)
 	OmegaAIController->RunBehaviorTree(BehaviorTree);
 }
 
-
 void AEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	InitAbilityActorInfo();
+
+	if (UOmegaUserWidget* OmegaUserWidget = Cast<UOmegaUserWidget>(HealthBar->GetUserWidgetObject()))
+	{
+		OmegaUserWidget->SetWidgetController(this);
+	}
 	
+	
+	BindCallbacks();
 }
 
-#pragma region ENEMY INTERFACE
+// -------------------------------------
+//  SETUP
+// -------------------------------------
+
+void AEnemyCharacter::BindCallbacks()
+{
+	if (const UOmegaAttributeSet* OmegaAS = Cast<UOmegaAttributeSet>(AttributeSet))
+	{
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(OmegaAS->GetHealthAttribute()).AddLambda([this](const FOnAttributeChangeData& Data)
+		{	
+			OnHealthChanged.Broadcast(Data.NewValue);
+		});
+
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(OmegaAS->GetMaxHealthAttribute()).AddLambda([this](const FOnAttributeChangeData& Data)
+		{	
+			OnMaxHealthChanged.Broadcast(Data.NewValue);
+		});
+
+		// Broadcast initial attribute values
+		OnHealthChanged.Broadcast(OmegaAS->GetHealth());
+		OnMaxHealthChanged.Broadcast(OmegaAS->GetMaxHealth());
+		
+	}
+}
+
+// -------------------------------------
+//  ENEMY INTERFACE
+// -------------------------------------
 
 void AEnemyCharacter::SetCombatTarget_Implementation(AActor* TargetActor)
 {
@@ -60,9 +99,6 @@ void AEnemyCharacter::SetCombatTarget_Implementation(AActor* TargetActor)
 	
 }
 
-#pragma endregion
-
-
 void AEnemyCharacter::InitAbilityActorInfo()
 {
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
@@ -76,6 +112,8 @@ void AEnemyCharacter::InitAbilityActorInfo()
 		InitializeDefaultAttributes(DefaultTertiaryAttributes, 1.f);
 	}
 }
+
+
 
 
 
