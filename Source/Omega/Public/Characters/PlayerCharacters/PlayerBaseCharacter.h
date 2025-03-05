@@ -14,7 +14,8 @@ class OMEGA_API APlayerBaseCharacter : public AOmegaCharacter, public IPlayerInt
 	GENERATED_BODY()
 
 public:
-	
+	virtual void Landed(const FHitResult& Hit) override;
+
 	APlayerBaseCharacter(const FObjectInitializer& ObjectInitializer);
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void PossessedBy(AController* NewController) override;

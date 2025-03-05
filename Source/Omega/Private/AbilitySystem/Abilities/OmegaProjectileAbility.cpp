@@ -2,6 +2,7 @@
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
+#include "OmegaGameplayTags.h"
 #include "Actors/OmegaProjectile.h"
 #include "Interfaces/CombatInterface.h"
 
@@ -36,10 +37,25 @@ void UOmegaProjectileAbility::ActivateAbility(const FGameplayAbilitySpecHandle H
 		UE_LOG(LogTemp, Error, TEXT("[%hs] Spawned projectile is null! Probably the projectile class in %s is not set."), __FUNCTION__, *this->GetName())
 		return;
 	}
-
+	
 	// Assign damage effect spec handle to the projectile
 	const UAbilitySystemComponent* SourceASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetAvatarActorFromActorInfo());
-	const FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), SourceASC->MakeEffectContext());
+
+	// Set Effect Context
+	FGameplayEffectContextHandle EffectContextHandle = SourceASC->MakeEffectContext();
+	EffectContextHandle.SetAbility(this);
+	EffectContextHandle.AddSourceObject(Projectile);
+
+	//Set Projectile Effect spec 
+	const FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), EffectContextHandle);
+	
+	// Assign Caller Magnitude
+	const FOmegaGameplayTags GameplayTags = FOmegaGameplayTags::Get();
+
+	// Damage depends on ability level 
+	const float ScaledDamage = AbilityDamageMagnitude.GetValueAtLevel(GetAbilityLevel());
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, GameplayTags.Damage, ScaledDamage);
+	
 	Projectile->DamageEffectSpecHandle = SpecHandle;
 	
 	// Finish spawning

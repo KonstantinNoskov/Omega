@@ -7,7 +7,7 @@
 
 class AOmegaPlayerController;
 class AOmegaCharacter;
-enum class ECustomMovementMode : uint8;
+enum class EOmegaCustomMovementMode : uint8;
 struct FInputActionValue;
 
 DECLARE_MULTICAST_DELEGATE(FOnMovementEventSignature);
@@ -34,7 +34,7 @@ public:
 	void UpdateCapsulePosition(float DeltaTime) const;
 
 	UFUNCTION(BlueprintPure)
-	FORCEINLINE ECustomMovementMode GetOmegaCustomMovementMode() const { return OmegaCustomMovementMode; } 
+	FORCEINLINE EOmegaCustomMovementMode GetOmegaCustomMovementMode() const { return OmegaCustomMovementMode; } 
 
 private:
 
@@ -42,15 +42,21 @@ private:
 	TObjectPtr<AOmegaPlayerController> OmegaController;
 
 	UPROPERTY(BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	ECustomMovementMode OmegaCustomMovementMode = ECustomMovementMode::None;
+	EOmegaCustomMovementMode OmegaCustomMovementMode = EOmegaCustomMovementMode::None;
 
-
-#pragma region COMMON
-
-	float InitialWalkDeceleration;
 	
+	// -------------------------------------
+	//  COMMON
+	// -------------------------------------
+	
+	float InitialWalkDeceleration;
 
-#pragma endregion
+	float BaseWalkSpeed;
+	
+public:
+
+	FORCEINLINE float GetBaseWalkSpeed() const { return BaseWalkSpeed; } 
+
 	
 #pragma region JUMP
 

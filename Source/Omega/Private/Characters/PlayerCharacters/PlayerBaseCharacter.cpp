@@ -13,6 +13,11 @@
 #include "UI/HUD/OmegaHUD.h"
 
 
+void APlayerBaseCharacter::Landed(const FHitResult& Hit)
+{
+	Super::Landed(Hit);
+}
+
 APlayerBaseCharacter::APlayerBaseCharacter(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {

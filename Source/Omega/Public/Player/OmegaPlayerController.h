@@ -7,6 +7,7 @@
 #include "GameFramework/PlayerController.h"
 #include "OmegaPlayerController.generated.h"
 
+class UDamageTextComponent;
 class UOmegaMovementComponent;
 class UOmegaAbilitySystemComponent;
 class UOmegaInputConfig;
@@ -131,8 +132,15 @@ private:
 	TObjectPtr<UInputAction> DashAction;
 
 
-
-
-
+	// -------------------------------------
+	//  DAMAGE WIDGET
+	// -------------------------------------
 	
+public:
+	
+	UFUNCTION()
+	void ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter);
+	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UDamageTextComponent> DamageTextComponentClass;
 };

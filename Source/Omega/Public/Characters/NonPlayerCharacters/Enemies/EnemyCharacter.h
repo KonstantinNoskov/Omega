@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "Characters/OmegaCharacter.h"
 #include "Interfaces/EnemyInterface.h"
 #include "UI/WidgetControllers/OmegaWidgetController.h"
@@ -25,6 +26,7 @@ protected:
 	
 	virtual void BeginPlay() override;
 
+	
 	// -------------------------------------
 	//  COMBAT INTERFACE
 	// -------------------------------------
@@ -33,12 +35,18 @@ public:
 	
 	FORCEINLINE virtual int32 GetPlayerLevel() const override { return Level; }
 
+	
+	// -------------------------------------
+	//  ENEMY INTERFACE
+	// -------------------------------------
+
+	virtual void SetCombatTarget_Implementation(AActor* TargetActor) override;
+
 
 	// -------------------------------------
 	//  DELEGATES
 	// -------------------------------------
-
-
+	
 	UPROPERTY(BlueprintAssignable)
 	FOnAttributeValueChangedSignature OnHealthChanged;
 
@@ -60,12 +68,6 @@ public:
 	FName CombatTargetName = "CombatTarget";
 
 
-	// -------------------------------------
-	//  ENEMY INTERFACE
-	// -------------------------------------
-
-	virtual void SetCombatTarget_Implementation(AActor* TargetActor) override;
-
 protected:
 	
 	virtual void InitAbilityActorInfo() override;
@@ -73,6 +75,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults")
 	int32 Level = 1;
 
+	
 	// -------------------------------------
 	//  WIDGET
 	// -------------------------------------
@@ -80,7 +83,16 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UWidgetComponent> HealthBar;
 
+	
+	// -------------------------------------
+	//  HIT REACT
+	// -------------------------------------
 
+public:
+	
+	void HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewTagCount);
 
+	UPROPERTY(BlueprintReadOnly, Category = "Combat")
+	bool bHitReacting = false;
 	
 };

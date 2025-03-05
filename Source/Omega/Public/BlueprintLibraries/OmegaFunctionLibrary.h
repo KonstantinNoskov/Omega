@@ -5,6 +5,7 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "OmegaFunctionLibrary.generated.h"
 
+class UAbilitySystemComponent;
 struct FGameplayTag;
 class UPaperSprite;
 
@@ -20,8 +21,22 @@ public:
 	{
 		return InDataTable->FindRow<T>(InTag.GetTagName(), TEXT(""));
 	}
-
+	
+	/**
+	 * 
+	 * @param Sprite 
+	 * @return 
+	 */
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "Get Source Size", Keywords = "Source Texture Sprite"), Category = "Omega|StaticFunctions")
 	static FVector2D GetSourceSize(UPaperSprite* Sprite);
+
+
+	/**
+	 * 
+	 * @param WorldContextObject 
+	 * @param ASC 
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Omega Function Library|Character Class Defaults")
+	static void GiveStartupAbilities(const UObject* WorldContextObject, UAbilitySystemComponent* ASC);
 	
 };

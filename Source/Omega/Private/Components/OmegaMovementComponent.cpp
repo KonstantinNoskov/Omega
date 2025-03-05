@@ -14,6 +14,8 @@ UOmegaMovementComponent::UOmegaMovementComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
 	NavAgentProps.bCanCrouch = true;
+
+	BaseWalkSpeed = MaxWalkSpeed;
 }
 
 void UOmegaMovementComponent::BeginPlay()
@@ -44,7 +46,7 @@ void UOmegaMovementComponent::TickComponent(float DeltaTime, ELevelTick TickType
 
 void UOmegaMovementComponent::UpdateCapsulePosition(float DeltaTime) const
 {
-	if (OmegaCustomMovementMode == ECustomMovementMode::Mantle)
+	if (OmegaCustomMovementMode == EOmegaCustomMovementMode::Mantle)
 	{
 		OmegaOwner->GetCapsuleComponent()->SetWorldLocation(FMath::VInterpTo(OmegaOwner->GetCapsuleComponent()->GetComponentLocation(), MantleTargetLocation, DeltaTime, MantleAnimationSpeed));
 	}
@@ -90,7 +92,7 @@ bool UOmegaMovementComponent::IsValidJump() const
 		bJumpDebug ? EDrawDebugTrace::ForDuration : EDrawDebugTrace::None,
 		HitResult, true);
 
-	const bool bJumpValid = !HitResult.bBlockingHit && OmegaCustomMovementMode != ECustomMovementMode::Dash; 
+	const bool bJumpValid = !HitResult.bBlockingHit && OmegaCustomMovementMode != EOmegaCustomMovementMode::Dash; 
 
 	return bJumpValid;
 }
@@ -105,7 +107,7 @@ void UOmegaMovementComponent::PerformCrouch(const FInputActionValue& InputAction
 	
 	if (OmegaOwner)
 	{
-		if (InputBool && !IsFalling() && OmegaCustomMovementMode != ECustomMovementMode::Dash)
+		if (InputBool && !IsFalling() && OmegaCustomMovementMode != EOmegaCustomMovementMode::Dash)
 		{	
 			OmegaOwner->Crouch();
 		}
@@ -145,14 +147,14 @@ void UOmegaMovementComponent::PerformDash()
 	
 	bFirstDash = false;
 	
-	OmegaCustomMovementMode = ECustomMovementMode::Dash;
+	OmegaCustomMovementMode = EOmegaCustomMovementMode::Dash;
 	BrakingDecelerationWalking = 1000.f;
 	
 	DashStarTime = GetWorld()->GetTimeSeconds();
 	
 	const FVector DashDirection = (Acceleration.IsNearlyZero() ? OmegaOwner->GetActorForwardVector() : Acceleration).GetSafeNormal2D();
 	
-	Velocity =  DashImpulse * DashDirection;
+	Velocity = DashImpulse * DashDirection;
 	
 	const FQuat NewRotation = FRotationMatrix::MakeFromXZ(DashDirection, FVector::UpVector).ToQuat();
 	
@@ -160,10 +162,11 @@ void UOmegaMovementComponent::PerformDash()
 	SafeMoveUpdatedComponent(FVector::ZeroVector, NewRotation, false, HitResult);
 
 	OmegaOwner->GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Enemy, ECR_Ignore);
+	
 }
 void UOmegaMovementComponent::OnDashFinished()
 {
-	OmegaCustomMovementMode = ECustomMovementMode::None;
+	OmegaCustomMovementMode = EOmegaCustomMovementMode::None;
 	
 	OmegaOwner->GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Enemy, ECR_Overlap);
 	BrakingDecelerationWalking = InitialWalkDeceleration;
@@ -190,7 +193,7 @@ bool UOmegaMovementComponent::IsMantleValid(const FHitResult& InHitResult, FVect
 	
 	const bool bHorizontalHit = FVector::DotProduct(InHitResult.ImpactNormal, FVector::UpVector) == FMath::Abs(0.f) ? true : false;
 	
-	if (/*IsFalling() && */ bHorizontalHit && !bValidateMantle && OmegaCustomMovementMode != ECustomMovementMode::Dash)
+	if (/*IsFalling() && */ bHorizontalHit && !bValidateMantle && OmegaCustomMovementMode != EOmegaCustomMovementMode::Dash)
 	{
 		// Set Mantle Check Timer to avoid every frame check
 		OnMantleResetDelegate.BindLambda([this]()
@@ -253,7 +256,7 @@ bool UOmegaMovementComponent::IsMantleValid(const FHitResult& InHitResult, FVect
 
 void UOmegaMovementComponent::PerformMantle(const FVector& MantleTargetPoint)
 {
-	OmegaCustomMovementMode = ECustomMovementMode::Mantle;
+	OmegaCustomMovementMode = EOmegaCustomMovementMode::Mantle;
 	Velocity = FVector::ZeroVector;
 	
 	SetMovementMode(MOVE_Flying);
@@ -264,7 +267,7 @@ void UOmegaMovementComponent::PerformMantle(const FVector& MantleTargetPoint)
 
 void UOmegaMovementComponent::OnMantleFinished()
 {
-	OmegaCustomMovementMode = ECustomMovementMode::None;
+	OmegaCustomMovementMode = EOmegaCustomMovementMode::None;
 	SetMovementMode(MOVE_Walking);
 	OmegaOwner->GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
 	OmegaController->EnableInput(OmegaController);

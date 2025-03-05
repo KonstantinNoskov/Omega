@@ -11,7 +11,10 @@ class OMEGA_API UOmegaGameplayAbility : public UGameplayAbility
 
 public:
 
-	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	UPROPERTY(EditDefaultsOnly, Category = "OmegaAbility|Input")
 	FGameplayTag StartupInputTag;
+
+	UPROPERTY(EditDefaultsOnly, Category = "OmegaAbility|Damage")
+	FScalableFloat AbilityDamageMagnitude;
 	
 };

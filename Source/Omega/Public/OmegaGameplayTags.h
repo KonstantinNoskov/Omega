@@ -24,58 +24,66 @@ private:
 
 public:
 
-#pragma region PRIMARY ATTRIBUTE
+	
+	// -------------------------------------
+	//  PRIMARY ATTRIBUTE
+	// -------------------------------------
 	
 	FGameplayTag Attributes_Primary_Strength;
 	FGameplayTag Attributes_Primary_Intelligence;
 	FGameplayTag Attributes_Primary_Dexterity;
 
-#pragma endregion
 
-#pragma region SECONDARY ATTRIBUTE
+	// -------------------------------------
+	//  SECONDARY ATTRIBUTE
+	// -------------------------------------
 	
 	FGameplayTag Attributes_Secondary_MaxHealth;
 	FGameplayTag Attributes_Secondary_MaxMana;
 
-#pragma endregion
 
-#pragma region TERTIARY ATTRIBUTE
-
+	// -------------------------------------
+	//  TERTIARY ATTRIBUTE
+	// -------------------------------------
 
 	FGameplayTag Attributes_Tertiary_Health;
 	FGameplayTag Attributes_Tertiary_Mana;
 
-#pragma endregion
-
-#pragma region ELEMENTALS
+	
+	// -------------------------------------
+	//  ELEMENTAL
+	// -------------------------------------
 	
 	FGameplayTag Elemental_Fire_OnFire;
 	FGameplayTag Elemental_Fire_Burn;
 
 	FGameplayTag Elemental_Water_InWater;
 	FGameplayTag Elemental_Water_Wet;
+
 	
-
-#pragma endregion
-
-#pragma region MESSAGES
+	// -------------------------------------
+	//  MESSAGES
+	// -------------------------------------
 	
 	FGameplayTag Message_HealthPotion_Small;
 	FGameplayTag Message_HealthPotion_Mid;
 	
 	FGameplayTag Message_ManaPotion_Small;
-	FGameplayTag Message_ManaPotion_Mid; 
+	FGameplayTag Message_ManaPotion_Mid;
 
-#pragma endregion 
-
-
-#pragma region INPUT
+	
+	// -------------------------------------
+	//  INPUT
+	// -------------------------------------
 
 	FGameplayTag InputTag_LMB;
 	FGameplayTag InputTag_RMB;
 
-#pragma endregion
+	// -------------------------------------
+	//  META
+	// -------------------------------------
 
-
+	FGameplayTag Damage;
+	FGameplayTag Effects_HitReact;
 };
 

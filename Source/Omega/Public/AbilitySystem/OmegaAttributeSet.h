@@ -113,4 +113,13 @@ public:
 	UPROPERTY(BlueprintReadOnly, Category = "Tertiary Attributes")
 	FGameplayAttributeData Mana;
 	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, Mana)
+
+	
+	// -------------------------------------
+	//  META ATTRIBUTES
+	// -------------------------------------
+
+	UPROPERTY(BlueprintReadOnly, Category = "Meta Attributes")
+	FGameplayAttributeData Damage;
+	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, Damage);
 };

@@ -1,13 +1,16 @@
 ﻿#include "Characters/NonPlayerCharacters/Enemies/EnemyCharacter.h"
 
 #include "OmegaCollisionChannels.h"
+#include "OmegaGameplayTags.h"
 #include "AbilitySystem/OmegaAbilitySystemComponent.h"
 #include "AbilitySystem/OmegaAttributeSet.h"
 #include "AI/OmegaAIController.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/OmegaMovementComponent.h"
 #include "Components/WidgetComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "UI/Widgets/OmegaUserWidget.h"
 
 
@@ -39,8 +42,12 @@ void AEnemyCharacter::PossessedBy(AController* NewController)
 	Super::PossessedBy(NewController);
 
 	OmegaAIController = Cast<AOmegaAIController>(NewController);
-	OmegaAIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
-	OmegaAIController->RunBehaviorTree(BehaviorTree);
+	if (OmegaAIController)
+	{
+		OmegaAIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
+		OmegaAIController->RunBehaviorTree(BehaviorTree);	
+	}
+	
 }
 
 void AEnemyCharacter::BeginPlay()
@@ -74,6 +81,11 @@ void AEnemyCharacter::BindCallbacks()
 		{	
 			OnMaxHealthChanged.Broadcast(Data.NewValue);
 		});
+
+
+		const FOmegaGameplayTags GameplayTags = FOmegaGameplayTags::Get();
+		FOnGameplayEffectTagCountChanged TagCountChangedDelegate = AbilitySystemComponent->RegisterGameplayTagEvent(GameplayTags.Effects_HitReact, EGameplayTagEventType::NewOrRemoved); 
+		TagCountChangedDelegate.AddUObject(this, &AEnemyCharacter::HitReactTagChanged);
 
 		// Broadcast initial attribute values
 		OnHealthChanged.Broadcast(OmegaAS->GetHealth());
@@ -111,6 +123,12 @@ void AEnemyCharacter::InitAbilityActorInfo()
 		InitializeDefaultAttributes(DefaultSecondaryAttributes, 1.f);
 		InitializeDefaultAttributes(DefaultTertiaryAttributes, 1.f);
 	}
+}
+
+void AEnemyCharacter::HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewTagCount)
+{
+	bHitReacting = NewTagCount > 0;
+	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0.f : GetOmegaMovementComponent()->GetBaseWalkSpeed();
 }
 
 

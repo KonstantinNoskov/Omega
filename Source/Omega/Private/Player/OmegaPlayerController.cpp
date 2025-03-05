@@ -8,6 +8,7 @@
 #include "AbilitySystem/OmegaAbilitySystemComponent.h"
 #include "Components/OmegaMovementComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "UI/Widgets/DamageTextComponent.h"
 
 
 AOmegaPlayerController::AOmegaPlayerController()
@@ -123,7 +124,7 @@ void AOmegaPlayerController::Move(const FInputActionValue& InputActionValue)
 
 	if (APawn* ControlledPawn = GetPawn<APawn>())
 	{
-		if (GetOmegaMovementComponent()->GetOmegaCustomMovementMode() != ECustomMovementMode::None) return;
+		if (GetOmegaMovementComponent()->GetOmegaCustomMovementMode() != EOmegaCustomMovementMode::None) return;
 		
 		ControlledPawn->AddMovementInput(FVector(InputFloat, 0.f,0.f));
 		
@@ -169,6 +170,24 @@ void AOmegaPlayerController::Dash(const FInputActionValue& InputActionValue)
 	if (GetOmegaMovementComponent())
 	{
 		GetOmegaMovementComponent()->HandleDash(InputActionValue);
+	}
+}
+
+void AOmegaPlayerController::ShowDamageNumber(float DamageAmount, ACharacter* TargetCharacter)
+{
+	if (IsValid(TargetCharacter) && DamageTextComponentClass)
+	{
+		// Create Damage widget, attach it to a damaged character
+		// and detach it right away so the damage widget can float in the world space
+		UDamageTextComponent* DamageText = NewObject<UDamageTextComponent>(this, DamageTextComponentClass);
+		DamageText->RegisterComponent();
+		DamageText->AttachToComponent(TargetCharacter->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+		DamageText->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+
+		UE_LOG(LogTemp, Warning, TEXT("[%hs] %s "), __FUNCTION__, *TargetCharacter->GetRootComponent()->GetName());
+		
+		// Set Damage value
+		DamageText->SetDamageText(DamageAmount);
 	}
 }
 

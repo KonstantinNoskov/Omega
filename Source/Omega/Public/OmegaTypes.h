@@ -33,7 +33,7 @@ enum class EEffectRemovalPolicy : uint8
 };
 
 UENUM(BlueprintType)
-enum class ECustomMovementMode : uint8
+enum class EOmegaCustomMovementMode : uint8
 {
 	None,
 	Dash,

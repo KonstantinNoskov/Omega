@@ -3,7 +3,11 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "GameplayEffectExtension.h"
 #include "OmegaGameplayTags.h"
+#include "Characters/OmegaCharacter.h"
 #include "GameFramework/Character.h"
+#include "Interfaces/CombatInterface.h"
+#include "Kismet/GameplayStatics.h"
+#include "Player/OmegaPlayerController.h"
 
 UOmegaAttributeSet::UOmegaAttributeSet()
 {
@@ -39,14 +43,64 @@ void UOmegaAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallb
 	FEffectProperties EffectProperties;
 	GetEffectProperties(Data, EffectProperties);
 
-	// Clamping the changed attributes
+	// Clamping Health
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
 		SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
 
-		UE_LOG(LogTemp, Warning, TEXT("[%hs] %f "), __FUNCTION__, GetHealth());
+		UE_LOG(LogTemp, Warning, TEXT("[%hs] %f %s "), __FUNCTION__, GetHealth(), *EffectProperties.TargetCharacter->GetName());
 	}
+
+	// Clamping Mana
+	if (Data.EvaluatedData.Attribute == GetManaAttribute())
+	{
+		SetMana(FMath::Clamp(GetMana(), 0.f, GetMaxMana()));
+
+		UE_LOG(LogTemp, Warning, TEXT("[%hs] %f "), __FUNCTION__, GetMana());
+	}
+
+	// Handle Incoming Damage
+	if (Data.EvaluatedData.Attribute == GetDamageAttribute())
+	{
+		const float LocalIncomingDamage = GetDamage();
+		SetDamage(0.f);
 		
+		if (LocalIncomingDamage > 0.f)
+		{
+			// Clamp Updated Health
+			const float NewHealth = GetHealth() - LocalIncomingDamage;
+			SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));
+
+			// Check for fatal damage
+			const bool bFatal = NewHealth <= 0.f;
+
+			// Perform Hit Reaction 
+			if (bFatal)
+			{
+				if (EffectProperties.TargetAvatarActor->Implements<UCombatInterface>())
+				{
+					ICombatInterface::Execute_Die(EffectProperties.TargetAvatarActor);
+				}
+			}
+			else
+			{
+				FGameplayTagContainer TagContainer;
+				TagContainer.AddTag(FOmegaGameplayTags::Get().Effects_HitReact);
+				EffectProperties.TargetASC->TryActivateAbilitiesByTag(TagContainer);
+			}
+
+			// Show Damage Widget
+
+			if (EffectProperties.SourceCharacter != EffectProperties.TargetCharacter)
+			{
+				AOmegaPlayerController* OmegaPC = Cast<AOmegaPlayerController>(UGameplayStatics::GetPlayerController(EffectProperties.SourceCharacter, 0));
+				if(OmegaPC)
+				{	
+					OmegaPC->ShowDamageNumber(LocalIncomingDamage, EffectProperties.TargetCharacter);
+				}				
+			}
+		}
+	}
 }
 
 void UOmegaAttributeSet::GetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& OutEffectProperties)
@@ -60,7 +114,10 @@ void UOmegaAttributeSet::GetEffectProperties(const FGameplayEffectModCallbackDat
 	OutEffectProperties.SourceASC = OutEffectProperties.EffectContextHandle.GetOriginalInstigatorAbilitySystemComponent();
 	if (IsValid(OutEffectProperties.SourceASC) && OutEffectProperties.SourceASC->AbilityActorInfo.IsValid() && OutEffectProperties.SourceASC->AbilityActorInfo->AvatarActor.IsValid())
 	{
+		// Get Source Avatar Actor
 		OutEffectProperties.SourceAvatarActor = OutEffectProperties.SourceASC->AbilityActorInfo->AvatarActor.Get();
+
+		// Get Source Controller
 		OutEffectProperties.SourceController = OutEffectProperties.SourceASC->AbilityActorInfo->PlayerController.Get();
 		
 		if (OutEffectProperties.SourceController && OutEffectProperties.SourceAvatarActor)
