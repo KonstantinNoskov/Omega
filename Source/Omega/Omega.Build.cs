@@ -9,19 +9,37 @@ public class Omega : ModuleRules
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
 		PublicDependencyModuleNames.AddRange(new string[]
-		{
+		{	
+			// Core
 			"Core",
 			"CoreUObject",
 			"Engine",
 			"InputCore",
-			"EnhancedInput",
+			
+			// 2D
 			"Paper2D",
 			"Paper2DEditor",
 			"PaperZD",
-			"PaperZDEditor"
+			"PaperZDEditor",
+			
+			// GAS
+			"GameplayAbilities",
+			"GameplayTags",
+			"GameplayTasks",
+			
+			// UI
+			"Slate",
+			"SlateCore",
+			"UMG",
+			
+			// AI
+			"AIModule", "EnhancedInput",
+			
+			// VFX
+			"Niagara"
 		});
 
-		PrivateDependencyModuleNames.AddRange(new string[] {  });
+		PrivateDependencyModuleNames.AddRange(new string[] { });
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
