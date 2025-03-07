@@ -2,20 +2,23 @@
 
 #include "CoreMinimal.h"
 #include "Characters/OmegaCharacter.h"
-#include "RedHoodCharacter.generated.h"
+#include "Interfaces/PlayerInterface.h"
+#include "PlayerBaseCharacter.generated.h"
 
 class UCameraComponent;
 class USpringArmComponent;
 
 UCLASS()
-class OMEGA_API ARedHoodCharacter : public AOmegaCharacter
+class OMEGA_API APlayerBaseCharacter : public AOmegaCharacter, public IPlayerInterface
 {
 	GENERATED_BODY()
 
 public:
+	virtual void Landed(const FHitResult& Hit) override;
 
-	ARedHoodCharacter();
+	APlayerBaseCharacter(const FObjectInitializer& ObjectInitializer);
 	virtual void Tick(float DeltaSeconds) override;
+	virtual void PossessedBy(AController* NewController) override;
 
 protected:
 
@@ -26,9 +29,9 @@ protected:
 protected:
 
 	/**
-	 *	Изменяет дистанцию персонажа до камеры в зависимости от скорости передвижения персонажа. Чем быстрее движется персонаж тем дальше камера
+	 *	Handles player camera behavior during gameplay
 	 * 
-	 * @param DeltaTime 
+	 *	@param DeltaTime - Delta time
 	 */
 	void HandleCameraBehavior(const float DeltaTime) const;
 	
@@ -37,7 +40,6 @@ public:
 
 	FORCEINLINE USpringArmComponent* GetSpringArm() const { return CharacterSpringArm; }
 	FORCEINLINE UCameraComponent* GetCamera() const { return CharacterCamera; }
-	
 
 private:
 
@@ -47,24 +49,27 @@ private:
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UCameraComponent> CharacterCamera;
 	
-	float InitialCameraDistance; 
+	float InitialCameraDistance;
+
+
+#pragma region COMBAT INTERFACE
+
+public:
+		
+	virtual int32 GetPlayerLevel() const override;
+
+#pragma endregion
+
 
 protected:
-
 	
-	/**
-	 * Максимальная дистанция на которую может отдалиться камера
-	 */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "CharacterSpringArm|Omega")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "OmegaSpringArm")
 	float MaxCameraDistance = 1000.f;
-
 	
-	/**
-	 * Скорость с которой будет изменяться дистанция камеры
-	 */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "CharacterSpringArm|Omega")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "OmegaSpringArm")
 	float CameraDistanceUpdateSpeed = 1.f;
 
 #pragma endregion
-	
+
+	virtual void InitAbilityActorInfo() override;
 };

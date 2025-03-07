@@ -86,3 +86,5 @@ Content/*
 *.vsconfig
 
 References
+Refs
+/Omega.sln.DotSettings.user
