@@ -27,8 +27,8 @@ public:
 	 * @param Sprite 
 	 * @return 
 	 */
-	UFUNCTION(BlueprintPure, meta = (DisplayName = "Get Source Size", Keywords = "Source Texture Sprite"), Category = "Omega|StaticFunctions")
-	static FVector2D GetSourceSize(UPaperSprite* Sprite);
+	/*UFUNCTION(BlueprintPure, meta = (DisplayName = "Get Source Size", Keywords = "Source Texture Sprite"), Category = "Omega|StaticFunctions")
+	static FVector2D GetSourceSize(UPaperSprite* Sprite);*/
 
 
 	/**

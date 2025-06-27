@@ -12,10 +12,10 @@
 #include "Engine/OverlapResult.h"
 #include "Interfaces/CombatInterface.h"
 
-FVector2D UOmegaFunctionLibrary::GetSourceSize(UPaperSprite* Sprite)
+/*FVector2D UOmegaFunctionLibrary::GetSourceSize(UPaperSprite* Sprite)
 {
 	return Sprite->GetSourceSize();
-}
+}*/
 
 void UOmegaFunctionLibrary::GiveStartupAbilities(const UObject* WorldContextObject, UAbilitySystemComponent* ASC, const FGameplayTag& CharacterAttackType)
 {

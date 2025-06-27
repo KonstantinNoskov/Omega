@@ -1,0 +1,58 @@
+; Pixel Cursors
+; astropulse.co
+
+[Version]
+signature="$CHICAGO$"
+
+[DefaultInstall]
+CopyFiles = Scheme.Cur,
+AddReg    = Scheme.Reg
+
+[DestinationDirs]
+Scheme.Cur = 10,"%CUR_DIR%"
+Scheme.Txt = 10,"%CUR_DIR%"
+
+[Scheme.Reg]
+HKCU,"Control Panel\Cursors\Schemes","%SCHEME_NAME%",,"%10%\%CUR_DIR%\%pointer%,%10%\%CUR_DIR%\%help%,%10%\%CUR_DIR%\%work%,%10%\%CUR_DIR%\%busy%,%10%\%CUR_DIR%\%Cross%,%10%\%CUR_DIR%\%Text%,%10%\%CUR_DIR%\%Hand%,%10%\%CUR_DIR%\%Unavailiable%,%10%\%CUR_DIR%\%Vert%,%10%\%CUR_DIR%\%Horz%,%10%\%CUR_DIR%\%Dgn1%,%10%\%CUR_DIR%\%Dgn2%,%10%\%CUR_DIR%\%move%,%10%\%CUR_DIR%\%alternate%,%10%\%CUR_DIR%\%link%,%10%\%CUR_DIR%\%pin%,%10%\%CUR_DIR%\%person%"
+
+[Scheme.Cur]
+astro_arrow.cur
+astro_helpsel.cur
+astro_working.ani
+astro_busy.ani
+astro_beam.cur
+astro_unavail.cur
+astro_ns.cur
+astro_ew.cur
+astro_nwse.cur
+astro_nesw.cur
+astro_move.cur
+astro_link.cur
+astro_pin.cur
+astro_person.cur
+astro_cross.cur
+astro_pen.cur
+astro_up.cur
+
+[Scheme.Txt]
+
+[Strings]
+CUR_DIR       = "Cursors\PixelCursors"
+SCHEME_NAME   = "Pixel Cursors"
+pointer       = "astro_arrow.cur"
+help          = "astro_helpsel.cur"
+work          = "astro_working.ani"
+busy          = "astro_busy.ani"
+cross         = "astro_cross.cur"
+text          = "astro_beam.cur"
+hand          = "astro_pen.cur"
+unavailiable  = "astro_unavail.cur"
+vert          = "astro_ns.cur"
+horz          = "astro_ew.cur"
+dgn1          = "astro_nwse.cur"
+dgn2          = "astro_nesw.cur"
+move          = "astro_move.cur"
+alternate     = "astro_up.cur"
+link          = "astro_link.cur"
+pin           = "astro_pin.cur"
+person        = "astro_person.cur
