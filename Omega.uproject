@@ -89,10 +89,6 @@
 		{
 			"Name": "Paper2D",
 			"Enabled": true
-		},
-		{
-			"Name": "ModelViewViewModel",
-			"Enabled": true
 		}
 	]
 }
