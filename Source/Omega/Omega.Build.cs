@@ -7,7 +7,8 @@ public class Omega : ModuleRules
 	public Omega(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
-	
+		PublicDefinitions.Add("NOMINMAX");
+		
 		PublicDependencyModuleNames.AddRange(new string[]
 		{	
 			// Core
@@ -39,7 +40,10 @@ public class Omega : ModuleRules
 			"EnhancedInput",
 			
 			// VFX
-			"Niagara"
+			"Niagara",
+			
+			// MVVM
+			"ModelViewViewModel"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { });
