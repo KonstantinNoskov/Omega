@@ -52,7 +52,7 @@ private:
 	FText PlayerName = FText::FromString("Unknown Hero");
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter, meta = (AllowPrivateAccess = "true"))
-	FString LoadSlotName{"LoadSlot_69"};
+	FString LoadSlotName{"LoadSlot_00"};
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter, meta = (AllowPrivateAccess = "true"))
 	int32 SlotIndex;

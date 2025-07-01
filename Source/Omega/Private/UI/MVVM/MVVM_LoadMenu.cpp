@@ -57,6 +57,7 @@ void UMVVM_LoadMenu::LoadData()
 
 		const FText PlayerName = SaveObject->PlayerName;
 		LoadSlot.Value->SlotStatus = SaveObject->SaveSlotStatus;
+		LoadSlot.Value->SetSlotIndex(SaveObject->SlotIndex);
 		LoadSlot.Value->SetPlayerName(PlayerName);
 		
 		LoadSlot.Value->InitializeSlot();
