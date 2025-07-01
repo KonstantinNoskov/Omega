@@ -4,6 +4,14 @@
 #include "GameFramework/SaveGame.h"
 #include "LoadMenuSaveGame.generated.h"
 
+UENUM(BlueprintType)
+enum ESaveSlotStatus
+{
+	Vacant,
+	EnterName,
+	Taken
+};
+
 UCLASS()
 class OMEGA_API ULoadMenuSaveGame : public USaveGame
 {
@@ -18,7 +26,8 @@ public:
 	int32 SlotIndex = 0;
 
 	UPROPERTY()
-	FString PlayerName = FString("Default Name");
+	FText PlayerName = FText::FromString("Default Name");
 
-	
+	UPROPERTY()
+	TEnumAsByte<ESaveSlotStatus> SaveSlotStatus = Vacant;
 };

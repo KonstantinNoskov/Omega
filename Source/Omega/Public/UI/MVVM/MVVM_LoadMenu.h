@@ -6,7 +6,7 @@
 
 class UMVVM_LoadSlot;
 
-UCLASS()
+UCLASS(BlueprintType, Blueprintable)
 class OMEGA_API UMVVM_LoadMenu : public UMVVMViewModelBase
 {
 	GENERATED_BODY()
@@ -26,9 +26,15 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SelectSlotButtonPressed(int32 SlotIndex);
+
+	void LoadData();
 	
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UMVVM_LoadSlot> MVVM_LoadSlotClass;
+
+	// Slot Index
+	int32 GetNumLoadSlots() const			{ return NumLoadSlots; }
+	void SetNumLoadSlots(int32 NewSlotNum)	{ UE_MVVM_SET_PROPERTY_VALUE(NumLoadSlots, NewSlotNum); }
 
 private:
 
@@ -43,4 +49,7 @@ private:
 
 	UPROPERTY()
 	TObjectPtr<UMVVM_LoadSlot> MVVM_LoadSlot_2;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter, meta = (AllowPrivateAccess = "true"))
+	int32 NumLoadSlots;
 };

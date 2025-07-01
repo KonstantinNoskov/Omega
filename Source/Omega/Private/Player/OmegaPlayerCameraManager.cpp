@@ -10,6 +10,8 @@ void AOmegaPlayerCameraManager::BeginPlay()
 	
 	OmegaController = Cast<AOmegaPlayerController>(GetOwningPlayerController());
 	PlayerCharacter = Cast<APlayerBaseCharacter>(GetOwningPlayerController()->GetPawn());
+
+	if (!IsValid(PlayerCharacter)) return;
 	OmegaMovement = PlayerCharacter->GetOmegaMovementComponent();
 }
 
