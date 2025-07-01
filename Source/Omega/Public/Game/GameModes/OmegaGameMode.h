@@ -4,6 +4,8 @@
 #include "GameFramework/GameModeBase.h"
 #include "OmegaGameMode.generated.h"
 
+class USaveGame;
+class UMVVM_LoadSlot;
 class UDamageWidgetData;
 class UCharacterDefaultInfo;
 
@@ -14,9 +16,14 @@ class OMEGA_API AOmegaGameMode : public AGameModeBase
 
 public:
 
+	void SaveSlotData(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex);
+
 	UPROPERTY(EditDefaultsOnly, Category = "Omega|Character Class Defaults")
 	UCharacterDefaultInfo* CharacterClassInfo;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Omega|UI")
 	UDamageWidgetData* DamageWidgetData;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<USaveGame> LoadMenuSaveGameClass;
 };

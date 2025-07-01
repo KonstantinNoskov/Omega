@@ -13,8 +13,18 @@ class OMEGA_API UMVVM_LoadSlot : public UMVVMViewModelBase
 
 public:
 
-	void Initialize();
-
+	void InitializeSlot();
+	
 	UPROPERTY(BlueprintAssignable)
 	FSetWidgetSwitcherIndex SetWidgetSwitcherIndex;
+
+	UPROPERTY()
+	FString PlayerName;
+
+	UPROPERTY()
+	FString LoadSlotName;
+
+	UPROPERTY()
+	FString SlotIndex;
+	
 };
