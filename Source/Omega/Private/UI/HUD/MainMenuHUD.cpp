@@ -10,8 +10,9 @@ void AMainMenuHUD::BeginPlay()
 	// Create Load Menu View Model
 	MVVM_LoadMenu = NewObject<UMVVM_LoadMenu>(this, MVVM_LoadMenuClass);
 	MVVM_LoadMenu->InitializeLoadSlots();
-	MVVM_LoadMenu->LoadData();
-
+	
 	MainMenuWidget = CreateWidget<UUserWidget>(GetWorld(), MainMenuWidgetClass);
 	MainMenuWidget->AddToViewport();
+
+	MVVM_LoadMenu->LoadData();
 }

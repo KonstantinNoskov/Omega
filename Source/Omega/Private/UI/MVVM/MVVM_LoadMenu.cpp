@@ -56,10 +56,8 @@ void UMVVM_LoadMenu::LoadData()
 		ULoadMenuSaveGame* SaveObject = OmegaGameMode->GetSaveSlotData(LoadSlot.Value->GetLoadSlotName(), LoadSlot.Key);
 
 		const FText PlayerName = SaveObject->PlayerName;
-		LoadSlot.Value->SlotStatus = SaveObject->SaveSlotStatus;
-		LoadSlot.Value->SetSlotIndex(SaveObject->SlotIndex);
 		LoadSlot.Value->SetPlayerName(PlayerName);
-		
+		LoadSlot.Value->SlotStatus = SaveObject->SaveSlotStatus;
 		LoadSlot.Value->InitializeSlot();
 	}
 }
