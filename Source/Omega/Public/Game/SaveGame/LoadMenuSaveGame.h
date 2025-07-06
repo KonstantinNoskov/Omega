@@ -29,5 +29,8 @@ public:
 	FText PlayerName = FText::FromString("Default Name");
 
 	UPROPERTY()
+	FText MapName = FText::FromString("Default Map");
+
+	UPROPERTY()
 	TEnumAsByte<ESaveSlotStatus> SaveSlotStatus = Vacant;
 };

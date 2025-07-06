@@ -20,7 +20,10 @@ public:
 	static void DeleteSlot(const FString& SlotName, int32 SlotIndex);
 	
 	void SaveSlotData(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex);
+	
 	ULoadMenuSaveGame* GetSaveSlotData(const FString& SlotName, int32 SlotIndex);
+
+	void TravelToMap(UMVVM_LoadSlot* LoadSlot);
 
 	UPROPERTY(EditDefaultsOnly, Category = "Omega|Character Class Defaults")
 	UCharacterDefaultInfo* CharacterClassInfo;
@@ -30,4 +33,20 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<USaveGame> LoadMenuSaveGameClass;
+
+	UPROPERTY(EditDefaultsOnly)
+	FString StartingMapName;
+
+	UPROPERTY(EditDefaultsOnly)
+	FString DefaultMapName;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TSoftObjectPtr<UWorld> DefaultMap;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TMap<FString, TSoftObjectPtr<UWorld>> Maps;
+
+protected:
+	
+	virtual void BeginPlay() override;
 };

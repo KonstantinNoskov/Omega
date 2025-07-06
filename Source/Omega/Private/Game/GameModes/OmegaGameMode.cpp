@@ -4,16 +4,21 @@
 #include "Kismet/GameplayStatics.h"
 #include "UI/MVVM/MVVM_LoadSlot.h"
 
+void AOmegaGameMode::BeginPlay()
+{
+	Super::BeginPlay();
 
+	Maps.Add(DefaultMapName, DefaultMap);
+}
 
 void AOmegaGameMode::SaveSlotData(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex)
 {
-	if (LoadSlot == nullptr)
-	DeleteSlot(LoadSlot->GetLoadSlotName(), SlotIndex);
+	DeleteSlot(LoadSlot->GetLoadSlotName(), LoadSlot->GetSlotIndex());	
 	
 	USaveGame* SaveGameObject =  UGameplayStatics::CreateSaveGameObject(LoadMenuSaveGameClass);
 	ULoadMenuSaveGame* LoadMenuSaveGame = Cast<ULoadMenuSaveGame>(SaveGameObject);
 	LoadMenuSaveGame->PlayerName = LoadSlot->GetPlayerName();
+	LoadMenuSaveGame->MapName = LoadSlot->GetMapName();
 	LoadMenuSaveGame->SaveSlotStatus = Taken;
 
 	UGameplayStatics::SaveGameToSlot(LoadMenuSaveGame, LoadSlot->GetLoadSlotName(), SlotIndex);
@@ -42,3 +47,15 @@ ULoadMenuSaveGame* AOmegaGameMode::GetSaveSlotData(const FString& SlotName, int3
 	ULoadMenuSaveGame* LoadMenuSaveGame = Cast<ULoadMenuSaveGame>(SaveGameObject);
 	return LoadMenuSaveGame;
 }
+
+void AOmegaGameMode::TravelToMap(UMVVM_LoadSlot* LoadSlot)
+{
+	const FString& SlotName = LoadSlot->GetLoadSlotName();
+	const int32  SlotIndex = LoadSlot->GetSlotIndex();
+	
+	FString MapName = LoadSlot->GetMapName().ToString();
+	TSoftObjectPtr<UWorld> MapToTravel = Maps.FindChecked(MapName);
+
+	UGameplayStatics::OpenLevelBySoftObjectPtr(LoadSlot, MapToTravel);
+}
+

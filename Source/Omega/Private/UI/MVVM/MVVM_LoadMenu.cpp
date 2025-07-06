@@ -2,6 +2,7 @@
 
 #include "Game/GameModes/OmegaGameMode.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetStringLibrary.h"
 #include "UI/MVVM/MVVM_LoadSlot.h"
 
 void UMVVM_LoadMenu::InitializeLoadSlots()
@@ -32,14 +33,14 @@ UMVVM_LoadSlot* UMVVM_LoadMenu::GetLoadSlotViewModelByIndex(int32 Index)
 void UMVVM_LoadMenu::NewSlotButtonPressed(int32 SlotIndex, const FString& EnteredName)
 {
 	AOmegaGameMode* OmegaGameMode = Cast<AOmegaGameMode>(UGameplayStatics::GetGameMode(this));
+	FText MapName = FText::FromString(UKismetStringLibrary::GetSubstring(OmegaGameMode->DefaultMapName, 0, 8));
 	
 	LoadSlots[SlotIndex]->SetPlayerName(FText::FromString(EnteredName));
-	
+	LoadSlots[SlotIndex]->SetMapName(MapName);
 	LoadSlots[SlotIndex]->SlotStatus = Taken;
 	
 	OmegaGameMode->SaveSlotData(LoadSlots[SlotIndex], SlotIndex);
 	LoadSlots[SlotIndex]->InitializeSlot();
-	
 }
 
 void UMVVM_LoadMenu::NewGameButtonPressed(int32 SlotIndex)
@@ -50,7 +51,6 @@ void UMVVM_LoadMenu::NewGameButtonPressed(int32 SlotIndex)
 		{
 			LoadSlots[SlotIndex]->SetWidgetSwitcherIndex.Broadcast(1);		
 		}
-		
 	}
 
 	LoadSlots[SlotIndex]->SetWidgetSwitcherIndex.Broadcast(1);
@@ -82,11 +82,18 @@ void UMVVM_LoadMenu::DeleteButtonPressed()
 		SelectedSlot->SlotStatus = Vacant;
 		SelectedSlot->InitializeSlot();
 	}
-
+	
 	for (auto LoadSlot : LoadSlots)
 	{
 		LoadSlot.Value->EnableSelectSlotButton.Broadcast(true);
 	}
+}
+
+void UMVVM_LoadMenu::PlayButtonPressed()
+{
+	AOmegaGameMode* OmegaGameMode = Cast<AOmegaGameMode>(UGameplayStatics::GetGameMode(this));
+	if (!IsValid(SelectedSlot)) return;
+	OmegaGameMode->TravelToMap(SelectedSlot);
 }
 
 
@@ -100,6 +107,7 @@ void UMVVM_LoadMenu::LoadData()
 		const FText PlayerName = SaveObject->PlayerName;
 		LoadSlot.Value->SetPlayerName(PlayerName);
 		LoadSlot.Value->SlotStatus = SaveObject->SaveSlotStatus;
+		LoadSlot.Value->SetMapName(SaveObject->MapName);
 		LoadSlot.Value->InitializeSlot();
 	}
 }

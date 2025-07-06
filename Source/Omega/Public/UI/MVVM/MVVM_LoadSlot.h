@@ -17,23 +17,6 @@ public:
 	
 	void InitializeSlot();
 	
-	UPROPERTY(BlueprintAssignable)
-	FSetWidgetSwitcherIndex SetWidgetSwitcherIndex;
-
-	UPROPERTY(BlueprintAssignable)
-	FEnableSelectSlotButton EnableSelectSlotButton;
-
-	/*UPROPERTY()
-	FString PlayerName;
-	
-
-	UPROPERTY()
-	FString LoadSlotName;
-
-	UPROPERTY()
-	FString SlotIndex;
-	*/	
-
 	// Player Name
 	FText GetPlayerName() const								{ return PlayerName; }
 	void SetPlayerName(const FText& NewPlayerName)			{ UE_MVVM_SET_PROPERTY_VALUE(PlayerName, NewPlayerName); }
@@ -46,9 +29,19 @@ public:
 	int32 GetSlotIndex() const								{ return SlotIndex; }
 	void SetSlotIndex(int32 NewSlotIndex)					{ UE_MVVM_SET_PROPERTY_VALUE(SlotIndex, NewSlotIndex); }
 
+	// Map Name
+	FText GetMapName() const								{ return MapName; }
+	void SetMapName(const FText& NewMapName)				{ UE_MVVM_SET_PROPERTY_VALUE(MapName, NewMapName); }
 
+	// Slot Status
 	UPROPERTY()
 	TEnumAsByte<ESaveSlotStatus> SlotStatus;
+
+	UPROPERTY(BlueprintAssignable)
+	FSetWidgetSwitcherIndex SetWidgetSwitcherIndex;
+
+	UPROPERTY(BlueprintAssignable)
+	FEnableSelectSlotButton EnableSelectSlotButton;
 
 private:
 
@@ -60,5 +53,8 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter, meta = (AllowPrivateAccess = "true"))
 	int32 SlotIndex;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter, meta = (AllowPrivateAccess = "true"))
+	FText MapName = FText::FromString("Default Map");
 	
 };
