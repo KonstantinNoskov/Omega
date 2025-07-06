@@ -8,14 +8,17 @@ void UMVVM_LoadMenu::InitializeLoadSlots()
 {
 	MVVM_LoadSlot_0 = NewObject<UMVVM_LoadSlot>(this, MVVM_LoadSlotClass);
 	MVVM_LoadSlot_0->SetLoadSlotName("LoadSlot_0");
+	MVVM_LoadSlot_0->SetSlotIndex(0);
 	LoadSlots.Add(0, MVVM_LoadSlot_0);
 	
 	MVVM_LoadSlot_1 = NewObject<UMVVM_LoadSlot>(this, MVVM_LoadSlotClass);
 	MVVM_LoadSlot_1->SetLoadSlotName("LoadSlot_1");
+	MVVM_LoadSlot_1->SetSlotIndex(1);
 	LoadSlots.Add(1, MVVM_LoadSlot_1);
 	
 	MVVM_LoadSlot_2 = NewObject<UMVVM_LoadSlot>(this, MVVM_LoadSlotClass);
 	MVVM_LoadSlot_2->SetLoadSlotName("LoadSlot_2");
+	MVVM_LoadSlot_2->SetSlotIndex(2);
 	LoadSlots.Add(2, MVVM_LoadSlot_2);
 
 	SetNumLoadSlots(LoadSlots.Num());
@@ -30,7 +33,8 @@ void UMVVM_LoadMenu::NewSlotButtonPressed(int32 SlotIndex, const FString& Entere
 {
 	AOmegaGameMode* OmegaGameMode = Cast<AOmegaGameMode>(UGameplayStatics::GetGameMode(this));
 	
-	//LoadSlots[SlotIndex]->SetPlayerName(EnteredName);
+	LoadSlots[SlotIndex]->SetPlayerName(FText::FromString(EnteredName));
+	
 	LoadSlots[SlotIndex]->SlotStatus = Taken;
 	
 	OmegaGameMode->SaveSlotData(LoadSlots[SlotIndex], SlotIndex);
@@ -40,6 +44,15 @@ void UMVVM_LoadMenu::NewSlotButtonPressed(int32 SlotIndex, const FString& Entere
 
 void UMVVM_LoadMenu::NewGameButtonPressed(int32 SlotIndex)
 {
+	for (auto LoadSlot : LoadSlots)
+	{	
+		if (LoadSlot.Key == SlotIndex)
+		{
+			LoadSlots[SlotIndex]->SetWidgetSwitcherIndex.Broadcast(1);		
+		}
+		
+	}
+
 	LoadSlots[SlotIndex]->SetWidgetSwitcherIndex.Broadcast(1);
 }
 
@@ -57,7 +70,25 @@ void UMVVM_LoadMenu::SelectSlotButtonPressed(int32 SlotIndex)
 			LoadSlot.Value->EnableSelectSlotButton.Broadcast(true);	
 		}
 	}
+
+	SelectedSlot = LoadSlots[SlotIndex];
 }
+
+void UMVVM_LoadMenu::DeleteButtonPressed()
+{
+	if (IsValid(SelectedSlot))
+	{
+		AOmegaGameMode::DeleteSlot(SelectedSlot->GetLoadSlotName(),  SelectedSlot->GetSlotIndex());
+		SelectedSlot->SlotStatus = Vacant;
+		SelectedSlot->InitializeSlot();
+	}
+
+	for (auto LoadSlot : LoadSlots)
+	{
+		LoadSlot.Value->EnableSelectSlotButton.Broadcast(true);
+	}
+}
+
 
 void UMVVM_LoadMenu::LoadData()
 {
@@ -72,3 +103,4 @@ void UMVVM_LoadMenu::LoadData()
 		LoadSlot.Value->InitializeSlot();
 	}
 }
+

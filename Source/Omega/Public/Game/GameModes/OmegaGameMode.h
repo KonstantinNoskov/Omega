@@ -16,7 +16,9 @@ class OMEGA_API AOmegaGameMode : public AGameModeBase
 	GENERATED_BODY()
 
 public:
-
+	
+	static void DeleteSlot(const FString& SlotName, int32 SlotIndex);
+	
 	void SaveSlotData(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex);
 	ULoadMenuSaveGame* GetSaveSlotData(const FString& SlotName, int32 SlotIndex);
 
