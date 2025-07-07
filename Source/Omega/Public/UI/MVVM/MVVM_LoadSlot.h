@@ -33,6 +33,12 @@ public:
 	FText GetMapName() const								{ return MapName; }
 	void SetMapName(const FText& NewMapName)				{ UE_MVVM_SET_PROPERTY_VALUE(MapName, NewMapName); }
 
+	// New Game
+	FText GetMyGame() const									{ return MyGame; }
+	void SetMyGame(const FText& MyNewGame)					{ UE_MVVM_SET_PROPERTY_VALUE(MyGame, MyNewGame); }
+
+	
+
 	// Slot Status
 	UPROPERTY()
 	TEnumAsByte<ESaveSlotStatus> SlotStatus;
@@ -56,5 +62,8 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter, meta = (AllowPrivateAccess = "true"))
 	FText MapName = FText::FromString("Default Map");
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter, meta = (AllowPrivateAccess = "true"))
+	FText MyGame;
 	
 };
