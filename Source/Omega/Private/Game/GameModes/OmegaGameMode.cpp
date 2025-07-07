@@ -1,6 +1,8 @@
 ﻿#include "Game/GameModes/OmegaGameMode.h"
 
+#include "Game/OmegaGameInstance.h"
 #include "Game/SaveGame/LoadMenuSaveGame.h"
+#include "GameFramework/PlayerStart.h"
 #include "Kismet/GameplayStatics.h"
 #include "UI/MVVM/MVVM_LoadSlot.h"
 
@@ -20,6 +22,7 @@ void AOmegaGameMode::SaveSlotData(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex)
 	LoadMenuSaveGame->PlayerName = LoadSlot->GetPlayerName();
 	LoadMenuSaveGame->MapName = LoadSlot->GetMapName();
 	LoadMenuSaveGame->SaveSlotStatus = Taken;
+	LoadMenuSaveGame->PlayerStartTag = LoadSlot->PlayerStartTag;
 
 	UGameplayStatics::SaveGameToSlot(LoadMenuSaveGame, LoadSlot->GetLoadSlotName(), SlotIndex);
 }
@@ -57,5 +60,32 @@ void AOmegaGameMode::TravelToMap(UMVVM_LoadSlot* LoadSlot)
 	TSoftObjectPtr<UWorld> MapToTravel = Maps.FindChecked(MapName);
 
 	UGameplayStatics::OpenLevelBySoftObjectPtr(LoadSlot, MapToTravel);
+}
+
+AActor* AOmegaGameMode::ChoosePlayerStart_Implementation(AController* Player)
+{
+	UOmegaGameInstance* OmegaGameInstance = Cast<UOmegaGameInstance>(GetGameInstance());
+	
+	TArray<AActor*> Actors;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), APlayerStart::StaticClass(), Actors);
+	if (Actors.Num() > 0)
+	{
+		AActor* SelectedActor = Actors[0];
+		for (AActor* Actor : Actors)
+		{
+			if (APlayerStart* PlayerStart = Cast<APlayerStart>(Actor))
+			{
+				if (PlayerStart->PlayerStartTag == OmegaGameInstance->PlayerStartTag)
+				{
+					SelectedActor = PlayerStart;
+					break;
+				}
+			}
+		}
+		
+		return SelectedActor;
+	}
+
+	return nullptr;
 }
 

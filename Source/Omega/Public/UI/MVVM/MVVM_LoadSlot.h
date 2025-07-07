@@ -38,7 +38,6 @@ public:
 	void SetMyGame(const FText& MyNewGame)					{ UE_MVVM_SET_PROPERTY_VALUE(MyGame, MyNewGame); }
 
 	
-
 	// Slot Status
 	UPROPERTY()
 	TEnumAsByte<ESaveSlotStatus> SlotStatus;
@@ -48,6 +47,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FEnableSelectSlotButton EnableSelectSlotButton;
+
+	UPROPERTY()
+	FName PlayerStartTag;
 
 private:
 
@@ -65,5 +67,4 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, FieldNotify, Setter, Getter, meta = (AllowPrivateAccess = "true"))
 	FText MyGame;
-	
 };

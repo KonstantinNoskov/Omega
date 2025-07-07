@@ -25,6 +25,8 @@ public:
 
 	void TravelToMap(UMVVM_LoadSlot* LoadSlot);
 
+	virtual AActor* ChoosePlayerStart_Implementation(AController* Player) override;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Omega|Character Class Defaults")
 	UCharacterDefaultInfo* CharacterClassInfo;
 
@@ -45,6 +47,9 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly)
 	TMap<FString, TSoftObjectPtr<UWorld>> Maps;
+
+	UPROPERTY(EditDefaultsOnly)
+	FName DefaultPlayerStartTag;
 
 protected:
 	
