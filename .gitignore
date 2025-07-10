@@ -72,3 +72,5 @@ Plugins/*/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+/Assets/Actors/Checkpoints/Bonvicio_Bonfire_1-0.zip
+/Assets/Actors/Checkpoints/ezgif.com-crop.gif

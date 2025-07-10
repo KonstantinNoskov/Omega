@@ -12,7 +12,6 @@ class OMEGA_API UOmegaUserWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
-	
 protected:
 	
 	UFUNCTION(BlueprintImplementableEvent)
