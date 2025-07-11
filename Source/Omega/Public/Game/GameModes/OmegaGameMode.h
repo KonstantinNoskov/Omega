@@ -20,12 +20,13 @@ public:
 	static void DeleteSlot(const FString& SlotName, int32 SlotIndex);
 	
 	void SaveSlotData(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex);
-	
 	ULoadMenuSaveGame* GetSaveSlotData(const FString& SlotName, int32 SlotIndex);
-
 	void TravelToMap(UMVVM_LoadSlot* LoadSlot);
-
 	virtual AActor* ChoosePlayerStart_Implementation(AController* Player) override;
+	ULoadMenuSaveGame* GetInGameSaveData();
+	void SaveInGameProgressData(ULoadMenuSaveGame* SaveObject);
+
+	
 
 	UPROPERTY(EditDefaultsOnly, Category = "Omega|Character Class Defaults")
 	UCharacterDefaultInfo* CharacterClassInfo;

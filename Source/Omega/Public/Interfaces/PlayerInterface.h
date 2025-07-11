@@ -15,5 +15,8 @@ class OMEGA_API IPlayerInterface
 	GENERATED_BODY()
 
 public:
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
+	void SaveProgress(const FName& CheckpointTag);
 	
 };

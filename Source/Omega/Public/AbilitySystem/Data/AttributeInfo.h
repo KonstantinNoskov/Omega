@@ -5,6 +5,7 @@
 #include "Engine/DataAsset.h"
 #include "AttributeInfo.generated.h"
 
+class UGameplayEffect;
 /**
  * Attribute data broadcasted to the widgets
  */
@@ -37,14 +38,17 @@ class OMEGA_API UAttributeInfo : public UDataAsset
 
 public:
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, DisplayName = "Primary")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, DisplayName = "Default|Primary")
 	TMap<FName, FOmegaAttributeInfo> PrimaryAttributesInfo;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, DisplayName = "Secondary")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, DisplayName = "Default|Secondary")
 	TMap<FName, FOmegaAttributeInfo> SecondaryAttributesInfo;
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, DisplayName = "Tertiary")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, DisplayName = "Default|Tertiary")
 	TMap<FName, FOmegaAttributeInfo> TertiaryAttributesInfo;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, DisplayName = "Primary")
+	TSubclassOf<UGameplayEffect> SetByCallerPrimaryAttributes;
 	
 	FOmegaAttributeInfo FindAttributeInfoByTag(const FGameplayTag& AttributeTag, bool bLogNotFound = false);
 };

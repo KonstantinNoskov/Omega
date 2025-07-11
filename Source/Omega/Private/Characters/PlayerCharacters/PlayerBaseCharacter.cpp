@@ -3,10 +3,14 @@
 #include "OmegaCollisionChannels.h"
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/OmegaAbilitySystemComponent.h"
+#include "AbilitySystem/OmegaAttributeSet.h"
 #include "BlueprintLibraries/OmegaFunctionLibrary.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/OmegaMovementComponent.h"
+#include "Game/OmegaGameInstance.h"
+#include "Game/GameModes/OmegaGameMode.h"
+#include "Game/SaveGame/LoadMenuSaveGame.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -77,10 +81,16 @@ void APlayerBaseCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 
-	// GAS
+	// Init GAS
 	InitAbilityActorInfo();
+
+	// Load Character Data
+	LoadProgress();
+	
+	// Load Character Abilities
 	AddCharacterAbilities();
 	BindDependencies(NewController);
+	
 }
 
 void APlayerBaseCharacter::BindDependencies(AController* NewController)
@@ -154,4 +164,44 @@ void APlayerBaseCharacter::Die_Implementation()
 	{
 		PlayerController->DisableInput(PlayerController);	
 	}
+}
+
+
+void APlayerBaseCharacter::LoadProgress()
+{
+	// Game Mode Check
+	AOmegaGameMode* OmegaGameMode = Cast<AOmegaGameMode>(UGameplayStatics::GetGameMode(this));
+	if (!IsValid(OmegaGameMode)) return;
+
+	// Save Object Check
+	ULoadMenuSaveGame* SaveData = OmegaGameMode->GetInGameSaveData();
+	if (!SaveData) return;
+
+	// Load Attribute Data
+	UOmegaAttributeSet* OmegaAttributeSet = Cast<UOmegaAttributeSet>(GetAttributeSet());
+	if (SaveData->bFirstTimeLoadIn)
+	{	
+		InitializeDefaultAttributes(DefaultPrimaryAttributes ,	1.f);
+	}
+	
+
+	OmegaGameMode->SaveInGameProgressData(SaveData);
+}
+
+
+void APlayerBaseCharacter::SaveProgress_Implementation(const FName& CheckpointTag)
+{
+	AOmegaGameMode* OmegaGameMode = Cast<AOmegaGameMode>(UGameplayStatics::GetGameMode(this));
+	if (!IsValid(OmegaGameMode)) return;
+	
+	ULoadMenuSaveGame* SaveData = OmegaGameMode->GetInGameSaveData();
+	if (!SaveData) return;
+
+	SaveData->PlayerStartTag	= CheckpointTag;
+	SaveData->Strength			= UOmegaAttributeSet::GetStrengthAttribute().GetNumericValue(GetAttributeSet());
+	SaveData->Intelligence		= UOmegaAttributeSet::GetIntelligenceAttribute().GetNumericValue(GetAttributeSet());
+	SaveData->Dexterity			= UOmegaAttributeSet::GetDexterityAttribute().GetNumericValue(GetAttributeSet());
+	SaveData->bFirstTimeLoadIn  = false;
+
+	OmegaGameMode->SaveInGameProgressData(SaveData);
 }

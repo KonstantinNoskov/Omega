@@ -14,6 +14,7 @@ class OMEGA_API APlayerBaseCharacter : public AOmegaCharacter, public IPlayerInt
 	GENERATED_BODY()
 
 public:
+	
 	virtual void Landed(const FHitResult& Hit) override;
 
 	APlayerBaseCharacter(const FObjectInitializer& ObjectInitializer);
@@ -25,6 +26,8 @@ protected:
 	virtual void BeginPlay() override;
 
 	virtual void BindDependencies(AController* NewController);
+
+	void LoadProgress();
 
 	UFUNCTION()
 	void OnCapsuleHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
@@ -75,4 +78,12 @@ protected:
 public:
 	
 	virtual void Die_Implementation() override;
+
+	//  Player Interface
+	// ===============================================================================================================
+ 
+	virtual void SaveProgress_Implementation(const FName& CheckpointTag) override;
+	
 };
+
+

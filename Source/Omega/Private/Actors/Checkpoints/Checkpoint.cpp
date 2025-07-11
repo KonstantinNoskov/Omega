@@ -4,6 +4,7 @@
 #include "PaperFlipbookComponent.h"
 #include "Components/BoxComponent.h"
 #include "Components/SphereComponent.h"
+#include "Interfaces/PlayerInterface.h"
 #include "Kismet/BlueprintTypeConversions.h"
 #include "Kismet/GameplayStatics.h"
 #include "UI/WidgetComponents/OmegaWidgetComponent.h"
@@ -33,6 +34,11 @@ void ACheckpoint::BeginPlay()
 void ACheckpoint::OnCheckpointOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
 	const FHitResult& SweepResult)
 {
+	// Save Progress
+	if (!OtherActor->Implements<UPlayerInterface>()) return;
+	IPlayerInterface::Execute_SaveProgress(OtherActor, PlayerStartTag);
+	
+	// Show Save notify widget
 	if (IsValid(SavedGameWidgetComponentClass))
 	{
 		UOmegaWidgetComponent* SaveGameWidget = NewObject<UOmegaWidgetComponent>(this, SavedGameWidgetComponentClass);
@@ -47,5 +53,6 @@ void ACheckpoint::OnCheckpointOverlap(UPrimitiveComponent* OverlappedComponent, 
 		UE_LOG(LogClass, Warning, TEXT("[%hs]: Checkpoint widget component class is not set. Check for Checkpoint default settings."), __FUNCTION__)
 	}
 
+	// Play Save Sound
 	UGameplayStatics::PlaySoundAtLocation(this, SavedSound, GetActorLocation());
 }

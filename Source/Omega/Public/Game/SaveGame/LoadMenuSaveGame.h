@@ -36,4 +36,20 @@ public:
 
 	UPROPERTY()
 	FName PlayerStartTag;
+
+	UPROPERTY()
+	bool bFirstTimeLoadIn = true;
+
+
+	//  Player Attribute Data
+	// ===============================================================================================================
+
+	UPROPERTY()
+	float Strength = 0.f;
+
+	UPROPERTY()
+	float Dexterity = 0.f;
+
+	UPROPERTY()
+	float Intelligence = 0.f;
 };

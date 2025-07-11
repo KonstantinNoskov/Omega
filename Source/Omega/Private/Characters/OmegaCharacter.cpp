@@ -84,8 +84,6 @@ void AOmegaCharacter::InitializeDefaultAttributes(const TSubclassOf<UGameplayEff
 	
 	const FGameplayEffectSpecHandle SpecHandle = AbilitySystemComponent->MakeOutgoingSpec(DefaultAttributesEffect, Level, ContextHandle);
 	AbilitySystemComponent->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data, AbilitySystemComponent);
-
-	
 }
 
 void AOmegaCharacter::AddCharacterAbilities()

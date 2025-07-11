@@ -89,3 +89,24 @@ AActor* AOmegaGameMode::ChoosePlayerStart_Implementation(AController* Player)
 	return nullptr;
 }
 
+ULoadMenuSaveGame* AOmegaGameMode::GetInGameSaveData()
+{
+	UOmegaGameInstance* OmegaGameInstance = Cast<UOmegaGameInstance>(GetGameInstance());
+
+	const FString InGameLoadSlotName = OmegaGameInstance->LoadSlotName;
+	const int32 InGameLoadSlotIndex = OmegaGameInstance->LoadSlotIndex;
+	
+	return GetSaveSlotData(InGameLoadSlotName, InGameLoadSlotIndex); 
+}
+
+void AOmegaGameMode::SaveInGameProgressData(ULoadMenuSaveGame* SaveObject)
+{
+	UOmegaGameInstance* OmegaGameInstance = Cast<UOmegaGameInstance>(GetGameInstance());
+
+	const FString InGameLoadSlotName = OmegaGameInstance->LoadSlotName;
+	const int32 InGameLoadSlotIndex = OmegaGameInstance->LoadSlotIndex;
+	OmegaGameInstance->PlayerStartTag = SaveObject->PlayerStartTag;
+
+	UGameplayStatics::SaveGameToSlot(SaveObject, InGameLoadSlotName, InGameLoadSlotIndex);
+}
+

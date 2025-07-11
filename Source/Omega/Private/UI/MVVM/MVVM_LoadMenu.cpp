@@ -102,6 +102,8 @@ void UMVVM_LoadMenu::PlayButtonPressed()
 	AOmegaGameMode* OmegaGameMode = Cast<AOmegaGameMode>(UGameplayStatics::GetGameMode(this));
 	UOmegaGameInstance* OmegaGameInstance = Cast<UOmegaGameInstance>(OmegaGameMode->GetGameInstance());
 	OmegaGameInstance->PlayerStartTag = SelectedSlot->PlayerStartTag;
+	OmegaGameInstance->LoadSlotName = SelectedSlot->GetLoadSlotName();
+	OmegaGameInstance->LoadSlotIndex = SelectedSlot->GetSlotIndex();
 	
 	if (!IsValid(SelectedSlot)) return;
 	OmegaGameMode->TravelToMap(SelectedSlot);
