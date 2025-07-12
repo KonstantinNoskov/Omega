@@ -1,9 +1,13 @@
 ﻿#include "Game/GameModes/OmegaGameMode.h"
 
+#include "EngineUtils.h"
+#include "NiagaraCommon.h"
 #include "Game/OmegaGameInstance.h"
 #include "Game/SaveGame/LoadMenuSaveGame.h"
 #include "GameFramework/PlayerStart.h"
+#include "Interfaces/SaveInterface.h"
 #include "Kismet/GameplayStatics.h"
+#include "Serialization/ObjectAndNameAsStringProxyArchive.h"
 #include "UI/MVVM/MVVM_LoadSlot.h"
 
 void AOmegaGameMode::BeginPlay()
@@ -110,3 +114,98 @@ void AOmegaGameMode::SaveInGameProgressData(ULoadMenuSaveGame* SaveObject)
 	UGameplayStatics::SaveGameToSlot(SaveObject, InGameLoadSlotName, InGameLoadSlotIndex);
 }
 
+void AOmegaGameMode::SaveWorldState(UWorld* World)
+{
+	// Get World's name
+	FString WorldName =  World->GetMapName();
+	WorldName.RemoveFromStart(World->StreamingLevelsPrefix);
+
+	UOmegaGameInstance* OmegaGameInstance = Cast<UOmegaGameInstance>(GetGameInstance());
+	check(OmegaGameInstance)
+
+	if (ULoadMenuSaveGame* SaveGame = GetSaveSlotData(OmegaGameInstance->LoadSlotName, OmegaGameInstance->LoadSlotIndex))
+	{
+		// Save Map if it doesn't exist yet
+		if (!SaveGame->HasMapData(WorldName))
+		{
+			FSavedMapData NewSavedMapData;
+			NewSavedMapData.MapAssetName = WorldName;
+			SaveGame->SavedMapsData.Add(NewSavedMapData);
+		}
+
+		// Get Current Map Data
+		FSavedMapData SavedMapData = SaveGame->GetSavedMapDataWithMapName(WorldName);
+
+		// ... and clear data of all actors in this map 
+		SavedMapData.SavedActorsData.Empty(); // Clear saved actor list
+		
+		for (FActorIterator It(World); It; ++It)
+		{
+			AActor* Actor = *It;
+			if (!IsValid(Actor) || !Actor->Implements<USaveInterface>()) continue;
+
+			// Actor Saved Data
+			FSavedActorData SavedActorData;
+			SavedActorData.ActorName = Actor->GetFName();
+			SavedActorData.Transform = Actor->GetTransform();
+
+			// Archive
+			FMemoryWriter MemoryWriter(SavedActorData.Bytes);
+			FObjectAndNameAsStringProxyArchive Archive(MemoryWriter, true);
+			Archive.ArIsSaveGame = true;
+
+			Actor->Serialize(Archive);
+			SavedMapData.SavedActorsData.AddUnique(SavedActorData);
+		}
+
+		for (FSavedMapData& MapDataToReplace : SaveGame->SavedMapsData)
+		{
+			if (MapDataToReplace.MapAssetName == WorldName)
+			{
+				MapDataToReplace = SavedMapData;
+			}
+		}
+
+		UGameplayStatics::SaveGameToSlot(SaveGame,OmegaGameInstance->LoadSlotName, OmegaGameInstance->LoadSlotIndex);
+	}
+}
+
+void AOmegaGameMode::LoadWorldState(UWorld* World) const
+{
+	FString WorldName =  World->GetMapName();
+	WorldName.RemoveFromStart(World->StreamingLevelsPrefix);
+
+	UOmegaGameInstance* OmegaGameInstance = Cast<UOmegaGameInstance>(GetGameInstance());
+	check(OmegaGameInstance)
+
+	if (UGameplayStatics::DoesSaveGameExist(OmegaGameInstance->LoadSlotName, OmegaGameInstance->LoadSlotIndex))
+	{
+		ULoadMenuSaveGame* SaveGame = Cast<ULoadMenuSaveGame>(UGameplayStatics::LoadGameFromSlot(OmegaGameInstance->LoadSlotName, OmegaGameInstance->LoadSlotIndex));
+		if (!IsValid(SaveGame)) return;
+		
+		for (FActorIterator It(World); It; ++It)
+		{
+			AActor* Actor = *It;
+			if (!IsValid(Actor) || !Actor->Implements<USaveInterface>()) continue;
+
+			for (FSavedActorData SavedActorData : SaveGame->GetSavedMapDataWithMapName(WorldName).SavedActorsData)
+			{
+				if (SavedActorData.ActorName == Actor->GetFName())
+				{
+					UE_LOG(LogClass, Warning, TEXT("%s"), *Actor->GetFName().ToString())
+					if (ISaveInterface::Execute_ShouldLoadTransform(Actor))
+					{
+						Actor->SetActorTransform(SavedActorData.Transform);
+					}
+
+					FMemoryReader MemoryReader(SavedActorData.Bytes);
+					FObjectAndNameAsStringProxyArchive Archive(MemoryReader, true);
+					Archive.ArIsSaveGame = true;
+					Actor->Serialize(Archive);
+
+					ISaveInterface::Execute_LoadActor(Actor);
+				}
+			}
+		}
+	}
+}

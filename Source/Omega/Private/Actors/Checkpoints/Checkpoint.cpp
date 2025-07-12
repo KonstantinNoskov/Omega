@@ -4,6 +4,7 @@
 #include "PaperFlipbookComponent.h"
 #include "Components/BoxComponent.h"
 #include "Components/SphereComponent.h"
+#include "Game/GameModes/OmegaGameMode.h"
 #include "Interfaces/PlayerInterface.h"
 #include "Kismet/BlueprintTypeConversions.h"
 #include "Kismet/GameplayStatics.h"
@@ -34,9 +35,20 @@ void ACheckpoint::BeginPlay()
 void ACheckpoint::OnCheckpointOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
 	const FHitResult& SweepResult)
 {
-	// Save Progress
+	if (bReached) return;
+
+	bReached = true;
+	
+	// Save Player Data
 	if (!OtherActor->Implements<UPlayerInterface>()) return;
 	IPlayerInterface::Execute_SaveProgress(OtherActor, PlayerStartTag);
+
+	// Save World Data
+	AOmegaGameMode* OmegaGameMode = Cast<AOmegaGameMode>(UGameplayStatics::GetGameMode(this));
+	if (IsValid(OmegaGameMode)) 
+	{
+		OmegaGameMode->SaveWorldState(GetWorld());
+	}
 	
 	// Show Save notify widget
 	if (IsValid(SavedGameWidgetComponentClass))

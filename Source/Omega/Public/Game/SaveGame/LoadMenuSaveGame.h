@@ -12,6 +12,42 @@ enum ESaveSlotStatus
 	Taken
 };
 
+
+USTRUCT(BlueprintType)
+struct FSavedActorData
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	FName ActorName = FName();
+
+	UPROPERTY()
+	FTransform Transform = FTransform();
+
+	// Serialized variables from the Actor - only those marked with SaveGame specifier
+	UPROPERTY()
+	TArray<uint8> Bytes;
+};
+
+inline bool operator==(const FSavedActorData& Left, const FSavedActorData& Right)
+{
+	return Left.ActorName == Right.ActorName;
+}
+
+USTRUCT(BlueprintType)
+struct FSavedMapData
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	FString MapAssetName = FString();
+
+	UPROPERTY()
+	TArray<FSavedActorData> SavedActorsData;
+};
+
+
+
 UCLASS()
 class OMEGA_API ULoadMenuSaveGame : public USaveGame
 {
@@ -58,4 +94,15 @@ public:
 
 	UPROPERTY()
 	float MaxHealth = 0.f;
+
+	
+	//  World State
+	// ===============================================================================================================
+
+	FSavedMapData GetSavedMapDataWithMapName(const FString& MapAssetName);
+
+	bool HasMapData(const FString& MapAssetName);
+	
+	UPROPERTY()
+	TArray<FSavedMapData> SavedMapsData;
 };

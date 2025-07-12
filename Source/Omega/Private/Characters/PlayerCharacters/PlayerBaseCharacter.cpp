@@ -86,6 +86,12 @@ void APlayerBaseCharacter::PossessedBy(AController* NewController)
 
 	// Load Character Data
 	LoadProgress();
+
+	if (AOmegaGameMode* OmegaGameMode = Cast<AOmegaGameMode>(UGameplayStatics::GetGameMode(this)))
+	{
+		OmegaGameMode->LoadWorldState(GetWorld());
+	}
+	
 	
 	// Load Character Abilities
 	AddCharacterAbilities();
@@ -197,7 +203,6 @@ void APlayerBaseCharacter::LoadProgress()
 		UOmegaFunctionLibrary::InitializeAttributesFromSaveData(this, AbilitySystemComponent, SaveData);
 	}
 	
-
 	OmegaGameMode->SaveInGameProgressData(SaveData);
 }
 

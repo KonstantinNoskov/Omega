@@ -27,7 +27,9 @@ public:
 	void SaveInGameProgressData(ULoadMenuSaveGame* SaveObject);
 
 	
-
+	void SaveWorldState(UWorld* World);
+	void LoadWorldState(UWorld* World) const;
+	
 	UPROPERTY(EditDefaultsOnly, Category = "Omega|Character Class Defaults")
 	UCharacterDefaultInfo* CharacterClassInfo;
 
@@ -56,3 +58,5 @@ protected:
 	
 	virtual void BeginPlay() override;
 };
+
+
