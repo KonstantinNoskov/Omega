@@ -23,7 +23,7 @@ void AOmegaGameMode::SaveSlotData(UMVVM_LoadSlot* LoadSlot, int32 SlotIndex)
 	LoadMenuSaveGame->MapName = LoadSlot->GetMapName();
 	LoadMenuSaveGame->SaveSlotStatus = Taken;
 	LoadMenuSaveGame->PlayerStartTag = LoadSlot->PlayerStartTag;
-
+	
 	UGameplayStatics::SaveGameToSlot(LoadMenuSaveGame, LoadSlot->GetLoadSlotName(), SlotIndex);
 }
 

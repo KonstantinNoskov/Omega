@@ -62,15 +62,16 @@ void UOmegaAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallb
 	{
 		SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
 
-		UE_LOG(LogTemp, Warning, TEXT("[%hs] %f %s "), __FUNCTION__, GetHealth(), *EffectProperties.TargetCharacter->GetName());
+		UE_LOG(LogTemp, Warning, TEXT("[%hs] Health: %f %s "), __FUNCTION__, GetHealth(), *EffectProperties.TargetCharacter->GetName());
 	}
 
 	// Change Health depending on the percentage of MaxHealth 
 	if (Data.EvaluatedData.Attribute == GetMaxHealthAttribute())
 	{
-		SetHealth(FMath::Clamp(FMath::CeilToFloat(GetMaxHealth() * HealthScale), 0.f, GetMaxHealth()));
+		//SetHealth(FMath::Clamp(FMath::CeilToFloat(GetMaxHealth() * HealthScale), 0.f, GetMaxHealth()));
+		SetMaxHealth(FMath::Clamp(GetMaxHealth(), 0.f, GetMaxHealth()));
 
-		UE_LOG(LogTemp, Warning, TEXT("[%hs] %f %s "), __FUNCTION__, GetHealth(), *EffectProperties.TargetCharacter->GetName());
+		UE_LOG(LogTemp, Warning, TEXT("[%hs] MaxHealth: %f %s "), __FUNCTION__, GetMaxHealth(), *EffectProperties.TargetCharacter->GetName());
 	}
 
 	// Clamping Mana

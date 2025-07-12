@@ -52,4 +52,10 @@ public:
 
 	UPROPERTY()
 	float Intelligence = 0.f;
+
+	UPROPERTY()
+	float Health = 0.f;
+
+	UPROPERTY()
+	float MaxHealth = 0.f;
 };

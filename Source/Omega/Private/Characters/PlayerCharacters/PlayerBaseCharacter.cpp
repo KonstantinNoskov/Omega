@@ -140,9 +140,11 @@ void APlayerBaseCharacter::InitAbilityActorInfo()
 	AttributeSet = OmegaPlayerState->GetAttributeSet();
 
 	// Set player's default primary attributes 
-	InitializeDefaultAttributes(DefaultPrimaryAttributes,	1.f);
-	InitializeDefaultAttributes(DefaultSecondaryAttributes,	1.f);
-	InitializeDefaultAttributes(DefaultTertiaryAttributes,	1.f);
+	//InitializeDefaultAttributes(DefaultPrimaryAttributes,		1.f);
+	//InitializeDefaultAttributes(DefaultSecondaryAttributes,	1.f);
+	//InitializeDefaultAttributes(DefaultTertiaryAttributes,	1.f);
+
+	//UOmegaFunctionLibrary::InitializeDefaultAttributes(this, OmegaASC);
 
 
 	// Modify attributes depending on character tags 
@@ -177,11 +179,22 @@ void APlayerBaseCharacter::LoadProgress()
 	ULoadMenuSaveGame* SaveData = OmegaGameMode->GetInGameSaveData();
 	if (!SaveData) return;
 
+	AOmegaPlayerState* OmegaPlayerState = GetPlayerState<AOmegaPlayerState>();
+	if (!OmegaPlayerState)	{ UE_LOG(LogTemp, Error, TEXT("[%hs]: OmegaPlayerState for PlayerBaseCharacter is null!"),__FUNCTION__)		return;	}
+	
+		// Inform Ability system that all essential data is set and it's time to bind callbacks to ability system delegates (OnGameplayEffectApplied, etc.)
+	UOmegaAbilitySystemComponent* OmegaASC = Cast<UOmegaAbilitySystemComponent>(OmegaPlayerState->GetAbilitySystemComponent());
+
 	// Load Attribute Data
 	UOmegaAttributeSet* OmegaAttributeSet = Cast<UOmegaAttributeSet>(GetAttributeSet());
 	if (SaveData->bFirstTimeLoadIn)
 	{	
-		InitializeDefaultAttributes(DefaultPrimaryAttributes ,	1.f);
+		//InitializeDefaultAttributes(DefaultPrimaryAttributes ,	1.f);
+		UOmegaFunctionLibrary::InitializeDefaultAttributes(this, OmegaASC);
+	}
+	else
+	{
+		UOmegaFunctionLibrary::InitializeAttributesFromSaveData(this, AbilitySystemComponent, SaveData);
 	}
 	
 
@@ -201,6 +214,8 @@ void APlayerBaseCharacter::SaveProgress_Implementation(const FName& CheckpointTa
 	SaveData->Strength			= UOmegaAttributeSet::GetStrengthAttribute().GetNumericValue(GetAttributeSet());
 	SaveData->Intelligence		= UOmegaAttributeSet::GetIntelligenceAttribute().GetNumericValue(GetAttributeSet());
 	SaveData->Dexterity			= UOmegaAttributeSet::GetDexterityAttribute().GetNumericValue(GetAttributeSet());
+	SaveData->MaxHealth			= UOmegaAttributeSet::GetMaxHealthAttribute().GetNumericValue(GetAttributeSet());
+	SaveData->Health			= UOmegaAttributeSet::GetHealthAttribute().GetNumericValue(GetAttributeSet());
 	SaveData->bFirstTimeLoadIn  = false;
 
 	OmegaGameMode->SaveInGameProgressData(SaveData);

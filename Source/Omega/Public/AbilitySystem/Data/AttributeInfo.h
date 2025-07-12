@@ -38,13 +38,13 @@ class OMEGA_API UAttributeInfo : public UDataAsset
 
 public:
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, DisplayName = "Default|Primary")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, DisplayName = "Default | Primary")
 	TMap<FName, FOmegaAttributeInfo> PrimaryAttributesInfo;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, DisplayName = "Default|Secondary")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, DisplayName = "Default | Secondary")
 	TMap<FName, FOmegaAttributeInfo> SecondaryAttributesInfo;
 	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, DisplayName = "Default|Tertiary")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, DisplayName = "Default | Tertiary")
 	TMap<FName, FOmegaAttributeInfo> TertiaryAttributesInfo;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, DisplayName = "Primary")

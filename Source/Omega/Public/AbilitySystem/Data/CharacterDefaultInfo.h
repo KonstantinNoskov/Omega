@@ -42,4 +42,22 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Common Abilities")
 	TArray<TSubclassOf<UGameplayAbility>> CommonAbilities;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Default Attributes")
+	TSubclassOf<UGameplayEffect> DefaultPrimaryAttribute;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Default Attributes")
+	TSubclassOf<UGameplayEffect> DefaultSecondaryAttribute;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Default Attributes")
+	TSubclassOf<UGameplayEffect> DefaultTertiaryAttribute;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Set by Caller Attributes")
+	TSubclassOf<UGameplayEffect> SetByCallerPrimaryAttribute;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Set by Caller Attributes")
+	TSubclassOf<UGameplayEffect> SetByCallerSecondaryAttribute;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Set by Caller Attributes")
+	TSubclassOf<UGameplayEffect> SetByCallerTertiaryAttribute;
 };

@@ -1,5 +1,6 @@
 ﻿#include "BlueprintLibraries/OmegaFunctionLibrary.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
 #include "GameplayAbilitySpec.h"
 #include "PaperSprite.h"
 #include "AbilitySystem/Data/CharacterDefaultInfo.h"
@@ -7,9 +8,11 @@
 #include "Kismet/GameplayStatics.h"
 #include "AbilitySystemComponent.h"
 #include "OmegaAbilityTypes.h"
+#include "OmegaGameplayTags.h"
 #include "AbilitySystem/Data/DamageWidgetInfo.h"
 #include "Engine/CoreSettings.h"
 #include "Engine/OverlapResult.h"
+#include "Game/SaveGame/LoadMenuSaveGame.h"
 #include "Interfaces/CombatInterface.h"
 
 /*FVector2D UOmegaFunctionLibrary::GetSourceSize(UPaperSprite* Sprite)
@@ -158,4 +161,71 @@ const FColor& UOmegaFunctionLibrary::GetDamageTypeColorByTag(const UObject* Worl
 	UDamageWidgetData* DamageWidgetData = OmegaGameMode->DamageWidgetData;
 	
 	return DamageWidgetData ? DamageWidgetData->GetDamageTypeColorByTag(GameplayTag) : FColor::Black;
+}
+
+void UOmegaFunctionLibrary::InitializeDefaultAttributes(const UObject* WorldContextObject, UAbilitySystemComponent* ASC)
+{
+	AActor* AvatarActor = ASC->GetAvatarActor();
+	
+	UCharacterDefaultInfo* CharacterDefaultInfo = GetCharacterDefaultInfo(WorldContextObject);
+	if (!IsValid(CharacterDefaultInfo->DefaultPrimaryAttribute))
+	{ UE_LOG(LogClass, Warning, TEXT("[%hs]: Character default primary attribute info is null. Check for Character Default Info settings."), __FUNCTION__) return; }
+	
+	FGameplayEffectContextHandle PrimaryAttributesContextHandle = ASC->MakeEffectContext();
+	PrimaryAttributesContextHandle.AddSourceObject(AvatarActor);
+	const FGameplayEffectSpecHandle PrimaryAttributesSpecHandle = ASC->MakeOutgoingSpec(CharacterDefaultInfo->DefaultPrimaryAttribute, 1, PrimaryAttributesContextHandle);
+	ASC->ApplyGameplayEffectSpecToSelf(*PrimaryAttributesSpecHandle.Data.Get());
+
+	if (!IsValid(CharacterDefaultInfo->DefaultSecondaryAttribute))
+	{ UE_LOG(LogClass, Warning, TEXT("[%hs]: Character default secondary attribute info is null. Check for Character Default Info settings."), __FUNCTION__) return; }
+	FGameplayEffectContextHandle SecondaryAttributesContextHandle = ASC->MakeEffectContext();
+	SecondaryAttributesContextHandle.AddSourceObject(AvatarActor);
+	const FGameplayEffectSpecHandle SecondaryAttributesSpecHandle = ASC->MakeOutgoingSpec(CharacterDefaultInfo->DefaultSecondaryAttribute, 1, SecondaryAttributesContextHandle);
+	ASC->ApplyGameplayEffectSpecToSelf(*SecondaryAttributesSpecHandle.Data.Get());
+
+	if (!IsValid(CharacterDefaultInfo->DefaultSecondaryAttribute))
+	{ UE_LOG(LogClass, Warning, TEXT("[%hs]: Character default tertiary attribute info is null. Check for Character Default Info settings."), __FUNCTION__) return; }
+	FGameplayEffectContextHandle TertiaryAttributesContextHandle = ASC->MakeEffectContext();
+	TertiaryAttributesContextHandle.AddSourceObject(AvatarActor);
+	const FGameplayEffectSpecHandle TertiaryAttributesSpecHandle = ASC->MakeOutgoingSpec(CharacterDefaultInfo->DefaultTertiaryAttribute, 1, TertiaryAttributesContextHandle);
+	ASC->ApplyGameplayEffectSpecToSelf(*TertiaryAttributesSpecHandle.Data.Get());	
+}
+
+void UOmegaFunctionLibrary::InitializeAttributesFromSaveData(const UObject* WorldContextObject, UAbilitySystemComponent* ASC, ULoadMenuSaveGame* SaveGame)
+{
+	UCharacterDefaultInfo* CharacterDefaultInfo = GetCharacterDefaultInfo(WorldContextObject);
+	if (!IsValid(CharacterDefaultInfo->DefaultPrimaryAttribute))
+	{ UE_LOG(LogClass, Warning, TEXT("[%hs]: Character default primary attribute info is null. Check for Character Default Info settings."), __FUNCTION__) return; }
+
+	AActor* AvatarActor = ASC->GetAvatarActor();
+	const FOmegaGameplayTags& GameplayTags = FOmegaGameplayTags::Get();
+
+	FGameplayEffectContextHandle EffectContextHandle = ASC->MakeEffectContext();
+	EffectContextHandle.AddSourceObject(AvatarActor);
+
+	FGameplayEffectSpecHandle SpecHandle = ASC->MakeOutgoingSpec(CharacterDefaultInfo->SetByCallerPrimaryAttribute, 1, EffectContextHandle);
+
+	// Apply primary attributes from save game.
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, GameplayTags.Attributes_Primary_Strength,		SaveGame->Strength);
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, GameplayTags.Attributes_Primary_Intelligence,	SaveGame->Intelligence);
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, GameplayTags.Attributes_Primary_Dexterity,		SaveGame->Dexterity);
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, GameplayTags.Attributes_Secondary_MaxHealth,	SaveGame->MaxHealth);
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, GameplayTags.Attributes_Tertiary_Health,		SaveGame->Health);
+	ASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data);
+	
+	// Apply secondary attributes from save game.
+	SpecHandle = ASC->MakeOutgoingSpec(CharacterDefaultInfo->SetByCallerSecondaryAttribute, 1, EffectContextHandle);
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, GameplayTags.Attributes_Secondary_MaxHealth,	SaveGame->MaxHealth);
+	ASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data);
+
+	// Apply tertiary attributes from save game.
+	SpecHandle = ASC->MakeOutgoingSpec(CharacterDefaultInfo->SetByCallerTertiaryAttribute, 1, EffectContextHandle);
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, GameplayTags.Attributes_Tertiary_Health,		SaveGame->Health);
+	ASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data);
+}
+
+UCharacterDefaultInfo* UOmegaFunctionLibrary::GetCharacterDefaultInfo(const UObject* WorldContextObject)
+{
+	AOmegaGameMode* OmegaGameMode = Cast<AOmegaGameMode>(UGameplayStatics::GetGameMode(WorldContextObject));
+	return OmegaGameMode->CharacterClassInfo;;
 }

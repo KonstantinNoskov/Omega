@@ -5,6 +5,8 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "OmegaFunctionLibrary.generated.h"
 
+class ULoadMenuSaveGame;
+class UCharacterDefaultInfo;
 class UAbilitySystemComponent;
 struct FGameplayTag;
 class UPaperSprite;
@@ -97,5 +99,14 @@ public:
 	 */
 	UFUNCTION(BlueprintPure, Category = "Omega Ability System Library", meta = (DefaultToSelf = "WorldContextObject"))
 	static const FColor& GetDamageTypeColorByTag(const UObject* WorldContextObject, FGameplayTag GameplayTag);
+
+	UFUNCTION(Category = "Omega Ability System Library", meta = (DefaultToSelf = "WorldContextObject"))
+	static void InitializeDefaultAttributes(const UObject* WorldContextObject, UAbilitySystemComponent* ASC);
+
+	UFUNCTION(Category = "Omega Ability System Library", meta = (DefaultToSelf = "WorldContextObject"))
+	static void InitializeAttributesFromSaveData(const UObject* WorldContextObject, UAbilitySystemComponent* ASC, ULoadMenuSaveGame* SaveGame);
+	
+	UFUNCTION(BlueprintPure, Category = "Omega Ability System Library", meta = (DefaultToSelf = "WorldContextObject"))
+	static UCharacterDefaultInfo* GetCharacterDefaultInfo(const UObject* WorldContextObject);
 	
 };
