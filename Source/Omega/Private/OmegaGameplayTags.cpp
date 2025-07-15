@@ -106,6 +106,16 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 			FString("Current amount of mana")
 			);
 
+
+	//  ABILITIES
+	// ===============================================================================================================
+
+	// Fireball
+	GameplayTags.Abilities_Fireball = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Abilities.Fireball"),
+			FString("Defines Fireball ability")
+			);
+	
 	
 	//  ELEMENTAL
 	// ===============================================================================================================

@@ -55,6 +55,12 @@ public:
 
 	FGameplayTag Attributes_Tertiary_Health;
 	FGameplayTag Attributes_Tertiary_Mana;
+
+	
+	//  ABILITIES
+	// ===============================================================================================================
+	
+	FGameplayTag Abilities_Fireball;
 	
 
 	//  DAMAGE TYPES
