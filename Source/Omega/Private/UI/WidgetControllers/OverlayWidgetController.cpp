@@ -4,6 +4,7 @@
 #include "AbilitySystem/OmegaAbilitySystemComponent.h"
 #include "AbilitySystem/OmegaAttributeSet.h"
 #include "OmegaTypes.h"
+#include "AbilitySystem/Data/AbilityInfo.h"
 #include "AbilitySystem/Data/AttributeInfo.h"
 #include "BlueprintLibraries/OmegaFunctionLibrary.h"
 
@@ -40,6 +41,18 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 			OnAttributeInfoChangedDelegate.Broadcast(Info);
 		});
 	}
+
+	// Bind callbacks to Ability updates
+	if (OmegaAbilitySystemComponent->bStartupAbilitiesGranted)
+	{
+		OnInitializeStartupAbilities(OmegaAbilitySystemComponent);
+	}
+	else
+	{
+		OmegaAbilitySystemComponent->OnAbilityGrantedDelegate.AddUObject(this, &UOverlayWidgetController::OnInitializeStartupAbilities);
+	}
+	
+	
 	
 	// Display effect messages on a viewport
 	OmegaAbilitySystemComponent->OnEffectAssetTagsUpdatedDelegate.AddLambda([this](const FGameplayTagContainer& InAssetTags, const FGameplayEffectSpec& AppliedEffectSpec)
@@ -56,5 +69,27 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 			else { UE_LOG(LogTemp, Error, TEXT("[%hs]: Message widget row in %s doesn't exist!"), __FUNCTION__, *WidgetMessageDataTable->GetName()) } 
 		}
 	});
-	
+}
+
+void UOverlayWidgetController::OnInitializeStartupAbilities(UOmegaAbilitySystemComponent* OmegaAbilitySystemComponent)
+{
+	if (!OmegaAbilitySystemComponent->bStartupAbilitiesGranted) return;
+
+	FForEachAbility BroadcastDelegate;
+	BroadcastDelegate.BindLambda([this, OmegaAbilitySystemComponent](const FGameplayAbilitySpec& InAbilitySpec)
+	{
+		checkf(AbilityInfo, TEXT("[%hs]: Ability info is null! Check for Overlay Widget controller defaults"), __FUNCTION__)
+		
+		FGameplayTag AbilityTag = OmegaAbilitySystemComponent->GetAbilityTagBySpec(InAbilitySpec);
+		if (!AbilityTag.MatchesTag(FGameplayTag::RequestGameplayTag(FName("Abilities")))) return;
+		
+		FGameplayTag InputTag = OmegaAbilitySystemComponent->GetInputTagBySpec(InAbilitySpec);
+		FOmegaAbilityInfo OmegaAbilityInfo = AbilityInfo->AbilityInfoMap[AbilityTag]; 
+		
+		OmegaAbilityInfo.InputTag = InputTag;
+		
+		OnAbilityInfoDelegate.Broadcast(OmegaAbilityInfo);
+	});
+
+	OmegaAbilitySystemComponent->ForEachAbility(BroadcastDelegate);
 }

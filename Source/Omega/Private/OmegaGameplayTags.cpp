@@ -110,6 +110,12 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 	//  ABILITIES
 	// ===============================================================================================================
 
+	// Melee Attack
+	GameplayTags.Abilities_MeleeAttack = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Abilities.MeleeAttack"),
+			FString("Defines basic melee attack")
+			);
+
 	// Fireball
 	GameplayTags.Abilities_Fireball = UGameplayTagsManager::Get().AddNativeGameplayTag(
 			FName("Abilities.Fireball"),
@@ -322,15 +328,27 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 	// -------------------------------------
 	
 	// Left Mouse Button
-	GameplayTags.InputTag_LMB = UGameplayTagsManager::Get().AddNativeGameplayTag(
-			FName("Input.LMB"),
+	GameplayTags.InputTag_Mouse_LMB = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Input.Mouse.LMB"),
 			FString("Left Mouse Button")
 			);
 
 	// Right Mouse Button
-	GameplayTags.InputTag_RMB = UGameplayTagsManager::Get().AddNativeGameplayTag(
-			FName("Input.RMB"),
+	GameplayTags.InputTag_Mouse_RMB = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Input.Mouse.RMB"),
 			FString("Right Mouse Button")
+			);
+
+	// Middle Mouse Button
+	GameplayTags.InputTag_Mouse_MMB = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Input.Mouse.MMB"),
+			FString("Middle Mouse Button")
+			);
+
+	// Keyboard "1" Button
+	GameplayTags.InputTag_Keyboard_1 = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Input.Keyboard.1"),
+			FString("Keyboard '1' Button")
 			);
 
 

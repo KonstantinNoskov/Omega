@@ -13,6 +13,7 @@
 #include "Engine/CoreSettings.h"
 #include "Engine/OverlapResult.h"
 #include "Game/SaveGame/LoadMenuSaveGame.h"
+#include "Input/InputData.h"
 #include "Interfaces/CombatInterface.h"
 
 /*FVector2D UOmegaFunctionLibrary::GetSourceSize(UPaperSprite* Sprite)
@@ -228,4 +229,22 @@ UCharacterDefaultInfo* UOmegaFunctionLibrary::GetCharacterDefaultInfo(const UObj
 {
 	AOmegaGameMode* OmegaGameMode = Cast<AOmegaGameMode>(UGameplayStatics::GetGameMode(WorldContextObject));
 	return OmegaGameMode->CharacterClassInfo;;
+}
+
+
+UTexture2D* UOmegaFunctionLibrary::GetInputIconByTag(const UObject* WorldContextObject, FGameplayTag GameplayTag)
+{
+	// Check for GameMode
+	AOmegaGameMode* OmegaGameMode = Cast<AOmegaGameMode>(UGameplayStatics::GetGameMode(WorldContextObject));
+	if (!OmegaGameMode) return nullptr; 
+
+	// Check for Character Class Info 
+	if (!OmegaGameMode->InputData)
+	{
+		UE_LOG(LogTemp, Error, TEXT("[%hs] Input Data is null. Check for game mode defaults."), __FUNCTION__);
+		return nullptr;
+	}
+	
+	return OmegaGameMode->InputData->GetInputIconByTag(GameplayTag);
+	
 }
