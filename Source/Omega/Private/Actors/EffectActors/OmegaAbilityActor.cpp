@@ -64,17 +64,16 @@ void AOmegaAbilityActor::OnCollisionOverlap(UPrimitiveComponent* OverlappedCompo
 	Destroy();
 }
 
-void AOmegaAbilityActor::GrantAbility(AActor* AbilityOwner)
+void AOmegaAbilityActor::GrantAbility(AActor* AbilityReceiver)
 {
-	APlayerBaseCharacter* Player = Cast<APlayerBaseCharacter>(AbilityOwner);
+	APlayerBaseCharacter* Player = Cast<APlayerBaseCharacter>(AbilityReceiver);
 	if (!Player) return;
-	UAbilitySystemComponent* PlayerASC = Player->GetAbilitySystemComponent();
-
+	UOmegaAbilitySystemComponent* PlayerASC = Cast<UOmegaAbilitySystemComponent>(Player->GetAbilitySystemComponent());
+	if (!PlayerASC) return;
 	if (!AbilityClass) return;
 	
  	FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, AbilityLevel);
 	AbilitySpec.DynamicAbilityTags.AddTag(AbilityClass.GetDefaultObject()->StartupInputTag);
-	
 	PlayerASC->GiveAbility(AbilitySpec);
 }
 

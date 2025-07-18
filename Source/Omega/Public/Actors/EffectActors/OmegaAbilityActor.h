@@ -29,7 +29,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void HoveringActor(float DeltaTime);
-	void GrantAbility(AActor* AbilityOwner);
+	void GrantAbility(AActor* AbilityReciever);
 
 	UFUNCTION()
 	void OnCollisionOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);

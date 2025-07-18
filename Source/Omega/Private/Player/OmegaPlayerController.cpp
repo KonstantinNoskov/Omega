@@ -69,19 +69,21 @@ void AOmegaPlayerController::SetupInputComponent()
 
 void AOmegaPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
-	if (InputTag.MatchesTagExact(FOmegaGameplayTags::Get().InputTag_LMB))
+	if (InputTag.MatchesTagExact(FOmegaGameplayTags::Get().InputTag_Mouse_LMB))
 	{
 		GetOmegaAbilitySystemComponent()->AbilityInputTagPressed(InputTag);
 	}
 
-	if (InputTag.MatchesTagExact(FOmegaGameplayTags::Get().InputTag_RMB))
+	FGameplayTag AbilityTag = FOmegaGameplayTags::Get().InputTag_Mouse_RMB;
+	
+	if (InputTag.MatchesTagExact(FOmegaGameplayTags::Get().InputTag_Mouse_RMB))
 	{
 		GetOmegaAbilitySystemComponent()->AbilityInputTagPressed(InputTag);
 	}
 }
 void AOmegaPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 {
-	if (InputTag.MatchesTagExact(FOmegaGameplayTags::Get().InputTag_LMB))
+	if (InputTag.MatchesTagExact(FOmegaGameplayTags::Get().InputTag_Mouse_LMB))
 	{
 		if (GetOmegaAbilitySystemComponent())
 		{

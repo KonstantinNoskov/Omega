@@ -59,7 +59,8 @@ public:
 	
 	//  ABILITIES
 	// ===============================================================================================================
-	
+
+	FGameplayTag Abilities_MeleeAttack;
 	FGameplayTag Abilities_Fireball;
 	
 
@@ -111,8 +112,10 @@ public:
 	//  INPUT
 	// ===============================================================================================================
 
-	FGameplayTag InputTag_LMB;
-	FGameplayTag InputTag_RMB;
+	FGameplayTag InputTag_Mouse_LMB;
+	FGameplayTag InputTag_Mouse_RMB;
+	FGameplayTag InputTag_Mouse_MMB;
+	FGameplayTag InputTag_Keyboard_1;
 
 
 	//  META

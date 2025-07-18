@@ -6,6 +6,8 @@
 
 class UOmegaMovementComponent;
 DECLARE_MULTICAST_DELEGATE_TwoParams(FOnEffectAssetTagsUpdatedSignature, const FGameplayTagContainer& /*AssetTags*/, const FGameplayEffectSpec& /*AppliedEffectSpec*/)
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnAbilityGranted, UOmegaAbilitySystemComponent* /*OmegaASC*/);
+DECLARE_DELEGATE_OneParam(FForEachAbility, const FGameplayAbilitySpec&);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class OMEGA_API UOmegaAbilitySystemComponent : public UAbilitySystemComponent
@@ -42,13 +44,16 @@ public:
 	void AbilityInputTagReleased(const FGameplayTag& InputTag);
 	
 	FOnEffectAssetTagsUpdatedSignature OnEffectAssetTagsUpdatedDelegate;
+	FOnAbilityGranted OnAbilityGrantedDelegate;
 
 
-#pragma region ABILITIES
-
-	void AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& InStartupAbilities);
-
-#pragma endregion
-		
+	//  ABILITIES
+	// ===============================================================================================================
 	
+	void AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& InStartupAbilities);
+	void ForEachAbility(const FForEachAbility& InDelegate);
+	static FGameplayTag GetAbilityTagBySpec(const FGameplayAbilitySpec& AbilitySpec);
+	static FGameplayTag GetInputTagBySpec(const FGameplayAbilitySpec& AbilitySpec);
+	
+	bool bStartupAbilitiesGranted = false;
 };
