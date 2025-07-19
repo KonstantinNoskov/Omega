@@ -93,3 +93,9 @@ void UOverlayWidgetController::OnInitializeStartupAbilities(UOmegaAbilitySystemC
 
 	OmegaAbilitySystemComponent->ForEachAbility(BroadcastDelegate);
 }
+
+void UOverlayWidgetController::OnAbilityGranted(const FOmegaAbilityInfo& InAbilityInfo)
+{
+	
+	OnAbilityInfoDelegate.Broadcast(InAbilityInfo);
+}

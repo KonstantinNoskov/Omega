@@ -75,6 +75,7 @@ public:
 protected:
 	
 	void OnInitializeStartupAbilities(UOmegaAbilitySystemComponent* OmegaAbilitySystemComponent);
+	void OnAbilityGranted(const FOmegaAbilityInfo& AbilityInfo);
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widget Data")
 	TObjectPtr<UAttributeInfo> AttributeData;

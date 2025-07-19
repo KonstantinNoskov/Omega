@@ -10,6 +10,8 @@ class UWidgetComponent;
 class UBoxComponent;
 class UGameplayAbility;
 
+
+
 UCLASS()
 class OMEGA_API AOmegaAbilityActor : public AActor
 {
@@ -25,6 +27,7 @@ protected:
 
 public:
 	
+	
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintCallable)
@@ -35,6 +38,8 @@ public:
 	void OnCollisionOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 protected:
+
+	
 
 	UPROPERTY(EditAnywhere, Category = "Omega")
 	TSubclassOf<UOmegaGameplayAbility> AbilityClass;

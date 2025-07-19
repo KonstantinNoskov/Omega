@@ -4,6 +4,8 @@
 #include "AbilitySystem/Abilities/OmegaGameplayAbility.h"
 #include "Characters/OmegaCharacter.h"
 #include "Components/OmegaMovementComponent.h"
+#include "UI/WidgetControllers/OverlayWidgetController.h"
+
 
 
 UOmegaAbilitySystemComponent::UOmegaAbilitySystemComponent()
@@ -89,6 +91,8 @@ void UOmegaAbilitySystemComponent::ForEachAbility(const FForEachAbility& InDeleg
 	}
 }
 
+
+
 FGameplayTag UOmegaAbilitySystemComponent::GetAbilityTagBySpec(const FGameplayAbilitySpec& AbilitySpec)
 {
 	if (!AbilitySpec.Ability) return FGameplayTag::EmptyTag; 
@@ -142,5 +146,7 @@ UOmegaMovementComponent* UOmegaAbilitySystemComponent::GetOmegaMovementComponent
 	return OmegaMovementComponent;
 }
 
-
-                      
+void UOmegaAbilitySystemComponent::OnAbilityGrantedBySpec(const FGameplayAbilitySpec& AbilitySpec)
+{
+	
+}

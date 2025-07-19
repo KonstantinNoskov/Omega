@@ -5,6 +5,7 @@
 #include "OmegaCollisionChannels.h"
 #include "AbilitySystem/OmegaAbilitySystemComponent.h"
 #include "AbilitySystem/Abilities/OmegaGameplayAbility.h"
+#include "AbilitySystem/Data/AbilityInfo.h"
 #include "Characters/PlayerCharacters/PlayerBaseCharacter.h"
 #include "Components/BoxComponent.h"
 #include "Components/WidgetComponent.h"
@@ -71,9 +72,11 @@ void AOmegaAbilityActor::GrantAbility(AActor* AbilityReceiver)
 	UOmegaAbilitySystemComponent* PlayerASC = Cast<UOmegaAbilitySystemComponent>(Player->GetAbilitySystemComponent());
 	if (!PlayerASC) return;
 	if (!AbilityClass) return;
-	
- 	FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, AbilityLevel);
+
+	FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, AbilityLevel);
 	AbilitySpec.DynamicAbilityTags.AddTag(AbilityClass.GetDefaultObject()->StartupInputTag);
 	PlayerASC->GiveAbility(AbilitySpec);
+	
+	PlayerASC->OnAbilityGrantedDelegate.Broadcast(PlayerASC);
 }
 
