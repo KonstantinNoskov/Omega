@@ -5,6 +5,7 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "OmegaFunctionLibrary.generated.h"
 
+struct FGameplayEffectContextHandle;
 class ULoadMenuSaveGame;
 class UCharacterDefaultInfo;
 class UAbilitySystemComponent;
@@ -108,5 +109,8 @@ public:
 	
 	UFUNCTION(BlueprintPure, Category = "Omega Ability System Library", meta = (DefaultToSelf = "WorldContextObject"))
 	static UCharacterDefaultInfo* GetCharacterDefaultInfo(const UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintPure, Category = "Omega Ability System Library", meta = (DefaultToSelf = "WorldContextObject"))
+	static UTexture2D* GetInputIconByTag(const UObject* WorldContextObject, FGameplayTag GameplayTag);
 	
 };

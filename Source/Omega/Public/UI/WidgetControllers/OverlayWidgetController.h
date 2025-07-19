@@ -6,6 +6,8 @@
 #include "OmegaWidgetController.h"
 #include "OverlayWidgetController.generated.h"
 
+class UOmegaAbilitySystemComponent;
+class UAbilityInfo;
 /*
  * Stores icon info for gameplay effect message widget
  */
@@ -52,7 +54,7 @@ struct FGameplayTag;
 struct FOnAttributeChangeData;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMessageWidgetRowSignature, const FUIWidgetRow, Row);
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAbilityInfoSignature, const FOmegaAbilityInfo&, AbilityInfo);
 
 UCLASS()
 class OMEGA_API UOverlayWidgetController : public UOmegaWidgetController
@@ -66,11 +68,20 @@ public:
 	
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
 	FOnAttributeInfoChangedSignature OnAttributeInfoChangedDelegate;
+
+	UPROPERTY(BlueprintAssignable, Category = "GAS|Abilities")
+	FAbilityInfoSignature OnAbilityInfoDelegate;
 	
 protected:
-
-	UPROPERTY(EditDefaultsOnly)
+	
+	void OnInitializeStartupAbilities(UOmegaAbilitySystemComponent* OmegaAbilitySystemComponent);
+	void OnAbilityGranted(const FOmegaAbilityInfo& AbilityInfo);
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widget Data")
 	TObjectPtr<UAttributeInfo> AttributeData;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widget Data");
+	TObjectPtr<UAbilityInfo> AbilityInfo;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widget Data", meta = (RequiredAssetDataTags = "RowStructure=/Script/Omega.UIWidgetRow"))
 	TObjectPtr<UDataTable> WidgetMessageDataTable;

@@ -4,6 +4,8 @@
 #include "AbilitySystem/Abilities/OmegaGameplayAbility.h"
 #include "Characters/OmegaCharacter.h"
 #include "Components/OmegaMovementComponent.h"
+#include "UI/WidgetControllers/OverlayWidgetController.h"
+
 
 
 UOmegaAbilitySystemComponent::UOmegaAbilitySystemComponent()
@@ -71,6 +73,54 @@ void UOmegaAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassO
 			GiveAbility(AbilitySpec);
 		}
 	}
+
+	bStartupAbilitiesGranted = true;
+	OnAbilityGrantedDelegate.Broadcast(this);
+}
+
+void UOmegaAbilitySystemComponent::ForEachAbility(const FForEachAbility& InDelegate)
+{
+	FScopedAbilityListLock ActiveScopeLock(*this);
+	
+	for (const FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		if (!InDelegate.ExecuteIfBound(AbilitySpec))
+		{
+			UE_LOG(LogClass, Warning, TEXT("Failed to execute delegate in %hs"), __FUNCTION__)	
+		}
+	}
+}
+
+
+
+FGameplayTag UOmegaAbilitySystemComponent::GetAbilityTagBySpec(const FGameplayAbilitySpec& AbilitySpec)
+{
+	if (!AbilitySpec.Ability) return FGameplayTag::EmptyTag; 
+
+	for (FGameplayTag Tag : AbilitySpec.Ability.Get()->AbilityTags)
+	{
+		if (Tag.MatchesTag(FGameplayTag::RequestGameplayTag(FName("Abilities"))))
+		{
+			return Tag;
+		}
+	}
+	
+	return FGameplayTag::EmptyTag;
+}
+
+FGameplayTag UOmegaAbilitySystemComponent::GetInputTagBySpec(const FGameplayAbilitySpec& AbilitySpec)
+{
+	if (!AbilitySpec.Ability) return FGameplayTag::EmptyTag; 
+
+	for (FGameplayTag Tag : AbilitySpec.DynamicAbilityTags)
+	{
+		if (Tag.MatchesTag(FGameplayTag::RequestGameplayTag(FName("Input"))))
+		{
+			return Tag;
+		}
+	}
+	
+	return FGameplayTag::EmptyTag;
 }
 
 
@@ -96,5 +146,7 @@ UOmegaMovementComponent* UOmegaAbilitySystemComponent::GetOmegaMovementComponent
 	return OmegaMovementComponent;
 }
 
-
-                      
+void UOmegaAbilitySystemComponent::OnAbilityGrantedBySpec(const FGameplayAbilitySpec& AbilitySpec)
+{
+	
+}

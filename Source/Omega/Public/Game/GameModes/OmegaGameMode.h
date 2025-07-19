@@ -4,6 +4,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "OmegaGameMode.generated.h"
 
+class UInputData;
 class ULoadMenuSaveGame;
 class USaveGame;
 class UMVVM_LoadSlot;
@@ -30,11 +31,14 @@ public:
 	void SaveWorldState(UWorld* World);
 	void LoadWorldState(UWorld* World) const;
 	
-	UPROPERTY(EditDefaultsOnly, Category = "Omega|Character Class Defaults")
+	UPROPERTY(EditDefaultsOnly, Category = "Omega")
 	UCharacterDefaultInfo* CharacterClassInfo;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Omega|UI")
+	UPROPERTY(EditDefaultsOnly, Category = "Omega")
 	UDamageWidgetData* DamageWidgetData;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Omega")
+	UInputData* InputData;
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<USaveGame> LoadMenuSaveGameClass;
