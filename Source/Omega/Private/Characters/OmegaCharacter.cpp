@@ -9,6 +9,7 @@
 #include "BlueprintLibraries/OmegaFunctionLibrary.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/OmegaMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 AOmegaCharacter::AOmegaCharacter(const FObjectInitializer& ObjectInitializer)
