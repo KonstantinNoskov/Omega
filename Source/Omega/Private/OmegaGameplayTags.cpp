@@ -121,7 +121,23 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 			FName("Abilities.Fireball"),
 			FString("Defines Fireball ability")
 			);
-	
+
+
+	//  ABILITIES COOLDOWN
+	// ===============================================================================================================
+ 
+	// Fireball
+	GameplayTags.Abilities_Cooldown_FireBall = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Abilities.Cooldown.Fireball"),
+			FString("Defines Fireball ability cooldown")
+			);
+
+	// HitReact
+	GameplayTags.Abilities_Cooldown_HitReact = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Abilities.Cooldown.HitReact"),
+			FString("Defines HitReact ability cooldown")
+			);
+
 	
 	//  ELEMENTAL
 	// ===============================================================================================================
