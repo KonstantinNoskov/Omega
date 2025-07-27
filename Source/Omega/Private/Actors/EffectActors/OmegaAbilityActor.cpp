@@ -53,9 +53,10 @@ void AOmegaAbilityActor::GrantAbility(AActor* AbilityReceiver)
 
 	FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, AbilityLevel);
 	AbilitySpec.DynamicAbilityTags.AddTag(AbilityClass.GetDefaultObject()->StartupInputTag);
+
 	PlayerASC->GiveAbility(AbilitySpec);
-	
 	PlayerASC->OnAbilityGrantedDelegate.Broadcast(PlayerASC);
+	//PlayerASC->OnAbilityGrantedBySpecDelegate.Broadcast(PlayerASC, AbilitySpec);
 }
 
 

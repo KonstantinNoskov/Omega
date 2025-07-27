@@ -9,7 +9,7 @@
 class UAbilitySystemComponent;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCooldownChangedSignature, float, TimeRemaining);
 
-UCLASS()
+UCLASS(BlueprintType, meta = (ExposedAsyncProxy = "AsyncTask"))
 class OMEGA_API UWaitCooldownChange : public UBlueprintAsyncActionBase
 {
 	GENERATED_BODY()
@@ -25,7 +25,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Omega", meta = (BlueprintInternalUseOnly = "true"))
 	static UWaitCooldownChange* WaitForCooldownChange(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayTag& InCooldownTag);
 
-	UFUNCTION(BlueprintCallable, Category = "Omega", meta = (BlueprintInternalUseOnly = "true"))
+	UFUNCTION(BlueprintCallable)
 	void EndTask();
 
 protected:
@@ -35,6 +35,7 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
-	
+
+	UPROPERTY()
 	FGameplayTag CooldownTag;
 };

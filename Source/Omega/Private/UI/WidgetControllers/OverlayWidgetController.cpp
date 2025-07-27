@@ -50,6 +50,7 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	else
 	{
 		OmegaAbilitySystemComponent->OnAbilityGrantedDelegate.AddUObject(this, &UOverlayWidgetController::OnInitializeStartupAbilities);
+		OmegaAbilitySystemComponent->OnAbilityGrantedBySpecDelegate.AddUObject(this, &UOverlayWidgetController::OnAbilityGranted);
 	}
 	
 	
@@ -88,14 +89,22 @@ void UOverlayWidgetController::OnInitializeStartupAbilities(UOmegaAbilitySystemC
 		
 		OmegaAbilityInfo.InputTag = InputTag;
 		
+		
 		OnAbilityInfoDelegate.Broadcast(OmegaAbilityInfo);
 	});
 
 	OmegaAbilitySystemComponent->ForEachAbility(BroadcastDelegate);
 }
 
-void UOverlayWidgetController::OnAbilityGranted(const FOmegaAbilityInfo& InAbilityInfo)
+void UOverlayWidgetController::OnAbilityGranted(UOmegaAbilitySystemComponent* OmegaAbilitySystemComponent, const FGameplayAbilitySpec& InAbilitySpec)
 {
+	FGameplayTag AbilityTag = OmegaAbilitySystemComponent->GetAbilityTagBySpec(InAbilitySpec);
+	if (!AbilityTag.MatchesTag(FGameplayTag::RequestGameplayTag(FName("Abilities")))) return;
 	
-	OnAbilityInfoDelegate.Broadcast(InAbilityInfo);
+	FOmegaAbilityInfo OmegaAbilityInfo = AbilityInfo->AbilityInfoMap[AbilityTag]; 
+		
+	OmegaAbilityInfo.InputTag = OmegaAbilitySystemComponent->GetInputTagBySpec(InAbilitySpec);
+	OmegaAbilityInfo.CooldownTag = OmegaAbilitySystemComponent->GetAbilityTagBySpec(InAbilitySpec);
+	
+	OnAbilityInfoDelegate.Broadcast(OmegaAbilityInfo);
 }
