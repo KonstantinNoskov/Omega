@@ -2,11 +2,14 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemComponent.h"
+
+
 #include "OmegaAbilitySystemComponent.generated.h"
 
 class UOmegaMovementComponent;
 DECLARE_MULTICAST_DELEGATE_TwoParams(FOnEffectAssetTagsUpdatedSignature, const FGameplayTagContainer& /*AssetTags*/, const FGameplayEffectSpec& /*AppliedEffectSpec*/)
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnAbilityGranted, UOmegaAbilitySystemComponent* /*OmegaASC*/);
+DECLARE_MULTICAST_DELEGATE_TwoParams(FOnAbilityGrantedBySpec, UOmegaAbilitySystemComponent* /*ASC*/, const FGameplayAbilitySpec& /*EffecSpec*/);
 DECLARE_DELEGATE_OneParam(FForEachAbility, const FGameplayAbilitySpec&);
 
 
@@ -45,6 +48,7 @@ public:
 	
 	FOnEffectAssetTagsUpdatedSignature OnEffectAssetTagsUpdatedDelegate;
 	FOnAbilityGranted OnAbilityGrantedDelegate;
+	FOnAbilityGrantedBySpec OnAbilityGrantedBySpecDelegate;
 
 	//  ABILITIES
 	// ===============================================================================================================

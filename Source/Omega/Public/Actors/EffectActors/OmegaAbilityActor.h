@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Actors/PickupActor.h"
 #include "GameFramework/Actor.h"
 #include "OmegaAbilityActor.generated.h"
 
@@ -13,7 +14,7 @@ class UGameplayAbility;
 
 
 UCLASS()
-class OMEGA_API AOmegaAbilityActor : public AActor
+class OMEGA_API AOmegaAbilityActor : public APickupActor
 {
 	GENERATED_BODY()
 
@@ -30,35 +31,17 @@ public:
 	
 	virtual void Tick(float DeltaTime) override;
 
-	UFUNCTION(BlueprintCallable)
-	void HoveringActor(float DeltaTime);
+	
 	void GrantAbility(AActor* AbilityReciever);
 
-	UFUNCTION()
-	void OnCollisionOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-
 protected:
+	virtual void OnCollisionOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+		const FHitResult& SweepResult) override;
 
 	
-
 	UPROPERTY(EditAnywhere, Category = "Omega")
 	TSubclassOf<UOmegaGameplayAbility> AbilityClass;
-
-	UPROPERTY(EditAnywhere, Category = "Omega")
-	int32 AbilityLevel{1};
-
-	UPROPERTY(EditAnywhere, Category = "Omega")
-	float HoverAmplitude{.5f};
-
-	UPROPERTY(EditAnywhere, Category = "Omega")
-	float HoverMagnitude{.025f};
-
-private:
-
-	float Radians{0.f};
 	
-	UPROPERTY(VisibleAnywhere, Category = "Omega", meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UBoxComponent> BoxCollision;
 
 	UPROPERTY(VisibleAnywhere, Category = "Omega", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UWidgetComponent> WidgetComponent; 

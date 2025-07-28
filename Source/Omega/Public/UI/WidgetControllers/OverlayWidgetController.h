@@ -4,8 +4,10 @@
 #include "GameplayTagContainer.h"
 #include "OmegaTypes.h"
 #include "OmegaWidgetController.h"
+#include "AbilitySystem/Data/AbilityInfo.h"
 #include "OverlayWidgetController.generated.h"
 
+struct FGameplayAbilitySpec;
 class UOmegaAbilitySystemComponent;
 class UAbilityInfo;
 /*
@@ -75,7 +77,7 @@ public:
 protected:
 	
 	void OnInitializeStartupAbilities(UOmegaAbilitySystemComponent* OmegaAbilitySystemComponent);
-	void OnAbilityGranted(const FOmegaAbilityInfo& AbilityInfo);
+	void OnAbilityGranted(UOmegaAbilitySystemComponent* OmegaAbilitySystemComponent, const FGameplayAbilitySpec& InAbilitySpec);
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widget Data")
 	TObjectPtr<UAttributeInfo> AttributeData;

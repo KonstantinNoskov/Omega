@@ -17,6 +17,9 @@ struct FOmegaAbilityInfo
 	FGameplayTag InputTag = FGameplayTag::EmptyTag;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FGameplayTag CooldownTag = FGameplayTag::EmptyTag;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FString AbilityName;
 };
 

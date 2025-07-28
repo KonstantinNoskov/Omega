@@ -62,6 +62,13 @@ public:
 
 	FGameplayTag Abilities_MeleeAttack;
 	FGameplayTag Abilities_Fireball;
+
+
+	// COOLDOWN
+	// ===============================================================================================================
+
+	FGameplayTag Abilities_Cooldown_HitReact;
+	FGameplayTag Abilities_Cooldown_FireBall;
 	
 
 	//  DAMAGE TYPES
@@ -83,7 +90,6 @@ public:
 	FGameplayTag Attributes_Secondary_Resistance_Poison;
 	FGameplayTag Attributes_Secondary_Resistance_Lightning;
 
-	
 	
 	//  DEBUFF STATUSES 
 	// ===============================================================================================================
