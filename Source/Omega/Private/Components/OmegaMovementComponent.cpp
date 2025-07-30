@@ -213,9 +213,8 @@ void UOmegaMovementComponent::PerformDash()
 	
 	FHitResult HitResult;
 	SafeMoveUpdatedComponent(FVector::ZeroVector, NewRotation, false, HitResult);
-
-	OmegaCharacterOwner->GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Enemy, ECR_Ignore);
 	
+	OmegaCharacterOwner->GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Enemy, ECR_Ignore);
 }
 void UOmegaMovementComponent::ExitDash()
 {
