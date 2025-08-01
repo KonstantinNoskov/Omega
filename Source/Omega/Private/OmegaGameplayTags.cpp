@@ -202,6 +202,12 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 			FName("Damage.Type.Lightning"),
 			FString("Lightning")
 			);
+
+	// Bleed
+	GameplayTags.Damage_Type_Bleed = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Damage.Type.Bleed"),
+			FString("Bleed")
+			);
 	
 
 
@@ -238,12 +244,19 @@ void FOmegaGameplayTags::InitializeNativeGameplayTags()
 			FString("Lightning Resistance")
 			);
 
+	// Bleed
+	GameplayTags.Attributes_Secondary_Resistance_Bleed = UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Attributes.Secondary.Resistance.Bleed"),
+			FString("Bleed Resistance")
+			);
+
 	
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Type_Physical, GameplayTags.Attributes_Secondary_Resistance_Physical);
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Type_Fire, GameplayTags.Attributes_Secondary_Resistance_Fire);
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Type_Cold, GameplayTags.Attributes_Secondary_Resistance_Cold);
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Type_Poison, GameplayTags.Attributes_Secondary_Resistance_Poison);
 	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Type_Lightning, GameplayTags.Attributes_Secondary_Resistance_Lightning);
+	GameplayTags.DamageTypesToResistances.Add(GameplayTags.Damage_Type_Bleed, GameplayTags.Attributes_Secondary_Resistance_Bleed);
 
 	
 	//  COMBAT

@@ -134,6 +134,10 @@ public:
 	FGameplayAttributeData LightningResistance;
 	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, LightningResistance)
 
+	UPROPERTY(BlueprintReadOnly, Category = "Secondary Attributes")
+	FGameplayAttributeData BleedResistance;
+	ATTRIBUTE_ACCESSORS(UOmegaAttributeSet, BleedResistance)
+
 	
 	// -------------------------------------
 	//  META ATTRIBUTES

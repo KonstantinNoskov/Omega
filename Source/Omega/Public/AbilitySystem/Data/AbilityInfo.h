@@ -5,6 +5,8 @@
 #include "Engine/DataAsset.h"
 #include "AbilityInfo.generated.h"
 
+class UGameplayAbility;
+
 USTRUCT(BlueprintType)
 struct FOmegaAbilityInfo
 {
@@ -21,6 +23,9 @@ struct FOmegaAbilityInfo
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FString AbilityName;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TSubclassOf<UGameplayAbility> Ability;
 };
 
 UCLASS()
@@ -32,4 +37,6 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(ForceInlineRow))
 	TMap<FGameplayTag, FOmegaAbilityInfo> AbilityInfoMap;
+
+	FOmegaAbilityInfo GetAbilityInfoByTag(const FGameplayTag& AbilityTag);
 };

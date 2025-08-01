@@ -79,6 +79,7 @@ public:
 	FGameplayTag Damage_Type_Cold;
 	FGameplayTag Damage_Type_Poison;
 	FGameplayTag Damage_Type_Lightning;
+	FGameplayTag Damage_Type_Bleed;
 
 	
 	//  DAMAGE RESISTANCES
@@ -89,6 +90,7 @@ public:
 	FGameplayTag Attributes_Secondary_Resistance_Cold;
 	FGameplayTag Attributes_Secondary_Resistance_Poison;
 	FGameplayTag Attributes_Secondary_Resistance_Lightning;
+	FGameplayTag Attributes_Secondary_Resistance_Bleed;
 
 	
 	//  DEBUFF STATUSES 

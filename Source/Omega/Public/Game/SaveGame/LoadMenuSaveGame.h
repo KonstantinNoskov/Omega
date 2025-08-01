@@ -1,8 +1,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "GameFramework/SaveGame.h"
 #include "LoadMenuSaveGame.generated.h"
+
+class UGameplayAbility;
 
 UENUM(BlueprintType)
 enum ESaveSlotStatus
@@ -33,6 +36,26 @@ inline bool operator==(const FSavedActorData& Left, const FSavedActorData& Right
 {
 	return Left.ActorName == Right.ActorName;
 }
+
+
+USTRUCT(BlueprintType)
+struct FSavedAbility
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	TSubclassOf<UGameplayAbility> GameplayAbility;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	FGameplayTag AbilityTag = FGameplayTag::EmptyTag;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	FGameplayTag AbilitySlot = FGameplayTag::EmptyTag;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	int32 AbilityLevel = 1; 
+};
+
 
 USTRUCT(BlueprintType)
 struct FSavedMapData
@@ -95,6 +118,12 @@ public:
 	UPROPERTY()
 	float MaxHealth = 0.f;
 
+	
+	// Abilities Data  
+	// ===============================================================================================================
+
+	UPROPERTY()
+	TArray<FSavedAbility> SavedAbilities;
 	
 	//  World State
 	// ===============================================================================================================

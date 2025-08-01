@@ -4,6 +4,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "OmegaGameMode.generated.h"
 
+class UAbilityInfo;
 class UInputData;
 class ULoadMenuSaveGame;
 class USaveGame;
@@ -39,6 +40,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Omega")
 	UInputData* InputData;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Omega")
+	UAbilityInfo* AbilityInfo; 
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<USaveGame> LoadMenuSaveGameClass;

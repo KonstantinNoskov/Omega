@@ -4,6 +4,7 @@
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/OmegaAbilitySystemComponent.h"
 #include "AbilitySystem/OmegaAttributeSet.h"
+#include "AbilitySystem/Data/AbilityInfo.h"
 #include "BlueprintLibraries/OmegaFunctionLibrary.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -222,6 +223,25 @@ void APlayerBaseCharacter::SaveProgress_Implementation(const FName& CheckpointTa
 	SaveData->MaxHealth			= UOmegaAttributeSet::GetMaxHealthAttribute().GetNumericValue(GetAttributeSet());
 	SaveData->Health			= UOmegaAttributeSet::GetHealthAttribute().GetNumericValue(GetAttributeSet());
 	SaveData->bFirstTimeLoadIn  = false;
+
+	UOmegaAbilitySystemComponent* OmegaASC = Cast<UOmegaAbilitySystemComponent>(AbilitySystemComponent);
+	
+	FForEachAbility SavedAbilityDelegate;
+	SavedAbilityDelegate.BindLambda([this, OmegaASC, SaveData](const FGameplayAbilitySpec& AbilitySpec)
+	{
+		FGameplayTag AbilityTag = OmegaASC->GetAbilityTagBySpec(AbilitySpec);
+		UAbilityInfo* AbilityInfo = UOmegaFunctionLibrary::GetAbilityInfo(this);
+		FOmegaAbilityInfo OmegaAbilityInfo = AbilityInfo->GetAbilityInfoByTag(AbilityTag);
+		
+		FSavedAbility SavedAbility;
+		SavedAbility.GameplayAbility = OmegaAbilityInfo.Ability;
+		SavedAbility.AbilityLevel = AbilitySpec.Level;
+		SavedAbility.AbilityTag = AbilityTag;
+
+		SaveData->SavedAbilities.Add(SavedAbility);
+		
+	});
+	OmegaASC->ForEachAbility(SavedAbilityDelegate);
 
 	OmegaGameMode->SaveInGameProgressData(SaveData);
 }

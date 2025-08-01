@@ -112,5 +112,8 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Omega Ability System Library", meta = (DefaultToSelf = "WorldContextObject"))
 	static UTexture2D* GetInputIconByTag(const UObject* WorldContextObject, FGameplayTag GameplayTag);
+
+	UFUNCTION(BlueprintPure, Category = "Omega Ability System Library", meta = (DefaultToSelf = "WorldContextObject"))
+	static UAbilityInfo* GetAbilityInfo(const UObject* WorldContextObject);
 	
 };

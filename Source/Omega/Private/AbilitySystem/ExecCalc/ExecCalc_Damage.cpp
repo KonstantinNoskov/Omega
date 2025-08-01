@@ -15,6 +15,7 @@ struct OmegaDamageStatics
 	DECLARE_ATTRIBUTE_CAPTUREDEF(ColdResistance)
 	DECLARE_ATTRIBUTE_CAPTUREDEF(PoisonResistance)
 	DECLARE_ATTRIBUTE_CAPTUREDEF(LightningResistance)
+	DECLARE_ATTRIBUTE_CAPTUREDEF(BleedResistance)
 
 
 	TMap<FGameplayTag, FGameplayEffectAttributeCaptureDefinition> TagsToCaptureDefs;
@@ -26,6 +27,7 @@ struct OmegaDamageStatics
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UOmegaAttributeSet, ColdResistance, Target, false)
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UOmegaAttributeSet, PoisonResistance, Target, false)
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UOmegaAttributeSet, LightningResistance, Target, false)
+		DEFINE_ATTRIBUTE_CAPTUREDEF(UOmegaAttributeSet, BleedResistance, Target, false)
 
 		const FOmegaGameplayTags& GameplayTags = FOmegaGameplayTags::Get();
 		TagsToCaptureDefs.Add(GameplayTags.Attributes_Secondary_Resistance_Physical,	PhysicalResistanceDef);
@@ -33,6 +35,7 @@ struct OmegaDamageStatics
 		TagsToCaptureDefs.Add(GameplayTags.Attributes_Secondary_Resistance_Cold,		ColdResistanceDef);
 		TagsToCaptureDefs.Add(GameplayTags.Attributes_Secondary_Resistance_Poison,		PoisonResistanceDef);
 		TagsToCaptureDefs.Add(GameplayTags.Attributes_Secondary_Resistance_Lightning,	LightningResistanceDef);
+		TagsToCaptureDefs.Add(GameplayTags.Attributes_Secondary_Resistance_Bleed,		BleedResistanceDef);
 	}
 };
 
@@ -49,6 +52,7 @@ UExecCalc_Damage::UExecCalc_Damage()
 	RelevantAttributesToCapture.Add(DamageStatics().ColdResistanceDef);
 	RelevantAttributesToCapture.Add(DamageStatics().PoisonResistanceDef);
 	RelevantAttributesToCapture.Add(DamageStatics().LightningResistanceDef);
+	RelevantAttributesToCapture.Add(DamageStatics().BleedResistanceDef);
 }
 
 void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams, FGameplayEffectCustomExecutionOutput& OutExecutionOutput) const

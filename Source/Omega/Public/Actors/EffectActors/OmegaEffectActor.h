@@ -85,16 +85,16 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Omega|Applied Effects")
 	bool bDestroyOnEffectRemoval = false;
 	
-	UPROPERTY(EditDefaultsOnly, Category = "Omega|Applied Effects|Applied/Removal Policies|Instant Effect", meta=(ForceInlineRow))
+	UPROPERTY(EditAnywhere, Category = "Omega|Applied Effects|Applied/Removal Policies|Instant Effect", meta=(ForceInlineRow))
 	TMap<FGameplayTag, FScalableFloat> InstantDamage;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Omega|Applied Effects|Applied/Removal Policies|Duration Effect", meta=(ForceInlineRow))
+	UPROPERTY(EditAnywhere, Category = "Omega|Applied Effects|Applied/Removal Policies|Duration Effect", meta=(ForceInlineRow))
 	TMap<FGameplayTag, FScalableFloat> DurationDamage;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Omega|Applied Effects|Applied/Removal Policies|Infinite Effect", meta=(ForceInlineRow))
+	UPROPERTY(EditAnywhere, Category = "Omega|Applied Effects|Applied/Removal Policies|Infinite Effect", meta=(ForceInlineRow))
 	TMap<FGameplayTag, FScalableFloat> InfiniteDamage;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Omega", meta=(ForceInlineRow))
+	UPROPERTY(EditAnywhere, Category = "Omega", meta=(ForceInlineRow))
 	int32 EffectLevel = 1;
 
 	TMap<EEffectApplicationPolicy, TMap<FGameplayTag, FScalableFloat>> DurationPolicyToDamage;

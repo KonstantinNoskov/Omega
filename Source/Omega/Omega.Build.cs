@@ -19,9 +19,9 @@ public class Omega : ModuleRules
 			
 			// 2D
 			"Paper2D",
-			"Paper2DEditor",
+			//"Paper2DEditor",
 			"PaperZD",
-			"PaperZDEditor",
+			//"PaperZDEditor",
 			
 			// GAS
 			"GameplayAbilities",

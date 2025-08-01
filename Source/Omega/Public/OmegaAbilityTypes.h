@@ -4,7 +4,7 @@
 #include "OmegaAbilityTypes.generated.h"
 
 
-USTRUCT(BlueprintType)
+USTRUCT(BlueprintType,Blueprintable)
 struct FOmegaGameplayEffectContext : public FGameplayEffectContext
 {
 	GENERATED_BODY()
@@ -27,7 +27,8 @@ struct FOmegaGameplayEffectContext : public FGameplayEffectContext
 	FORCEINLINE void SetIsBlocked(bool InbBlocked)										{ bBlocked = InbBlocked; }
 	FORCEINLINE void SetDamageType(const FGameplayTagContainer& NewDamageTypes) 		{ DamageTypes = NewDamageTypes; }
 
-	FORCEINLINE void AddDamageType(const FGameplayTag& NewDamageType) 					{ DamageTypes.AddTag(NewDamageType); }
+	
+	void AddDamageType(const FGameplayTag& NewDamageType) 					{ DamageTypes.AddTag(NewDamageType); }
 	
 
 protected:

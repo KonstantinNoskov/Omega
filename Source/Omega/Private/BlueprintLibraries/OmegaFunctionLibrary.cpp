@@ -248,3 +248,11 @@ UTexture2D* UOmegaFunctionLibrary::GetInputIconByTag(const UObject* WorldContext
 	return OmegaGameMode->InputData->GetInputIconByTag(GameplayTag);
 	
 }
+
+UAbilityInfo* UOmegaFunctionLibrary::GetAbilityInfo(const UObject* WorldContextObject)
+{
+	const AOmegaGameMode* AuraGameMode = Cast<AOmegaGameMode>(UGameplayStatics::GetGameMode(WorldContextObject));
+	if (AuraGameMode == nullptr) return nullptr;
+	
+	return AuraGameMode->AbilityInfo;
+}

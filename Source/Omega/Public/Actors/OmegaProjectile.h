@@ -57,6 +57,7 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UProjectileMovementComponent> ProjectileMovement;
-	
+
+	UPROPERTY(Blueprintable, BlueprintReadWrite, BlueprintReadWrite)
 	FGameplayEffectSpecHandle DamageEffectSpecHandle;
 };
